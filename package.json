@@ -1,0 +1,58 @@
+{
+  "name": "teamspeak3.js",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamspeakjs/teamspeak3.js.git"
+  },
+  "author": "Lixqa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teamspeakjs/teamspeak3.js/issues"
+  },
+  "homepage": "https://github.com/teamspeakjs/teamspeak3.js#readme",
+  "description": "A TypeScript library for interacting with a Teamspeak 3 server using the ServerQuery protocol. It provides a type-safe way for managing server users, channels, and more.",
+  "keywords": [
+    "teamspeak",
+    "teamspeak3",
+    "serverquery",
+    "typescript",
+    "sdk",
+    "library",
+    "bot",
+    "client",
+    "ts3"
+  ],
+  "maintainers": [
+    {
+      "name": "Lixqa",
+      "email": "lixqadev@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "@discordjs/collection": "^2.1.1",
+    "@vladfrangu/async_event_emitter": "^2.4.6",
+    "events": "^3.3.0",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.3",
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
+  }
+}
