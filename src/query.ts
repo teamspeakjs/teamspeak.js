@@ -27,6 +27,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public actions = new ActionManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
+  protected virtualServerId: number | null = null;
 
   constructor(options: ClientOptions) {
     super();
@@ -74,6 +75,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * Select a virtual server by its ID.
    */
   async useVirtualServer(id: number): Promise<void> {
+    this.virtualServerId = id;
+
     await this.commands.use({ sid: id });
 
     const serverQueryInfo = await this.commands.whoami();
@@ -140,5 +143,17 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   sendHostMessage(message: string): Promise<void> {
     return this.commands.gm({ msg: message });
+  }
+
+  /**
+   * Sends a server message to the current virtual server.
+   * @param message The message to send.
+   */
+  sendServerMessage(message: string): Promise<void> {
+    return this.commands.sendtextmessage({
+      target: this.virtualServerId!,
+      targetmode: 3,
+      msg: message,
+    });
   }
 }
