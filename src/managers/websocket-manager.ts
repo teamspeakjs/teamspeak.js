@@ -44,4 +44,9 @@ export default class WebSocketManager extends EventEmitter {
       this.emit('raw', trimmed);
     }
   }
+
+  destroy(): void {
+    this.removeAllListeners();
+    this.socket.destroy();
+  }
 }

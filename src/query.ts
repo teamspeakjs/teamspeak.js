@@ -24,14 +24,23 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public client: QueryClient | null = null;
   public actions = new ActionManager(this);
 
+  private _pingInterval: NodeJS.Timeout | null = null;
+
   constructor(options: ClientOptions) {
     super();
     this.ws = new WebSocketManager(options.host, options.port);
     this.commands.registerWsEvents();
+
+    this._pingInterval = setInterval(() => this._ping(), 120_000);
   }
 
-  ping(): void {
-    this.ws.send('ping');
+  /**
+   * Send a ping to the server.
+   *
+   * This command does not exist and throws an error.
+   */
+  private _ping(): void {
+    this.commands._execute('ping').catch(() => {});
   }
 
   /**
@@ -76,5 +85,20 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   getRawHostInfo() {
     return this.commands.hostinfo();
+  }
+
+  /**
+   * Close the connection and destroy the Query instance.
+   */
+  destroy(): void {
+    if (this._pingInterval) {
+      clearInterval(this._pingInterval);
+      this._pingInterval = null;
+    }
+    this.ws.destroy();
+    this.removeAllListeners();
+
+    this.channels.cache.clear();
+    this.clients.cache.clear();
   }
 }
