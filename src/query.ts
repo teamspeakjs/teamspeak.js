@@ -8,6 +8,7 @@ import QueryClient from './structures/query-client';
 import ActionManager from './managers/action-manager';
 import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
 import { EventTypes } from './typings/types';
+import { Events } from './utils/events';
 
 interface ClientOptions {
   host: string;
@@ -28,10 +29,18 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   constructor(options: ClientOptions) {
     super();
-    this.ws = new WebSocketManager(options.host, options.port);
+
+    this.ws = new WebSocketManager(options.host, options.port, (data) => {
+      this.emit(Events.Debug, `[CLIENT] ${data}`);
+    });
+
     this.commands.registerWsEvents();
 
     this._pingInterval = setInterval(() => this._ping(), 120_000);
+
+    this.ws.on('raw', (data) => {
+      this.emit(Events.Debug, `[SERVER] ${data}`);
+    });
   }
 
   /**

@@ -4,14 +4,17 @@ import { EventEmitter } from 'events';
 export default class WebSocketManager extends EventEmitter {
   private host: string;
   private port: number;
+  private onOutgoing: (data: string) => void;
+
   private socket!: net.Socket;
   private buffer = '';
   public isReady = false;
 
-  constructor(host: string, port = 10011) {
+  constructor(host: string, port = 10011, onOutgoing: (data: string) => void) {
     super();
     this.host = host;
     this.port = port;
+    this.onOutgoing = onOutgoing;
   }
 
   connect(): void {
@@ -24,6 +27,7 @@ export default class WebSocketManager extends EventEmitter {
 
   send(cmd: string): void {
     this.socket.write(cmd.trim() + '\n');
+    this.onOutgoing(cmd.trim());
   }
 
   private handleData(data: Buffer): void {

@@ -14,8 +14,11 @@ export type If<Value extends boolean, TrueResult, FalseResult = null> = Value ex
     : TrueResult | FalseResult;
 
 export type EventTypes = {
+  Debug: [message: string];
+
   ChannelCreate: [channel: Channel, invoker: Client];
   ChannelUpdate: [before: Channel, after: Channel, invoker: Client];
   ChannelDelete: [channel: Channel, invoker: Client];
+
   ClientEnterView: [client: Client];
 };
