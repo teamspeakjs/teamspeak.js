@@ -17,4 +17,5 @@ export type EventTypes = {
   ChannelCreate: [channel: Channel, invoker: Client];
   ChannelUpdate: [before: Channel, after: Channel, invoker: Client];
   ChannelDelete: [channel: Channel, invoker: Client];
+  ClientEnterView: [client: Client];
 };
