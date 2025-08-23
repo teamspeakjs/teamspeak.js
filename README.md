@@ -23,7 +23,7 @@ const query = new Query({
 });
 
 query.on('ready', async () => {
-  console.log('Connected to TeamsSpeak server!');
+  console.log('Connected to TeamSpeak server!');
 
   await query.login('serveradmin', 'p4ssw0rd'); // Login with query credentials
   await query.useVirtualServer(1); // Select VirtualServer with ID 1

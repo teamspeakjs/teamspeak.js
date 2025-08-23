@@ -28,7 +28,6 @@ export default abstract class Base {
   }
 
   valueOf() {
-    //TODO: return id;
-    return 1;
+    return this.id;
   }
 }
