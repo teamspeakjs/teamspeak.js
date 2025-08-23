@@ -291,3 +291,22 @@ export type RawClientFindItem = {
   clid: string;
   client_nickname: string;
 };
+
+export type RawClientIds = [RawClientIdsItem, ...Omit<RawClientIdsItem, 'cluid'>[]];
+
+type RawClientIdsItem = {
+  cluid: string;
+  clid: string;
+  name: string;
+};
+
+export type RawClientDbid = {
+  cluid: string;
+  cldbid: string;
+};
+
+export type RawClientName = {
+  cluid: string;
+  cldbid: string;
+  name: string;
+};

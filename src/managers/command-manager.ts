@@ -6,7 +6,10 @@ import {
   RawChannelFindItem,
   RawChannelListItem,
   RawClient,
+  RawClientDbid,
   RawClientFindItem,
+  RawClientIds,
+  RawClientName,
   RawHostInfo,
   RawInstance,
   RawServer,
@@ -320,20 +323,20 @@ export default class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  clientgetids() {
-    throw new Error('Not implemented');
+  clientgetids(params: { cluid: string }) {
+    return this.query.commands._execute<RawClientIds>('clientgetids', params);
   }
 
-  clientgetdbidfromuid() {
-    throw new Error('Not implemented');
+  clientgetdbidfromuid(params: { cluid: string }) {
+    return this.query.commands._execute<RawClientDbid>('clientgetdbidfromuid', params);
   }
 
-  clientgetnamefromuid() {
-    throw new Error('Not implemented');
+  clientgetnamefromuid(params: { cluid: string }) {
+    return this.query.commands._execute<RawClientName>('clientgetnamefromuid', params);
   }
 
-  clientgetnamefromdbid() {
-    throw new Error('Not implemented');
+  clientgetnamefromdbid(params: { cldbid: string }) {
+    return this.query.commands._execute<RawClientName>('clientgetnamefromdbid', params);
   }
 
   clientsetserverquerylogin() {

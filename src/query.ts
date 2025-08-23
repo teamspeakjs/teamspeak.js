@@ -9,7 +9,14 @@ import ActionManager from './managers/action-manager';
 import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
 import { EventTypes } from './typings/types';
 import { Events } from './utils/events';
-import { RawHostInfo, RawServer, RawVersion } from './typings/teamspeak';
+import {
+  RawClientDbid,
+  RawClientIds,
+  RawClientName,
+  RawHostInfo,
+  RawServer,
+  RawVersion,
+} from './typings/teamspeak';
 
 interface ClientOptions {
   host: string;
@@ -178,5 +185,37 @@ export class Query extends AsyncEventEmitter<EventTypes> {
       target: this.client.channelId!,
       msg: content,
     });
+  }
+
+  /**
+   * Get the client IDs and nicknames by their unique identifier.
+   * @param uniqueId The unique identifier of the client.
+   */
+  getRawClientIds(uniqueId: string): Promise<RawClientIds> {
+    return this.commands.clientgetids({ cluid: uniqueId });
+  }
+
+  /**
+   * Get the raw client database ID from its unique identifier.
+   * @param uniqueId The unique identifier of the client.
+   */
+  getRawClientDatabaseIdFromUniqueId(uniqueId: string): Promise<RawClientDbid> {
+    return this.commands.clientgetdbidfromuid({ cluid: uniqueId });
+  }
+
+  /**
+   * Get the raw client name from its unique identifier.
+   * @param uniqueId The unique identifier of the client.
+   */
+  getRawClientNameFromUniqueId(uniqueId: string): Promise<RawClientName> {
+    return this.commands.clientgetnamefromuid({ cluid: uniqueId });
+  }
+
+  /**
+   * Get the raw client name from its database ID.
+   * @param dbid The database ID of the client.
+   */
+  getRawClientNameFromDatabaseId(dbid: string): Promise<RawClientName> {
+    return this.commands.clientgetnamefromdbid({ cldbid: dbid });
   }
 }
