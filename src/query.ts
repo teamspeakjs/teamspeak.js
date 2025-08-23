@@ -63,6 +63,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Login to the ServerQuery.
+   * @param username The username to login with.
+   * @param password The password to login with.
    */
   login(username: string, password: string): Promise<void> {
     return this.commands.login({
@@ -73,6 +75,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Select a virtual server by its ID.
+   * @param id The virtual server ID.
    */
   async useVirtualServer(id: number): Promise<void> {
     this.virtualServerId = id;
@@ -86,6 +89,10 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.client = new QueryClient(this, client);
   }
 
+  /**
+   * Select a virtual server by its port.
+   * @param port The virtual server port.
+   */
   async useVirtualServerByPort(port: number): Promise<void> {
     const { server_id } = await this.getRawServerIdByPort(port);
 
@@ -132,6 +139,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Get the raw Server ID by its port.
+   * @param port The virtual server port.
    */
   getRawServerIdByPort(port: number): Promise<{ server_id: string }> {
     return this.commands.serveridgetbyport({ virtualserver_port: port });
