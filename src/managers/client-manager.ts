@@ -4,7 +4,7 @@ import Client from '../structures/client';
 import CachedManager from './cached-manager';
 import { ClientResolvable } from '../typings/types';
 import CommandError from '../errors/command-error';
-import { RawClient } from '../typings/teamspeak';
+import { RawClient, RawClientFindItem } from '../typings/teamspeak';
 
 export default class ClientManager extends CachedManager<Client, RawClient> {
   constructor(query: Query) {
@@ -71,7 +71,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
   }
 
   async search(query: string) {
-    let _data: RawClient | RawClient[] = [];
+    let _data: RawClientFindItem | RawClientFindItem[] = [];
     try {
       _data = await this.query.commands.clientfind({ pattern: query });
     } catch (error) {

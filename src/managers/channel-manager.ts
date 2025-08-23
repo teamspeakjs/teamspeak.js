@@ -4,7 +4,8 @@ import Channel from '../structures/channel';
 import CachedManager from './cached-manager';
 import { ChannelResolvable } from '../typings/types';
 import { stringifyValues } from '../utils/helpers';
-import { RawChannel } from '../typings/teamspeak';
+import { RawChannel, RawChannelFindItem } from '../typings/teamspeak';
+import CommandError from '../errors/command-error';
 
 type ChannelCreateOptions = {
   name: string;
@@ -73,6 +74,29 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
 
   protected async _fetchAll(): Promise<Collection<number, Channel>> {
     const data = await this.query.commands.channellist();
+
+    const channels = new Collection<number, Channel>();
+
+    for (const channel of data) {
+      channels.set(Number(channel.cid), this._add(channel));
+    }
+
+    return channels;
+  }
+
+  async search(query: string) {
+    let _data: RawChannelFindItem | RawChannelFindItem[] = [];
+    try {
+      _data = await this.query.commands.channelfind({ pattern: query });
+    } catch (error) {
+      if (error instanceof CommandError && error.id === 768) {
+        return new Collection<number, Channel>();
+      }
+
+      throw error;
+    }
+
+    const data = Array.isArray(_data) ? _data : [_data];
 
     const channels = new Collection<number, Channel>();
 

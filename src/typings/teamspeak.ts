@@ -279,3 +279,13 @@ export type RawServer = {
   connection_bandwidth_received_last_second_total: string;
   connection_bandwidth_received_last_minute_total: string;
 };
+
+export type RawChannelFindItem = {
+  cid: string;
+  channel_name: string;
+};
+
+export type RawClientFindItem = {
+  clid: string;
+  client_nickname: string;
+};

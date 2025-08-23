@@ -3,8 +3,10 @@ import { Query } from '../query';
 import CommandExecutor from '../services/command-executor';
 import {
   RawChannel,
+  RawChannelFindItem,
   RawChannelListItem,
   RawClient,
+  RawClientFindItem,
   RawHostInfo,
   RawInstance,
   RawServer,
@@ -173,8 +175,11 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawChannel>('channelinfo', params);
   }
 
-  channelfind() {
-    throw new Error('Not implemented');
+  channelfind(params: { pattern: string }) {
+    return this.query.commands._execute<RawChannelFindItem | RawChannelFindItem[]>(
+      'channelfind',
+      params,
+    );
   }
 
   channelmove() {
@@ -287,7 +292,10 @@ export default class CommandManager extends CommandExecutor {
   }
 
   clientfind(params: { pattern: string }) {
-    return this.query.commands._execute<RawClient | RawClient[]>('clientfind', params);
+    return this.query.commands._execute<RawClientFindItem | RawClientFindItem[]>(
+      'clientfind',
+      params,
+    );
   }
 
   clientedit() {
