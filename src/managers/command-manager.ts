@@ -352,8 +352,8 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('clientkick', params);
   }
 
-  clientpoke() {
-    throw new Error('Not implemented');
+  clientpoke(params: { clid: number; msg: string }) {
+    return this.query.commands._execute<void>('clientpoke', params);
   }
 
   clientpermlist() {

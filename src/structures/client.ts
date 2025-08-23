@@ -64,6 +64,10 @@ export default class Client extends Base {
     return this.query.clients.sendMessage(this, content);
   }
 
+  poke(content: string): Promise<void> {
+    return this.query.clients.poke(this, content);
+  }
+
   toString(): string {
     return `[URL=client://${this.id}/${this.uniqueId}~${this.nickname}]${this.nickname}[/URL]`;
   }

@@ -123,4 +123,13 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
       msg: content,
     });
   }
+
+  poke(client: ClientResolvable, content: string): Promise<void> {
+    const id = this.resolveId(client);
+
+    return this.query.commands.clientpoke({
+      clid: id,
+      msg: content,
+    });
+  }
 }
