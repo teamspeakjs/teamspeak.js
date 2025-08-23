@@ -4,7 +4,7 @@ import Client from '../structures/client';
 import { RawClient } from '../typings/teamspeak';
 import { Events } from '../utils/events';
 
-type Payload = RawClient & {
+type Payload = Omit<RawClient, 'cid'> & {
   cfid: string;
   ctid: string;
   reasonid: string;
@@ -18,7 +18,10 @@ export default class ClientEnterViewAction extends Action {
 
   handle(data: Payload): { client: Client } {
     const existing = this.query.clients.cache.get(Number(data.clid));
-    const client = this.query.clients._add(data);
+    const client = this.query.clients._add({
+      ...data,
+      cid: data.ctid,
+    });
     if (!existing && client) {
       this.query.emit(Events.ClientEnterView, client);
     }

@@ -2,6 +2,8 @@ import ChannelCreateAction from '../actions/ChannelCreate';
 import ChannelDeleteAction from '../actions/ChannelDelete';
 import ChannelUpdateAction from '../actions/ChannelUpdate';
 import ClientEnterViewAction from '../actions/ClientEnterView';
+import ClientLeaveViewAction from '../actions/ClientLeaveView';
+import ClientMoveAction from '../actions/ClientMove';
 import { Query } from '../query';
 import BaseManager from './base-manager';
 
@@ -13,6 +15,8 @@ export default class ActionManager extends BaseManager {
 
   //CLIENTS
   ClientEnterView: ClientEnterViewAction;
+  ClientLeaveView: ClientLeaveViewAction;
+  ClientMove: ClientMoveAction;
 
   constructor(query: Query) {
     super(query);
@@ -22,5 +26,7 @@ export default class ActionManager extends BaseManager {
     this.ChannelUpdate = new ChannelUpdateAction(query);
 
     this.ClientEnterView = new ClientEnterViewAction(query);
+    this.ClientLeaveView = new ClientLeaveViewAction(query);
+    this.ClientMove = new ClientMoveAction(query);
   }
 }

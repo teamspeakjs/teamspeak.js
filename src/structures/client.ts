@@ -15,27 +15,27 @@ export default class Client extends Base {
     this._patch(data);
   }
 
-  _patch(data: RawClient) {
+  _patch(data: Partial<RawClient>) {
     if ('clid' in data) {
-      this.id = Number(data.clid);
+      this.id = Number(data.clid!);
     }
     if ('cid' in data) {
-      this.channelId = Number(data.cid);
+      this.channelId = Number(data.cid!);
       if (!this.query.channels.cache.has(this.channelId)) {
         this.query.channels._add({ cid: this.channelId.toString() });
       }
     }
     if ('client_unique_identifier' in data) {
-      this.uniqueId = data.client_unique_identifier;
+      this.uniqueId = data.client_unique_identifier!;
     }
     if ('client_database_id' in data) {
-      this.databaseId = Number(data.client_database_id);
+      this.databaseId = Number(data.client_database_id!);
     }
     if ('client_nickname' in data) {
-      this.nickname = data.client_nickname;
+      this.nickname = data.client_nickname!;
     }
     if ('client_type' in data) {
-      this.type = Number(data.client_type);
+      this.type = Number(data.client_type!);
     }
   }
 

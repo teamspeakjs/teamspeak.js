@@ -6,4 +6,6 @@ export const Events = {
   ChannelUpdate: 'ChannelUpdate',
 
   ClientEnterView: 'ClientEnterView',
+  ClientLeaveView: 'ClientLeaveView',
+  ClientMove: 'ClientMove',
 } as const;
