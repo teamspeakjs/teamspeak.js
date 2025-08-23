@@ -2,7 +2,7 @@ import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import Client from '../structures/client';
 import CachedManager from './cached-manager';
-import { ClientResolvable } from '../typings/types';
+import { ChannelResolvable, ClientResolvable } from '../typings/types';
 import CommandError from '../errors/command-error';
 import { RawClient, RawClientFindItem } from '../typings/teamspeak';
 import { stringifyValues } from '../utils/helpers';
@@ -163,5 +163,29 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
       clid: id,
       msg: content,
     });
+  }
+
+  async move(
+    client: ClientResolvable,
+    channel: ChannelResolvable,
+    channelPassword?: string,
+  ): Promise<Client> {
+    const clientId = this.resolveId(client);
+    const channelId = this.query.channels.resolveId(channel);
+
+    await this.query.commands.clientmove({
+      clid: clientId,
+      cid: channelId,
+      cpw: channelPassword,
+    });
+
+    return this.query.actions.ClientMove.handle({
+      ctid: channelId.toString(),
+      clid: clientId.toString(),
+      reasonid: '1',
+      invokerid: this.query.client.id.toString(),
+      invokername: this.query.client.nickname!,
+      invokeruid: this.query.client.uniqueId!,
+    }).client!;
   }
 }

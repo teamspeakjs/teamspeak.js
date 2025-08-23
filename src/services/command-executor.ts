@@ -68,7 +68,7 @@ export default abstract class CommandExecutor extends BaseManager {
     return Object.entries(params)
       .map(([key, value]) => {
         if (Array.isArray(value)) {
-          return value.map((v) => `${key}=${this.escapeText(v.toString())}`).join(' ');
+          return value.map((v) => `${key}=${this.escapeText(v.toString())}`).join('|');
         }
         if (value === true) return `${key}=1`;
         if (value === false) return `${key}=0`;

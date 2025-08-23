@@ -344,11 +344,11 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('clientupdate', params);
   }
 
-  clientmove() {
-    throw new Error('Not implemented');
+  clientmove(params: { clid: number; cid: number; cpw?: string }) {
+    return this.query.commands._execute<void>('clientmove', params);
   }
 
-  clientkick(params: { clid: number | number[]; reasonid: number; reasonmsg?: string }) {
+  clientkick(params: { clid: number; reasonid: number; reasonmsg?: string }) {
     return this.query.commands._execute<void>('clientkick', params);
   }
 

@@ -1,6 +1,7 @@
 import { ClientEditOptions } from '../managers/client-manager';
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
+import { ChannelResolvable } from '../typings/types';
 import Base from './base';
 import Channel from './channel';
 
@@ -79,6 +80,10 @@ export default class Client extends Base {
 
   poke(content: string): Promise<void> {
     return this.query.clients.poke(this, content);
+  }
+
+  move(channel: ChannelResolvable, channelPassword?: string): Promise<Client> {
+    return this.query.clients.move(this, channel, channelPassword);
   }
 
   toString(): string {
