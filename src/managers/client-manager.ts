@@ -2,7 +2,8 @@ import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import Client from '../structures/client';
 import CachedManager from './cached-manager';
-import { ClientResolvable } from '../typings/types';
+import { ClientResolvable, RawClient } from '../typings/types';
+import CommandError from '../errors/command-error';
 
 export default class ClientManager extends CachedManager<Client> {
   constructor(query: Query) {
@@ -57,6 +58,29 @@ export default class ClientManager extends CachedManager<Client> {
 
   protected async _fetchAll() {
     const _data = await this.query.commands.clientlist();
+    const data = Array.isArray(_data) ? _data : [_data];
+
+    const clients = new Collection<number, Client>();
+
+    for (const client of data) {
+      clients.set(Number(client.clid), this._add(client));
+    }
+
+    return clients;
+  }
+
+  async search(query: string) {
+    let _data: RawClient | RawClient[] = [];
+    try {
+      _data = await this.query.commands.clientfind({ pattern: query });
+    } catch (error) {
+      if (error instanceof CommandError && error.id === 512) {
+        return new Collection<number, Client>();
+      }
+
+      throw error;
+    }
+
     const data = Array.isArray(_data) ? _data : [_data];
 
     const clients = new Collection<number, Client>();

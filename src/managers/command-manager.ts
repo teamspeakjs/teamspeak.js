@@ -1,5 +1,14 @@
+import CommandError from '../errors/command-error';
 import { Query } from '../query';
-import { RawChannel, RawClient, RawInstance, RawServerQueryInfo } from '../typings/types';
+import {
+  RawChannel,
+  RawClient,
+  RawCommandError,
+  RawHostInfo,
+  RawInstance,
+  RawServerQueryInfo,
+  RawVersion,
+} from '../typings/types';
 import BaseManager from './base-manager';
 
 type QueueItem = {
@@ -7,12 +16,6 @@ type QueueItem = {
   resolve: (value: any) => void;
   reject: (reason?: any) => void;
   timeout?: NodeJS.Timeout;
-};
-
-type CommandError = {
-  id: number;
-  msg: string;
-  extra_msg?: string;
 };
 
 export default class CommandManager extends BaseManager {
@@ -49,11 +52,12 @@ export default class CommandManager extends BaseManager {
     try {
       return await executeOnce();
     } catch (err: unknown) {
-      const error = err as CommandError;
+      const error =
+        err instanceof CommandError ? err : new CommandError(name, err as RawCommandError);
       // detect flooding
-      if (error && String(error.id) === '524' && error.extra_msg) {
+      if (error && String(error.raw.id) === '524' && error.raw.extra_msg) {
         // extract seconds from "please wait X seconds"
-        const match = /wait\s+(\d+)\s+seconds/i.exec(error.extra_msg);
+        const match = /wait\s+(\d+)\s+seconds/i.exec(error.raw.extra_msg);
         const delaySec = match ? parseInt(match[1], 10) : 1;
 
         // wait
@@ -62,9 +66,8 @@ export default class CommandManager extends BaseManager {
         // retry once after waiting
         return await executeOnce();
       }
-      throw new Error(
-        `Failed to execute command "${name}": ${error.msg ?? err}. Code: ${error.id ?? 'unknown'}`,
-      );
+
+      throw error;
     }
   }
 
@@ -197,7 +200,7 @@ export default class CommandManager extends BaseManager {
    *  - data is an object | array | string | null
    *  - error is an object like { id: number, msg: string, ... }
    */
-  public parseResponse(raw: string): { data: any; error: CommandError } {
+  public parseResponse(raw: string): { data: any; error: RawCommandError } {
     const lines = raw
       .split(/\r?\n/)
       .map((l) => l.trim())
@@ -239,10 +242,10 @@ export default class CommandManager extends BaseManager {
     }
 
     // parse error line into object
-    let errorObj: CommandError = { id: -1, msg: '' };
+    let errorObj: RawCommandError = { id: -1, msg: '' };
     if (errorLine) {
       const afterError = errorLine.replace(/^error\s+/, '');
-      errorObj = this.parseRowToObject(afterError) as unknown as CommandError; // raw strings only
+      errorObj = this.parseRowToObject(afterError) as unknown as RawCommandError; // raw strings only
     }
 
     return { data, error: errorObj };
@@ -315,7 +318,7 @@ export default class CommandManager extends BaseManager {
       // resolve after resetting state so next item can start
       try {
         if (parsed.error.msg != 'ok') {
-          cur.reject(parsed.error);
+          cur.reject(new CommandError(cur.command.split(' ')[0], parsed.error));
         } else {
           cur.resolve(parsed.data);
         }
@@ -403,7 +406,7 @@ export default class CommandManager extends BaseManager {
 
       const notification = this.query.notifications[cleanedEventName];
 
-      //TODO: Make this more frienly since this is ugly
+      //TODO: Make this more friendly since this is ugly
       if (notification) {
         if ('handle' in notification) notification.handle(parsed.data);
       } else {
@@ -443,11 +446,11 @@ export default class CommandManager extends BaseManager {
   }
 
   version() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawVersion>('version');
   }
 
   hostinfo() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawHostInfo>('hostinfo');
   }
 
   instanceinfo() {
@@ -695,8 +698,8 @@ export default class CommandManager extends BaseManager {
     return this.query.commands._execute<RawClient>('clientinfo', params);
   }
 
-  clientfind() {
-    throw new Error('Not implemented');
+  clientfind(params: { pattern: string }) {
+    return this.query.commands._execute<RawClient | RawClient[]>('clientfind', params);
   }
 
   clientedit() {

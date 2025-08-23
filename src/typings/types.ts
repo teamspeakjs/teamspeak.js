@@ -65,3 +65,22 @@ export type EventTypes = {
   ChannelUpdate: [before: Channel, after: Channel];
   ChannelDelete: [channel: Channel];
 };
+
+export type RawVersion = {
+  version: string;
+  build: string;
+  platform: string;
+};
+
+export type RawHostInfo = {
+  instance_uptime: string;
+  host_timestamp_utc: string;
+  virtualservers_running_total: string;
+  connection_filetransfer_bandwidth_sent: string;
+};
+
+export type RawCommandError = {
+  id: number;
+  msg: string;
+  extra_msg?: string;
+};

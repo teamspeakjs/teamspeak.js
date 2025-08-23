@@ -34,10 +34,16 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.ws.send('ping');
   }
 
+  /**
+   * Connect to the Host.
+   */
   connect(): void {
     this.ws.connect();
   }
 
+  /**
+   * Login to the ServerQuery.
+   */
   login(username: string, password: string) {
     return this.commands.login({
       client_login_name: username,
@@ -45,6 +51,9 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     });
   }
 
+  /**
+   * Select a virtual server by its ID.
+   */
   async useVirtualServer(id: number) {
     await this.commands.use({ sid: id });
 
@@ -53,5 +62,19 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     const client = await this.commands.clientinfo({ clid: Number(serverQueryInfo.client_id) });
 
     this.client = new QueryClient(this, client);
+  }
+
+  /**
+   * Get the raw ServerQuery version information.
+   */
+  getRawServerVersion() {
+    return this.commands.version();
+  }
+
+  /**
+   * Get the raw ServerQuery host information.
+   */
+  getRawHostInfo() {
+    return this.commands.hostinfo();
   }
 }

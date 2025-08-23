@@ -36,11 +36,15 @@ export default class Client extends Base {
   }
 
   get partial() {
-    return typeof this.nickname !== 'string';
+    return typeof this.nickname !== 'string' || typeof this.databaseId !== 'number';
   }
 
   get channel() {
     return this.channelId ? this.query.channels.cache.get(this.channelId)! : null;
+  }
+
+  fetch(force = false) {
+    return this.query.clients.fetch(this, { force });
   }
 
   kickFromChannel(reason?: string) {
