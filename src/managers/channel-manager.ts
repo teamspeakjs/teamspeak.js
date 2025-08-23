@@ -2,7 +2,7 @@ import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import Channel from '../structures/channel';
 import CachedManager from './cached-manager';
-import { ChannelResolvable } from '../typings/types';
+import { BaseFetchOptions, ChannelResolvable } from '../typings/types';
 import { stringifyValues } from '../utils/helpers';
 import { RawChannel, RawChannelFindItem } from '../typings/teamspeak';
 import CommandError from '../errors/command-error';
@@ -21,25 +21,44 @@ export type ChannelEditOptions = {
   description?: string;
 };
 
+/**
+ * Manages the channels in the TeamSpeak server.
+ */
 export default class ChannelManager extends CachedManager<Channel, RawChannel> {
   constructor(query: Query) {
     super(query, Channel, 'cid');
   }
 
+  /**
+   * Resolves a channel ID.
+   * @param {ChannelResolvable} channel The object to resolve.
+   * @returns {number} The channel ID.
+   */
   resolveId(channel: ChannelResolvable): number {
     if (channel instanceof Channel) return channel.id;
     return channel;
   }
 
+  /**
+   * Obtains a channel from TeamSpeak, or the cache if it's available.
+   * @param {ChannelResolvable} channel The channel to fetch.
+   * @param {BaseFetchOptions} options The options for fetching the channel.
+   * @returns {Promise<Channel>} The channel.
+   */
   async fetch(
     channel: ChannelResolvable,
-    options?: { cache?: boolean; force?: boolean },
+    options?: BaseFetchOptions,
   ): Promise<Awaited<ReturnType<ChannelManager['_fetchSingle']>>>;
+
+  /**
+   * Obtains all channels from TeamSpeak.
+   * @returns {Promise<Collection<number, Channel>>} The channels.
+   */
   async fetch(): Promise<Awaited<ReturnType<ChannelManager['_fetchAll']>>>;
 
   async fetch(
     channel?: ChannelResolvable,
-    { cache = true, force = false } = {},
+    { cache = true, force = false }: BaseFetchOptions = {},
   ): Promise<Awaited<ReturnType<typeof this._fetchSingle | typeof this._fetchAll>>> {
     if (channel) {
       return this._fetchSingle({ channel, cache, force });
@@ -54,9 +73,7 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     force = false,
   }: {
     channel: ChannelResolvable;
-    cache?: boolean;
-    force?: boolean;
-  }): Promise<Channel> {
+  } & BaseFetchOptions): Promise<Channel> {
     const id = this.resolveId(channel);
 
     if (!force) {
@@ -87,6 +104,11 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     return channels;
   }
 
+  /**
+   * Creates a new channel.
+   * @param {ChannelCreateOptions} options The options for creating the channel.
+   * @returns {Promise<Channel>} The created channel.
+   */
   async create(options: ChannelCreateOptions): Promise<Channel> {
     const data = await this.query.commands.channelcreate({
       channel_name: options.name,
@@ -101,6 +123,13 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
   }
 
   //TODO: Find a cleaner approach for this payload stuff?
+
+  /**
+   * Edits a channel.
+   * @param {ChannelResolvable} channel The channel to edit.
+   * @param {ChannelEditOptions} data The new channel data.
+   * @returns {Promise<Channel>} The updated channel.
+   */
   async edit(channel: ChannelResolvable, data: ChannelEditOptions): Promise<Channel> {
     const id = this.resolveId(channel);
 
@@ -116,12 +145,22 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     return this.query.actions.ChannelUpdate.handle(stringifyValues(payload)).after!;
   }
 
-  async delete(channel: ChannelResolvable, force = false): Promise<void> {
+  /**
+   * Deletes a channel.
+   * @param {ChannelResolvable} channel The channel to delete.
+   * @param {boolean} [force=false] Whether to force the deletion. Forcing deletion will kick all clients from the channel.
+   */
+  async delete(channel: ChannelResolvable, force: boolean = false): Promise<void> {
     const id = this.resolveId(channel);
     await this.query.commands.channeldelete({ cid: id, force });
     this.query.actions.ChannelDelete.handle({ cid: id.toString() });
   }
 
+  /**
+   * Searches for channels based on the channel name.
+   * @param {string} query The search query.
+   * @returns {Promise<Collection<number, Channel>>} The found channels.
+   */
   async search(query: string): Promise<Collection<number, Channel>> {
     let _data: RawChannelFindItem | RawChannelFindItem[] = [];
     try {

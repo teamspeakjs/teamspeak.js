@@ -2,7 +2,7 @@ import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import Client from '../structures/client';
 import CachedManager from './cached-manager';
-import { ChannelResolvable, ClientResolvable } from '../typings/types';
+import { BaseFetchOptions, ChannelResolvable, ClientResolvable } from '../typings/types';
 import CommandError from '../errors/command-error';
 import { RawClient, RawClientFindItem } from '../typings/teamspeak';
 import { stringifyValues } from '../utils/helpers';
@@ -25,13 +25,13 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
 
   async fetch(
     client: ClientResolvable,
-    options?: { cache?: boolean; force?: boolean },
+    options?: BaseFetchOptions,
   ): Promise<Awaited<ReturnType<ClientManager['_fetchSingle']>>>;
   async fetch(): Promise<Awaited<ReturnType<ClientManager['_fetchAll']>>>;
 
   async fetch(
     client?: ClientResolvable,
-    { cache = true, force = false } = {},
+    { cache = true, force = false }: BaseFetchOptions = {},
   ): Promise<Awaited<ReturnType<typeof this._fetchSingle | typeof this._fetchAll>>> {
     if (client) {
       return this._fetchSingle({ client, cache, force });
@@ -46,9 +46,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     force = false,
   }: {
     client: ClientResolvable;
-    cache?: boolean;
-    force?: boolean;
-  }): Promise<Client> {
+  } & BaseFetchOptions): Promise<Client> {
     const id = this.resolveId(client);
 
     if (!force) {

@@ -25,3 +25,8 @@ export type EventTypes = {
   ClientUpdate: [before: Client, after: Client];
   ClientMove: [client: Client, oldChannel: Channel, newChannel: Channel, invoker: Client | null];
 };
+
+export type BaseFetchOptions = {
+  cache?: boolean;
+  force?: boolean;
+};
