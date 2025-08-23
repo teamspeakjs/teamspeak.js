@@ -2,8 +2,61 @@
 
 A fully typesafe and easy-to-use Node.js client for interacting with Teamspeak 3 servers via ServerQuery.
 
+💡 **Inspired by [Discord.js](https://discord.js.org/),** bringing a similar event-driven and easy-to-use interface to Teamspeak 3.
+
 **Documentation coming soon!**
 
-Stay tuned for installation instructions, usage examples, and more.
+Stay tuned for installation instructions, more usage examples, and more.
+
+✨ **More features are coming soon!** Feel free to contribute and help improve the project.
 
 🔗 [View on npm](https://www.npmjs.com/package/teamspeak3.js)
+
+## Examples
+
+```typescript
+import { Query } from 'teamspeak3.js';
+
+const query = new Query({
+  host: '127.0.0.1',
+  port: 10011,
+});
+
+query.on('ready', async () => {
+  console.log('Connected to TeamsSpeak server!');
+
+  await query.login('serveradmin', 'p4ssw0rd'); // Login with query credentials
+  await query.useVirtualServer(1); // Select VirtualServer with ID 1
+  await query.notifications.subscribeAll(); // Subscribe to ALL notifications (channelcreated, clientmoved, ...)
+
+  // You're free to go!
+
+  // Fetch all clients
+  const clients = await query.clients.fetch();
+
+  console.log('There are currently', clients.size, 'clients');
+
+  // Create a new permanent channel
+  const createdChannel = await query.channels.create({ name: 'New Channel', type: 'permanent' });
+
+  console.log('Created channel:', createdChannel);
+
+  // Edit the channel
+  await createdChannel.edit({ name: 'Changed Name', topic: 'Just chilling' });
+
+  // Delete the channel
+  await createdChannel.delete();
+});
+
+query.on('ChannelCreate', (channel) => {
+  console.log('Some channel got created:', channel);
+});
+
+query.on('ChannelUpdate', (before, after) => {
+  if (before.name !== after.name) {
+    console.log(`Channel name of ${before.id} changed from "${before.name}" to "${after.name}"`);
+  }
+});
+
+query.connect();
+```
