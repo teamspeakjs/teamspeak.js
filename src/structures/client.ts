@@ -1,3 +1,4 @@
+import { ClientEditOptions } from '../managers/client-manager';
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
 import Base from './base';
@@ -9,6 +10,7 @@ export default class Client extends Base {
   uniqueId: string | null = null;
   nickname: string | null = null;
   type: number | null = null;
+  description: string | null = null;
 
   constructor(query: Query, data: RawClient) {
     super(query, Number(data.clid));
@@ -38,10 +40,17 @@ export default class Client extends Base {
     if ('client_type' in data) {
       this.type = Number(data.client_type!);
     }
+    if ('client_description' in data) {
+      this.description = data.client_description!;
+    }
   }
 
   get partial(): boolean {
-    return typeof this.nickname !== 'string' || typeof this.databaseId !== 'number';
+    return (
+      typeof this.nickname !== 'string' ||
+      typeof this.databaseId !== 'number' ||
+      typeof this.description !== 'string'
+    );
   }
 
   get channel(): Channel | null {
@@ -50,6 +59,10 @@ export default class Client extends Base {
 
   fetch(force = false): Promise<Client> {
     return this.query.clients.fetch(this, { force });
+  }
+
+  edit(data: ClientEditOptions): Promise<Client> {
+    return this.query.clients.edit(this, data);
   }
 
   kickFromChannel(reason?: string): Promise<void> {

@@ -7,5 +7,6 @@ export const Events = {
 
   ClientEnterView: 'ClientEnterView',
   ClientLeaveView: 'ClientLeaveView',
+  ClientUpdate: 'ClientUpdate',
   ClientMove: 'ClientMove',
 } as const;

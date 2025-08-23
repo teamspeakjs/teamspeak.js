@@ -22,5 +22,6 @@ export type EventTypes = {
 
   ClientEnterView: [client: Client];
   ClientLeaveView: [client: Client];
+  ClientUpdate: [before: Client, after: Client];
   ClientMove: [client: Client, oldChannel: Channel, newChannel: Channel, invoker: Client | null];
 };

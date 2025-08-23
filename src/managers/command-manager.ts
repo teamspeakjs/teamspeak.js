@@ -300,8 +300,8 @@ export default class CommandManager extends CommandExecutor {
     );
   }
 
-  clientedit() {
-    throw new Error('Not implemented');
+  clientedit(params: { clid: number; client_is_talker?: boolean; client_description?: string }) {
+    return this.query.commands._execute<void>('clientedit', params);
   }
 
   clientdblist() {
@@ -340,8 +340,8 @@ export default class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  clientupdate() {
-    throw new Error('Not implemented');
+  clientupdate(params: { clid: number; client_nickname?: string }) {
+    return this.query.commands._execute<void>('clientupdate', params);
   }
 
   clientmove() {

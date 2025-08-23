@@ -56,12 +56,12 @@ export default class Channel extends Base {
     return this.query.channels.fetch(this, { force });
   }
 
-  kickClient(client: ClientResolvable, reason?: string): Promise<void> {
-    return this.query.clients.kickFromChannel(client, reason);
-  }
-
   edit(data: ChannelEditOptions): Promise<Channel> {
     return this.query.channels.edit(this, data);
+  }
+
+  kickClient(client: ClientResolvable, reason?: string): Promise<void> {
+    return this.query.clients.kickFromChannel(client, reason);
   }
 
   delete(force = false): Promise<void> {

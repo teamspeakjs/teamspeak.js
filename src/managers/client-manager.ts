@@ -5,6 +5,13 @@ import CachedManager from './cached-manager';
 import { ClientResolvable } from '../typings/types';
 import CommandError from '../errors/command-error';
 import { RawClient, RawClientFindItem } from '../typings/teamspeak';
+import { stringifyValues } from '../utils/helpers';
+
+export type ClientEditOptions = {
+  nickname?: string;
+  isTalker?: boolean;
+  description?: string;
+};
 
 export default class ClientManager extends CachedManager<Client, RawClient> {
   constructor(query: Query) {
@@ -71,6 +78,31 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     }
 
     return clients;
+  }
+
+  //TODO: Find a cleaner approach for this payload stuff?
+  async edit(client: ClientResolvable, data: ClientEditOptions): Promise<Client> {
+    const id = this.resolveId(client);
+
+    const payload = {
+      clid: id,
+      client_nickname: data.nickname,
+      client_is_talker: data.isTalker,
+      client_description: data.description,
+    };
+
+    // Note:
+    // Self client edits are handled via clientupdate;
+    // Other client edits via clientedit;
+    // Self client can only edit their own nickname;
+    // Other clients can be edited their description and isTalker;
+    if (id === this.query.client.id) {
+      await this.query.commands.clientupdate(payload);
+    } else {
+      await this.query.commands.clientedit(payload);
+    }
+
+    return this.query.actions.ClientUpdate.handle(stringifyValues(payload)).after!;
   }
 
   async search(query: string): Promise<Collection<number, Client>> {

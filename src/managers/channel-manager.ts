@@ -87,6 +87,41 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     return channels;
   }
 
+  async create(options: ChannelCreateOptions): Promise<Channel> {
+    const data = await this.query.commands.channelcreate({
+      channel_name: options.name,
+      channel_topic: options.topic,
+      channel_description: options.description,
+      channel_flag_temporary: options.type === 'temporary',
+      channel_flag_permanent: options.type === 'permanent',
+      channel_flag_default: options.default,
+    });
+
+    return this.query.actions.ChannelCreate.handle(data).channel;
+  }
+
+  //TODO: Find a cleaner approach for this payload stuff?
+  async edit(channel: ChannelResolvable, data: ChannelEditOptions): Promise<Channel> {
+    const id = this.resolveId(channel);
+
+    const payload: Parameters<typeof this.query.commands.channeledit>[0] = {
+      cid: id,
+      channel_name: data.name,
+      channel_topic: data.topic,
+      channel_description: data.description,
+    };
+
+    await this.query.commands.channeledit(payload);
+
+    return this.query.actions.ChannelUpdate.handle(stringifyValues(payload)).after!;
+  }
+
+  async delete(channel: ChannelResolvable, force = false): Promise<void> {
+    const id = this.resolveId(channel);
+    await this.query.commands.channeldelete({ cid: id, force });
+    this.query.actions.ChannelDelete.handle({ cid: id.toString() });
+  }
+
   async search(query: string): Promise<Collection<number, Channel>> {
     let _data: RawChannelFindItem | RawChannelFindItem[] = [];
     try {
@@ -108,40 +143,5 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     }
 
     return channels;
-  }
-
-  async create(options: ChannelCreateOptions): Promise<Channel> {
-    const data = await this.query.commands.channelcreate({
-      channel_name: options.name,
-      channel_topic: options.topic,
-      channel_description: options.description,
-      channel_flag_temporary: options.type === 'temporary',
-      channel_flag_permanent: options.type === 'permanent',
-      channel_flag_default: options.default,
-    });
-
-    return this.query.actions.ChannelCreate.handle(data).channel;
-  }
-
-  async delete(channel: ChannelResolvable, force = false): Promise<void> {
-    const id = this.resolveId(channel);
-    await this.query.commands.channeldelete({ cid: id, force });
-    this.query.actions.ChannelDelete.handle({ cid: id.toString() });
-  }
-
-  //TODO: Find a cleaner approach for this?
-  async edit(channel: ChannelResolvable, data: ChannelEditOptions): Promise<Channel> {
-    const id = this.resolveId(channel);
-
-    const payload: Parameters<typeof this.query.commands.channeledit>[0] = {
-      cid: id,
-      channel_name: data.name,
-      channel_topic: data.topic,
-      channel_description: data.description,
-    };
-
-    await this.query.commands.channeledit(payload);
-
-    return this.query.actions.ChannelUpdate.handle(stringifyValues(payload)).after!;
   }
 }

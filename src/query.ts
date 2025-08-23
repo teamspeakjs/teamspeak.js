@@ -86,7 +86,10 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
     const client = await this.commands.clientinfo({ clid: Number(serverQueryInfo.client_id) });
 
-    this.client = new QueryClient(this, client);
+    this.client = new QueryClient(this, {
+      ...client,
+      clid: serverQueryInfo.client_id,
+    });
   }
 
   /**

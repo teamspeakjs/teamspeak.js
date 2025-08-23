@@ -102,9 +102,11 @@ export type RawClient = {
   client_talk_power: string;
   client_talk_request: string;
   client_talk_request_msg: string;
+  client_is_talker: string;
   client_total_bytes_downloaded: string;
   client_is_priority_speaker: string;
   client_nickname_phonetic: string;
+  client_description: string;
   client_needed_serverquery_view_power: string;
   client_default_token: string;
   client_icon_id: string;
