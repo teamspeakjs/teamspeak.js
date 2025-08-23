@@ -73,18 +73,10 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.client = new QueryClient(this, client);
   }
 
-  /**
-   * Get the raw ServerQuery version information.
-   */
-  getRawServerVersion() {
-    return this.commands.version();
-  }
+  async useVirtualServerByPort(port: number) {
+    const { server_id } = await this.getRawServerIdByPort(port);
 
-  /**
-   * Get the raw ServerQuery host information.
-   */
-  getRawHostInfo() {
-    return this.commands.hostinfo();
+    await this.useVirtualServer(Number(server_id));
   }
 
   /**
@@ -100,5 +92,35 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
     this.channels.cache.clear();
     this.clients.cache.clear();
+  }
+
+  // TODO: Move all raw data fetching methods to a separate structures & managers.
+
+  /**
+   * Get the raw ServerQuery version information.
+   */
+  getRawServerVersion() {
+    return this.commands.version();
+  }
+
+  /**
+   * Get the raw ServerQuery host information.
+   */
+  getRawHostInfo() {
+    return this.commands.hostinfo();
+  }
+
+  /**
+   * Get the raw Server information.
+   */
+  getRawServerInfo() {
+    return this.commands.serverinfo();
+  }
+
+  /**
+   * Get the raw Server ID by its port.
+   */
+  getRawServerIdByPort(port: number) {
+    return this.commands.serveridgetbyport({ virtualserver_port: port });
   }
 }

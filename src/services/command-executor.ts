@@ -52,8 +52,7 @@ export default abstract class CommandExecutor extends BaseManager {
         const match = /wait\s+(\d+)\s+seconds/i.exec(error.raw.extra_msg);
         const delaySec = match ? parseInt(match[1], 10) : 1;
 
-        // wait
-        await new Promise((r) => setTimeout(r, delaySec * 1000));
+        await new Promise((r) => setTimeout(r, delaySec * 1000 + 500)); // add a small buffer
 
         // retry once after waiting
         return await executeOnce();

@@ -4,6 +4,8 @@ import {
   RawClient,
   RawHostInfo,
   RawInstance,
+  RawServer,
+  RawServerListItem,
   RawServerQueryInfo,
   RawVersion,
 } from '../typings/types';
@@ -54,11 +56,11 @@ export default class CommandManager extends CommandExecutor {
   }
 
   serverlist() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawServerListItem[]>('serverlist');
   }
 
-  serveridgetbyport() {
-    throw new Error('Not implemented');
+  serveridgetbyport(params: { virtualserver_port: number }) {
+    return this.query.commands._execute<{ server_id: string }>('serveridgetbyport', params);
   }
 
   serverdelete() {
@@ -82,7 +84,7 @@ export default class CommandManager extends CommandExecutor {
   }
 
   serverinfo() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawServer>('serverinfo');
   }
 
   serverrequestconnectioninfo() {
