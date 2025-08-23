@@ -1,7 +1,7 @@
 import CommandError from '../errors/command-error';
 import { Query } from '../query';
-import { RawCommandError } from '../typings/types';
 import BaseManager from '../managers/base-manager';
+import { RawCommandError } from '../typings/teamspeak';
 
 type QueueItem = {
   command: string;

@@ -1,6 +1,7 @@
 import { Query } from '../query';
 import Action from '../structures/action';
 import Channel from '../structures/channel';
+import Client from '../structures/client';
 import { Events } from '../utils/events';
 
 type Payload = {
@@ -22,13 +23,22 @@ export default class ChannelCreateAction extends Action {
     super(query);
   }
 
-  handle(data: Payload): Channel {
+  handle(data: Payload): { channel: Channel; invoker: Client } {
     const existing = this.query.channels.cache.get(Number(data.cid));
     const channel = this.query.channels._add(data);
+    const invoker = this.query.clients._add({
+      clid: data.invokerid ? data.invokerid : this.query.client.id.toString(),
+      client_nickname: data.invokername
+        ? data.invokername
+        : (this.query.client.nickname ?? undefined),
+    });
     if (!existing && channel) {
-      this.query.emit(Events.ChannelCreate, channel);
+      this.query.emit(Events.ChannelCreate, channel, invoker);
     }
 
-    return channel;
+    return {
+      channel,
+      invoker,
+    };
   }
 }

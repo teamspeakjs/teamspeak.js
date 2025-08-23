@@ -2,10 +2,11 @@ import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import Client from '../structures/client';
 import CachedManager from './cached-manager';
-import { ClientResolvable, RawClient } from '../typings/types';
+import { ClientResolvable } from '../typings/types';
 import CommandError from '../errors/command-error';
+import { RawClient } from '../typings/teamspeak';
 
-export default class ClientManager extends CachedManager<Client> {
+export default class ClientManager extends CachedManager<Client, RawClient> {
   constructor(query: Query) {
     super(query, Client, 'clid');
   }
@@ -50,7 +51,7 @@ export default class ClientManager extends CachedManager<Client> {
     return this._add(
       {
         ...data,
-        clid: id,
+        clid: id.toString(),
       },
       cache,
     );

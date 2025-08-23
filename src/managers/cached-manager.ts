@@ -10,7 +10,7 @@ export interface Structure<Holds, RawHolds> {
   _clone(): Holds;
 }
 
-export default abstract class CachedManager<Holds extends Base> extends BaseManager {
+export default abstract class CachedManager<Holds extends Base, RawHolds> extends BaseManager {
   holds: Constructable<Holds>;
   idKey: string;
 
@@ -26,8 +26,8 @@ export default abstract class CachedManager<Holds extends Base> extends BaseMana
     return this._cache;
   }
 
-  _add(data: unknown, cache = true, { id }: { id?: number } = {}): Holds {
-    const existing = this.cache.get((data as any)[this.idKey]!);
+  _add(data: Partial<RawHolds>, cache = true, { id }: { id?: number } = {}): Holds {
+    const existing = this.cache.get(Number((data as any)[this.idKey]!));
     if (existing) {
       if (cache) {
         existing._patch(data);

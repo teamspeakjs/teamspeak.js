@@ -1,4 +1,6 @@
 import { Query } from '../query';
+
+import CommandExecutor from '../services/command-executor';
 import {
   RawChannel,
   RawClient,
@@ -8,8 +10,7 @@ import {
   RawServerListItem,
   RawServerQueryInfo,
   RawVersion,
-} from '../typings/types';
-import CommandExecutor from '../services/command-executor';
+} from '../typings/teamspeak';
 
 export default class CommandManager extends CommandExecutor {
   constructor(query: Query) {

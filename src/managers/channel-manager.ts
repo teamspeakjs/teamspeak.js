@@ -4,6 +4,7 @@ import Channel from '../structures/channel';
 import CachedManager from './cached-manager';
 import { ChannelResolvable } from '../typings/types';
 import { stringifyValues } from '../utils/helpers';
+import { RawChannel } from '../typings/teamspeak';
 
 type ChannelCreateOptions = {
   name: string;
@@ -19,7 +20,7 @@ export type ChannelEditOptions = {
   description?: string;
 };
 
-export default class ChannelManager extends CachedManager<Channel> {
+export default class ChannelManager extends CachedManager<Channel, RawChannel> {
   constructor(query: Query) {
     super(query, Channel, 'cid');
   }
@@ -64,7 +65,7 @@ export default class ChannelManager extends CachedManager<Channel> {
     return this._add(
       {
         ...data,
-        cid: id,
+        cid: id.toString(),
       },
       cache,
     );
@@ -92,13 +93,13 @@ export default class ChannelManager extends CachedManager<Channel> {
       channel_flag_default: options.default,
     });
 
-    return this.query.actions.ChannelCreate.handle(data);
+    return this.query.actions.ChannelCreate.handle(data).channel;
   }
 
   async delete(channel: ChannelResolvable, force = false) {
     const id = this.resolveId(channel);
     await this.query.commands.channeldelete({ cid: id, force });
-    return this.query.actions.ChannelDelete.handle({ cid: id.toString() });
+    return this.query.actions.ChannelDelete.handle({ cid: id.toString() }).channel;
   }
 
   //TODO: Find a cleaner approach for this?

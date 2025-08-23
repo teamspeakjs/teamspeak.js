@@ -21,7 +21,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public clients = new ClientManager(this);
   public commands = new CommandManager(this);
   public notifications = new NotificationManager(this);
-  public client: QueryClient | null = null;
+  public client = null as unknown as QueryClient; // Overwrite type
   public actions = new ActionManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
@@ -76,7 +76,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   async useVirtualServerByPort(port: number) {
     const { server_id } = await this.getRawServerIdByPort(port);
 
-    await this.useVirtualServer(Number(server_id));
+    return await this.useVirtualServer(Number(server_id));
   }
 
   /**

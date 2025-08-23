@@ -1,6 +1,8 @@
 import { Query } from '../query';
 import Notification from '../structures/notification';
-import { RawChannel } from '../typings/types';
+import { RawChannel } from '../typings/teamspeak';
+
+// TODO: Fix those notification payloads. Can be done better. (Everywhere; Actions and Notifications)
 
 type Payload = RawChannel & {
   invokerid: string;

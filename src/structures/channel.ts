@@ -1,6 +1,7 @@
 import { ChannelEditOptions } from '../managers/channel-manager';
 import { Query } from '../query';
-import { ClientResolvable, RawChannel } from '../typings/types';
+import { RawChannel } from '../typings/teamspeak';
+import { ClientResolvable } from '../typings/types';
 import Base from './base';
 
 export default class Channel extends Base {
@@ -19,8 +20,9 @@ export default class Channel extends Base {
   _patch(data: Partial<RawChannel>) {
     if ('pid' in data) {
       this.parentId = Number(data.pid!);
-      if (!this.query.channels.cache.has(this.parentId)) {
-        this.query.channels._add({ cid: this.parentId });
+      // Check if parentId != 0 aswell since parentId is sent as 0 and otherwise the cache would write an empty channel
+      if (this.parentId != 0 && !this.query.channels.cache.has(this.parentId)) {
+        this.query.channels._add({ cid: this.parentId.toString() });
       }
     }
     if ('channel_name' in data) {

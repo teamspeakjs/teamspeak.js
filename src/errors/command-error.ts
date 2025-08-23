@@ -1,4 +1,4 @@
-import { RawCommandError } from '../typings/types';
+import { RawCommandError } from '../typings/teamspeak';
 
 export default class CommandError extends Error {
   id: number;

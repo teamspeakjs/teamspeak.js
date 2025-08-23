@@ -1,10 +1,11 @@
 import { Query } from '../query';
-import { RawClient } from '../typings/types';
+import { RawClient } from '../typings/teamspeak';
 import Base from './base';
 
 export default class Client extends Base {
   channelId: number | null = null;
   databaseId: number | null = null;
+  uniqueId: string | null = null;
   nickname: string | null = null;
   type: number | null = null;
 
@@ -21,8 +22,11 @@ export default class Client extends Base {
     if ('cid' in data) {
       this.channelId = Number(data.cid);
       if (!this.query.channels.cache.has(this.channelId)) {
-        this.query.channels._add({ cid: this.channelId });
+        this.query.channels._add({ cid: this.channelId.toString() });
       }
+    }
+    if ('client_unique_identifier' in data) {
+      this.uniqueId = data.client_unique_identifier;
     }
     if ('client_database_id' in data) {
       this.databaseId = Number(data.client_database_id);
@@ -59,8 +63,7 @@ export default class Client extends Base {
     return this.query.clients.sendMessage(this, content);
   }
 
-  //TODO: Turn into proper mention later
   toString() {
-    return `Client ${this.id}: ${this.nickname}`;
+    return `[URL=client://${this.id}/${this.uniqueId}~${this.nickname}]${this.nickname}[/URL]`;
   }
 }
