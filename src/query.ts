@@ -37,7 +37,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Send a ping to the server.
    *
-   * This command does not exist and throws an error.
+   * This command does not officially exist and throws an error.
    */
   private _ping(): void {
     this.commands._execute('ping').catch(() => {});
@@ -122,5 +122,13 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   getRawServerIdByPort(port: number) {
     return this.commands.serveridgetbyport({ virtualserver_port: port });
+  }
+
+  /**
+   * Sends a server message to virtual servers in the TeamSpeak 3 Server instance.
+   * @param message The message to send.
+   */
+  sendHostMessage(message: string) {
+    return this.commands.gm({ msg: message });
   }
 }

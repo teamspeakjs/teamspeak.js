@@ -3,6 +3,7 @@ import { Query } from '../query';
 import CommandExecutor from '../services/command-executor';
 import {
   RawChannel,
+  RawChannelListItem,
   RawClient,
   RawHostInfo,
   RawInstance,
@@ -148,8 +149,8 @@ export default class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  gm() {
-    throw new Error('Not implemented');
+  gm(params: { msg: string }) {
+    return this.query.commands._execute<void>('gm', params);
   }
 
   sendtextmessage(params: { targetmode: number; target: number; msg: string }) {
@@ -165,7 +166,7 @@ export default class CommandManager extends CommandExecutor {
   }
 
   channellist() {
-    return this.query.commands._execute<RawChannel[]>('channellist');
+    return this.query.commands._execute<RawChannelListItem[]>('channellist');
   }
 
   channelinfo(params: { cid: number }) {

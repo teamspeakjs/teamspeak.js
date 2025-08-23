@@ -168,6 +168,15 @@ export type RawServerListItem = {
   virtualserver_machine_id: string;
 };
 
+export type RawChannelListItem = {
+  cid: string;
+  pid: string;
+  channel_order: string;
+  channel_name: string;
+  total_clients: string;
+  channel_needed_subscribe_power: string;
+};
+
 export type RawServer = {
   virtualserver_unique_identifier: string;
   virtualserver_name: string;
