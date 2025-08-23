@@ -56,10 +56,6 @@ export default class Channel extends Base {
     return this.query.channels.fetch(this, { force });
   }
 
-  sendMessage(content: string): Promise<void> {
-    return this.query.channels.sendMessage(this, content);
-  }
-
   kickClient(client: ClientResolvable, reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(client, reason);
   }

@@ -144,14 +144,4 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
 
     return this.query.actions.ChannelUpdate.handle(stringifyValues(payload)).after!;
   }
-
-  sendMessage(channel: ChannelResolvable, content: string): Promise<void> {
-    const id = this.resolveId(channel);
-
-    return this.query.commands.sendtextmessage({
-      targetmode: 2,
-      target: id,
-      msg: content,
-    });
-  }
 }

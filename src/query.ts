@@ -149,19 +149,31 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * Sends a server message to virtual servers in the TeamSpeak 3 Server instance.
    * @param message The message to send.
    */
-  sendHostMessage(message: string): Promise<void> {
-    return this.commands.gm({ msg: message });
+  sendHostMessage(content: string): Promise<void> {
+    return this.commands.gm({ msg: content });
   }
 
   /**
    * Sends a server message to the current virtual server.
    * @param message The message to send.
    */
-  sendServerMessage(message: string): Promise<void> {
+  sendServerMessage(content: string): Promise<void> {
     return this.commands.sendtextmessage({
       target: this.virtualServerId!,
       targetmode: 3,
-      msg: message,
+      msg: content,
+    });
+  }
+
+  /**
+   * Sends a message to the current channel.
+   * @param content The message content.
+   */
+  sendChannelMessage(content: string): Promise<void> {
+    return this.commands.sendtextmessage({
+      targetmode: 2,
+      target: this.client.channelId!,
+      msg: content,
     });
   }
 }
