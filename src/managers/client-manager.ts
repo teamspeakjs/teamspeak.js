@@ -11,7 +11,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     super(query, Client, 'clid');
   }
 
-  resolveId(client: ClientResolvable) {
+  resolveId(client: ClientResolvable): number {
     if (client instanceof Client) return client.id;
     return client;
   }
@@ -22,7 +22,10 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
   ): Promise<Awaited<ReturnType<ClientManager['_fetchSingle']>>>;
   async fetch(): Promise<Awaited<ReturnType<ClientManager['_fetchAll']>>>;
 
-  async fetch(client?: ClientResolvable, { cache = true, force = false } = {}) {
+  async fetch(
+    client?: ClientResolvable,
+    { cache = true, force = false } = {},
+  ): Promise<Awaited<ReturnType<typeof this._fetchSingle | typeof this._fetchAll>>> {
     if (client) {
       return this._fetchSingle({ client, cache, force });
     } else {
@@ -38,7 +41,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     client: ClientResolvable;
     cache?: boolean;
     force?: boolean;
-  }) {
+  }): Promise<Client> {
     const id = this.resolveId(client);
 
     if (!force) {
@@ -57,7 +60,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     );
   }
 
-  protected async _fetchAll() {
+  protected async _fetchAll(): Promise<Collection<number, Client>> {
     const _data = await this.query.commands.clientlist();
     const data = Array.isArray(_data) ? _data : [_data];
 
@@ -70,7 +73,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     return clients;
   }
 
-  async search(query: string) {
+  async search(query: string): Promise<Collection<number, Client>> {
     let _data: RawClientFindItem | RawClientFindItem[] = [];
     try {
       _data = await this.query.commands.clientfind({ pattern: query });
@@ -93,7 +96,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     return clients;
   }
 
-  async kickFromChannel(client: ClientResolvable, reason?: string) {
+  kickFromChannel(client: ClientResolvable, reason?: string): Promise<void> {
     const id = this.resolveId(client);
     return this.query.commands.clientkick({
       clid: id,
@@ -102,7 +105,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
-  async kickFromServer(client: ClientResolvable, reason?: string) {
+  kickFromServer(client: ClientResolvable, reason?: string): Promise<void> {
     const id = this.resolveId(client);
     return this.query.commands.clientkick({
       clid: id,
@@ -111,7 +114,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
-  async sendMessage(client: ClientResolvable, content: string) {
+  sendMessage(client: ClientResolvable, content: string): Promise<void> {
     const id = this.resolveId(client);
 
     return this.query.commands.sendtextmessage({

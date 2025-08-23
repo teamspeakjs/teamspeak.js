@@ -38,6 +38,13 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-console': ['warn', { allow: ['debug', 'warn', 'error'] }],
       '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
+        {
+          allowExpressions: false,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
     },
     ignores: ['node_modules/**', 'dist/**'],
   },

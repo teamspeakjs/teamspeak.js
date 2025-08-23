@@ -1,6 +1,7 @@
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
 import Base from './base';
+import Channel from './channel';
 
 export default class Client extends Base {
   channelId: number | null = null;
@@ -15,7 +16,7 @@ export default class Client extends Base {
     this._patch(data);
   }
 
-  _patch(data: Partial<RawClient>) {
+  _patch(data: Partial<RawClient>): void {
     if ('clid' in data) {
       this.id = Number(data.clid!);
     }
@@ -39,31 +40,31 @@ export default class Client extends Base {
     }
   }
 
-  get partial() {
+  get partial(): boolean {
     return typeof this.nickname !== 'string' || typeof this.databaseId !== 'number';
   }
 
-  get channel() {
+  get channel(): Channel | null {
     return this.channelId ? this.query.channels.cache.get(this.channelId)! : null;
   }
 
-  fetch(force = false) {
+  fetch(force = false): Promise<Client> {
     return this.query.clients.fetch(this, { force });
   }
 
-  kickFromChannel(reason?: string) {
+  kickFromChannel(reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(this, reason);
   }
 
-  kickFromServer(reason?: string) {
+  kickFromServer(reason?: string): Promise<void> {
     return this.query.clients.kickFromServer(this, reason);
   }
 
-  sendMessage(content: string) {
+  sendMessage(content: string): Promise<void> {
     return this.query.clients.sendMessage(this, content);
   }
 
-  toString() {
+  toString(): string {
     return `[URL=client://${this.id}/${this.uniqueId}~${this.nickname}]${this.nickname}[/URL]`;
   }
 }

@@ -22,7 +22,7 @@ export default abstract class CachedManager<Holds extends Base, RawHolds> extend
     this.idKey = idKey;
   }
 
-  get cache() {
+  get cache(): Collection<number, Holds> {
     return this._cache;
   }
 

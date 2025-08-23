@@ -15,6 +15,8 @@ import {
   RawVersion,
 } from '../typings/teamspeak';
 
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 export default class CommandManager extends CommandExecutor {
   constructor(query: Query) {
     super(query);

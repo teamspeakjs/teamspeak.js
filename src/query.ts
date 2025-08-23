@@ -9,6 +9,7 @@ import ActionManager from './managers/action-manager';
 import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
 import { EventTypes } from './typings/types';
 import { Events } from './utils/events';
+import { RawHostInfo, RawServer, RawVersion } from './typings/teamspeak';
 
 interface ClientOptions {
   host: string;
@@ -62,7 +63,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Login to the ServerQuery.
    */
-  login(username: string, password: string) {
+  login(username: string, password: string): Promise<void> {
     return this.commands.login({
       client_login_name: username,
       client_login_password: password,
@@ -72,7 +73,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Select a virtual server by its ID.
    */
-  async useVirtualServer(id: number) {
+  async useVirtualServer(id: number): Promise<void> {
     await this.commands.use({ sid: id });
 
     const serverQueryInfo = await this.commands.whoami();
@@ -82,7 +83,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.client = new QueryClient(this, client);
   }
 
-  async useVirtualServerByPort(port: number) {
+  async useVirtualServerByPort(port: number): Promise<void> {
     const { server_id } = await this.getRawServerIdByPort(port);
 
     return await this.useVirtualServer(Number(server_id));
@@ -108,28 +109,28 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Get the raw ServerQuery version information.
    */
-  getRawServerVersion() {
+  getRawServerVersion(): Promise<RawVersion> {
     return this.commands.version();
   }
 
   /**
    * Get the raw ServerQuery host information.
    */
-  getRawHostInfo() {
+  getRawHostInfo(): Promise<RawHostInfo> {
     return this.commands.hostinfo();
   }
 
   /**
    * Get the raw Server information.
    */
-  getRawServerInfo() {
+  getRawServerInfo(): Promise<RawServer> {
     return this.commands.serverinfo();
   }
 
   /**
    * Get the raw Server ID by its port.
    */
-  getRawServerIdByPort(port: number) {
+  getRawServerIdByPort(port: number): Promise<{ server_id: string }> {
     return this.commands.serveridgetbyport({ virtualserver_port: port });
   }
 
@@ -137,7 +138,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * Sends a server message to virtual servers in the TeamSpeak 3 Server instance.
    * @param message The message to send.
    */
-  sendHostMessage(message: string) {
+  sendHostMessage(message: string): Promise<void> {
     return this.commands.gm({ msg: message });
   }
 }

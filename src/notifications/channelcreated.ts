@@ -15,7 +15,7 @@ export default class ChannelCreatedNotification extends Notification {
     super(query);
   }
 
-  handle(data: Payload) {
+  handle(data: Payload): void {
     this.query.actions.ChannelCreate.handle(data);
   }
 }

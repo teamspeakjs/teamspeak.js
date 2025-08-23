@@ -26,7 +26,7 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     super(query, Channel, 'cid');
   }
 
-  resolveId(channel: ChannelResolvable) {
+  resolveId(channel: ChannelResolvable): number {
     if (channel instanceof Channel) return channel.id;
     return channel;
   }
@@ -37,7 +37,10 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
   ): Promise<Awaited<ReturnType<ChannelManager['_fetchSingle']>>>;
   async fetch(): Promise<Awaited<ReturnType<ChannelManager['_fetchAll']>>>;
 
-  async fetch(channel?: ChannelResolvable, { cache = true, force = false } = {}) {
+  async fetch(
+    channel?: ChannelResolvable,
+    { cache = true, force = false } = {},
+  ): Promise<Awaited<ReturnType<typeof this._fetchSingle | typeof this._fetchAll>>> {
     if (channel) {
       return this._fetchSingle({ channel, cache, force });
     } else {
@@ -84,7 +87,7 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     return channels;
   }
 
-  async search(query: string) {
+  async search(query: string): Promise<Collection<number, Channel>> {
     let _data: RawChannelFindItem | RawChannelFindItem[] = [];
     try {
       _data = await this.query.commands.channelfind({ pattern: query });
@@ -107,7 +110,7 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     return channels;
   }
 
-  async create(options: ChannelCreateOptions) {
+  async create(options: ChannelCreateOptions): Promise<Channel> {
     const data = await this.query.commands.channelcreate({
       channel_name: options.name,
       channel_topic: options.topic,
@@ -120,14 +123,14 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
     return this.query.actions.ChannelCreate.handle(data).channel;
   }
 
-  async delete(channel: ChannelResolvable, force = false) {
+  async delete(channel: ChannelResolvable, force = false): Promise<void> {
     const id = this.resolveId(channel);
     await this.query.commands.channeldelete({ cid: id, force });
-    return this.query.actions.ChannelDelete.handle({ cid: id.toString() }).channel;
+    this.query.actions.ChannelDelete.handle({ cid: id.toString() });
   }
 
   //TODO: Find a cleaner approach for this?
-  async edit(channel: ChannelResolvable, data: ChannelEditOptions) {
+  async edit(channel: ChannelResolvable, data: ChannelEditOptions): Promise<Channel> {
     const id = this.resolveId(channel);
 
     const payload: Parameters<typeof this.query.commands.channeledit>[0] = {
@@ -139,10 +142,10 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
 
     await this.query.commands.channeledit(payload);
 
-    return this.query.actions.ChannelUpdate.handle(stringifyValues(payload)).after;
+    return this.query.actions.ChannelUpdate.handle(stringifyValues(payload)).after!;
   }
 
-  async sendMessage(channel: ChannelResolvable, content: string) {
+  sendMessage(channel: ChannelResolvable, content: string): Promise<void> {
     const id = this.resolveId(channel);
 
     return this.query.commands.sendtextmessage({

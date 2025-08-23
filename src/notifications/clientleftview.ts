@@ -14,7 +14,7 @@ export default class ClientLeftViewNotification extends Notification {
     super(query);
   }
 
-  handle(data: Payload) {
+  handle(data: Payload): void {
     this.query.actions.ClientLeaveView.handle(data);
   }
 }

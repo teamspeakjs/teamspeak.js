@@ -1,3 +1,4 @@
+import { Collection } from '@discordjs/collection';
 import { ChannelEditOptions } from '../managers/channel-manager';
 import { Query } from '../query';
 import { RawChannel } from '../typings/teamspeak';
@@ -17,7 +18,7 @@ export default class Channel extends Base {
     this._patch(data);
   }
 
-  _patch(data: Partial<RawChannel>) {
+  _patch(data: Partial<RawChannel>): void {
     if ('pid' in data) {
       this.parentId = Number(data.pid!);
       // Check if parentId != 0 aswell since parentId is sent as 0 and otherwise the cache would write an empty channel
@@ -39,7 +40,7 @@ export default class Channel extends Base {
     }
   }
 
-  get partial() {
+  get partial(): boolean {
     return typeof this.name !== 'string';
   }
 
@@ -47,27 +48,27 @@ export default class Channel extends Base {
     return this.parentId ? this.query.channels.cache.get(this.parentId)! : null;
   }
 
-  get children() {
+  get children(): Collection<number, Channel> {
     return this.query.channels.cache.filter((channel) => channel.parentId === this.id);
   }
 
-  fetch(force = false) {
+  fetch(force = false): Promise<Channel> {
     return this.query.channels.fetch(this, { force });
   }
 
-  sendMessage(content: string) {
+  sendMessage(content: string): Promise<void> {
     return this.query.channels.sendMessage(this, content);
   }
 
-  kickClient(client: ClientResolvable, reason?: string) {
+  kickClient(client: ClientResolvable, reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(client, reason);
   }
 
-  edit(data: ChannelEditOptions) {
+  edit(data: ChannelEditOptions): Promise<Channel> {
     return this.query.channels.edit(this, data);
   }
 
-  delete(force = false) {
+  delete(force = false): Promise<void> {
     return this.query.channels.delete(this, force);
   }
 }

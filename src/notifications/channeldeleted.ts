@@ -13,7 +13,7 @@ export default class ChannelDeletedNotification extends Notification {
     super(query);
   }
 
-  handle(data: Payload) {
+  handle(data: Payload): void {
     this.query.actions.ChannelDelete.handle(data);
   }
 }

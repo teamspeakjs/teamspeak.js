@@ -15,7 +15,7 @@ export default class ClientMovedNotification extends Notification {
     super(query);
   }
 
-  handle(data: Payload) {
+  handle(data: Payload): void {
     this.query.actions.ClientMove.handle(data);
   }
 }
