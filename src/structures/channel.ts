@@ -41,6 +41,10 @@ export default class Channel extends Base {
     this._patch(data);
   }
 
+  /**
+   * Patches the channel with new data.
+   * @param {Partial<RawChannel>} data The new data to patch the channel with.
+   */
   _patch(data: Partial<RawChannel>): void {
     if ('pid' in data) {
       this.parentId = Number(data.pid!);
@@ -138,31 +142,69 @@ export default class Channel extends Base {
     }
   }
 
+  /**
+   * Checks if the channel is partially filled.
+   * @returns {boolean} Whether the channel is partially filled.
+   */
   get partial(): boolean {
-    return typeof this.name !== 'string';
+    return (
+      typeof this.name !== 'string' ||
+      typeof this.description !== 'string' ||
+      typeof this.topic !== 'string' ||
+      typeof this.uniqueId !== 'string'
+    );
   }
 
+  /**
+   * Gets the parent channel of this channel.
+   * @returns {Channel | null} The parent channel, or null if there is none.
+   */
   get parent(): Channel | null {
     return this.parentId ? this.query.channels.cache.get(this.parentId)! : null;
   }
 
+  /**
+   * Gets the child channels of this channel.
+   * @returns {Collection<number, Channel>} The child channels.
+   */
   get children(): Collection<number, Channel> {
     return this.query.channels.cache.filter((channel) => channel.parentId === this.id);
   }
 
-  fetch(force = false): Promise<Channel> {
+  /**
+   * Fetches the channel from the server or the cache.
+   * @param {boolean} [force=false] Whether to force a fetch from the server.
+   * @returns {Promise<Channel>} The fetched channel.
+   */
+  fetch(force: boolean = false): Promise<Channel> {
     return this.query.channels.fetch(this, { force });
   }
 
+  /**
+   * Edits the channel with new data.
+   * @param {ChannelEditOptions} data The new data to patch the channel with.
+   * @returns {Promise<Channel>} The updated channel.
+   */
   edit(data: ChannelEditOptions): Promise<Channel> {
     return this.query.channels.edit(this, data);
   }
 
+  /**
+   * Kicks a client from the channel.
+   * @param {ClientResolvable} client The client to kick.
+   * @param {string} [reason] The reason for the kick.
+   * @returns {Promise<void>}
+   */
   kickClient(client: ClientResolvable, reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(client, reason);
   }
 
-  delete(force = false): Promise<void> {
+  /**
+   * Deletes the channel.
+   * @param {boolean} [force=false] Whether to force the deletion. Forcing deletion will kick all clients from the channel.
+   * @returns {Promise<void>}
+   */
+  delete(force: boolean = false): Promise<void> {
     return this.query.channels.delete(this, force);
   }
 }

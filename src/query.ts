@@ -24,6 +24,9 @@ interface ClientOptions {
   port?: number;
 }
 
+/**
+ * Represents a ServerQuery connection.
+ */
 export class Query extends AsyncEventEmitter<EventTypes> {
   public ws: WebSocketManager;
 

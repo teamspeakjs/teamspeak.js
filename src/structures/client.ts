@@ -19,6 +19,10 @@ export default class Client extends Base {
     this._patch(data);
   }
 
+  /**
+   * Patches the client with new data.
+   * @param {Partial<RawClient>} data The new data to patch the client with.
+   */
   _patch(data: Partial<RawClient>): void {
     if ('clid' in data) {
       this.id = Number(data.clid!);
@@ -46,6 +50,10 @@ export default class Client extends Base {
     }
   }
 
+  /**
+   * Checks if the client is partially filled.
+   * @returns {boolean} Whether the client is partially filled.
+   */
   get partial(): boolean {
     return (
       typeof this.nickname !== 'string' ||
@@ -54,42 +62,92 @@ export default class Client extends Base {
     );
   }
 
+  /**
+   * Gets the channel the client is in.
+   * @returns {Channel | null} The channel the client is in, or null if unknown.
+   */
   get channel(): Channel | null {
     return this.channelId ? this.query.channels.cache.get(this.channelId)! : null;
   }
 
-  fetch(force = false): Promise<Client> {
+  /**
+   * Fetches the client from the server or the cache.
+   * @param {boolean} [force=false] Whether to force the fetch.
+   * @returns {Promise<Client>} The fetched client.
+   */
+  fetch(force: boolean = false): Promise<Client> {
     return this.query.clients.fetch(this, { force });
   }
 
+  /**
+   * Edits the client with new data.
+   * @param {ClientEditOptions} data The new data to patch the client with.
+   * @returns {Promise<Client>} The updated client.
+   */
   edit(data: ClientEditOptions): Promise<Client> {
     return this.query.clients.edit(this, data);
   }
 
+  /**
+   * Kicks the client from the current channel.
+   * @param {string} [reason] The reason for the kick.
+   * @returns {Promise<void>} A promise that resolves when the client has been kicked.
+   */
   kickFromChannel(reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(this, reason);
   }
 
+  /**
+   * Kicks the client from the server.
+   * @param {string} [reason] The reason for the kick.
+   * @returns {Promise<void>} A promise that resolves when the client has been kicked.
+   */
   kickFromServer(reason?: string): Promise<void> {
     return this.query.clients.kickFromServer(this, reason);
   }
 
+  /**
+   * Sends a message to the client.
+   * @param {string} content The content of the message.
+   * @returns {Promise<void>} A promise that resolves when the message has been sent.
+   */
   sendMessage(content: string): Promise<void> {
     return this.query.clients.sendMessage(this, content);
   }
 
+  /**
+   * Pokes the client.
+   * @param {string} content The content of the poke message.
+   * @returns {Promise<void>} A promise that resolves when the poke has been sent.
+   */
   poke(content: string): Promise<void> {
     return this.query.clients.poke(this, content);
   }
 
+  /**
+   * Moves the client to a different channel.
+   * @param {ChannelResolvable} channel The channel to move the client to.
+   * @param {string} [channelPassword] The password for the channel, if required.
+   * @returns {Promise<Client>} A promise that resolves to the moved client.
+   */
   move(channel: ChannelResolvable, channelPassword?: string): Promise<Client> {
     return this.query.clients.move(this, channel, channelPassword);
   }
 
+  /**
+   * Sets the description of the client.
+   * @param {string} description The new description.
+   * @returns {Promise<Client>} The updated client.
+   */
   setDescription(description: string): Promise<Client> {
     return this.query.clients.edit(this, { description });
   }
 
+  /**
+   * Sets whether the client is a talker.
+   * @param {boolean} isTalker Whether the client is a talker.
+   * @returns {Promise<Client>} The updated client.
+   */
   setTalker(isTalker: boolean): Promise<Client> {
     return this.query.clients.edit(this, { isTalker });
   }

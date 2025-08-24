@@ -18,20 +18,39 @@ export type ClientEditOptions = {
   description?: string;
 };
 
+/**
+ * Manages the clients in the TeamSpeak server.
+ */
 export default class ClientManager extends CachedManager<Client, RawClient> {
   constructor(query: Query) {
     super(query, Client, 'clid');
   }
 
+  /**
+   * Resolves a client ID.
+   * @param {ClientResolvable} client The object to resolve.
+   * @returns {number} The client ID.
+   */
   resolveId(client: ClientResolvable): number {
     if (client instanceof Client) return client.id;
     return client;
   }
 
+  /**
+   * Obtains a client from TeamSpeak, or the cache if it's available.
+   * @param {ClientResolvable} client The client to fetch.
+   * @param {BaseFetchOptions} options The options for fetching the client.
+   * @returns {Promise<Client>} The client.
+   */
   async fetch(
     client: ClientResolvable,
     options?: BaseFetchOptions,
   ): Promise<Awaited<ReturnType<ClientManager['_fetchSingle']>>>;
+
+  /**
+   * Obtains all clients from TeamSpeak.
+   * @returns {Promise<Collection<number, Client>>} The clients.
+   */
   async fetch(): Promise<Awaited<ReturnType<ClientManager['_fetchAll']>>>;
 
   async fetch(
@@ -84,6 +103,13 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
   }
 
   //TODO: Find a cleaner approach for this payload stuff?
+
+  /**
+   * Edits a client.
+   * @param {ClientResolvable} client The client to edit.
+   * @param {ClientEditOptions} data The new client data.
+   * @returns {Promise<Client>} The updated client.
+   */
   async edit(client: ClientResolvable, data: ClientEditOptions): Promise<Client> {
     const id = this.resolveId(client);
 
@@ -108,6 +134,11 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     return this.query.actions.ClientUpdate.handle(stringifyValues(payload)).after!;
   }
 
+  /**
+   * Searches for clients based on the client nickname.
+   * @param {string} query The search query.
+   * @returns {Promise<Collection<number, Client>>} The found clients.
+   */
   async search(query: string): Promise<Collection<number, Client>> {
     let _data: RawClientFindItem | RawClientFindItem[] = [];
     try {
@@ -131,6 +162,12 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     return clients;
   }
 
+  /**
+   * Kicks a client from the current channel.
+   * @param {ClientResolvable} client The client to kick.
+   * @param {string} [reason] The reason for the kick.
+   * @returns {Promise<void>} A promise that resolves when the client has been kicked.
+   */
   kickFromChannel(client: ClientResolvable, reason?: string): Promise<void> {
     const id = this.resolveId(client);
     return this.query.commands.clientkick({
@@ -140,6 +177,12 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
+  /**
+   * Kicks a client from the server.
+   * @param {ClientResolvable} client The client to kick.
+   * @param {string} [reason] The reason for the kick.
+   * @returns {Promise<void>} A promise that resolves when the client has been kicked.
+   */
   kickFromServer(client: ClientResolvable, reason?: string): Promise<void> {
     const id = this.resolveId(client);
     return this.query.commands.clientkick({
@@ -149,6 +192,12 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
+  /**
+   * Sends a message to a client.
+   * @param {ClientResolvable} client The client to send the message to.
+   * @param {string} content The content of the message.
+   * @returns {Promise<void>} A promise that resolves when the message has been sent.
+   */
   sendMessage(client: ClientResolvable, content: string): Promise<void> {
     const id = this.resolveId(client);
 
@@ -159,6 +208,12 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
+  /**
+   * Pokes a client.
+   * @param {ClientResolvable} client The client to poke.
+   * @param {string} content The content of the poke.
+   * @returns {Promise<void>} A promise that resolves when the poke has been sent.
+   */
   poke(client: ClientResolvable, content: string): Promise<void> {
     const id = this.resolveId(client);
 
@@ -168,6 +223,13 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
+  /**
+   * Moves a client to a different channel.
+   * @param {ClientResolvable} client The client to move.
+   * @param {ChannelResolvable} channel The channel to move the client to.
+   * @param {string} [channelPassword] The password for the channel, if required.
+   * @returns {Promise<Client>} A promise that resolves to the moved client.
+   */
   async move(
     client: ClientResolvable,
     channel: ChannelResolvable,
