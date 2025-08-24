@@ -14,6 +14,7 @@ import {
   RawInstance,
   RawServer,
   RawServerConnectionInfo,
+  RawServerGroup,
   RawServerListItem,
   RawServerQueryInfo,
   RawVersion,
@@ -106,19 +107,19 @@ export default class CommandManager extends CommandExecutor {
   }
 
   servergrouplist() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawServerGroup | RawServerGroup[]>('servergrouplist');
   }
 
-  servergroupadd() {
-    throw new Error('Not implemented');
+  servergroupadd(params: { name: string }) {
+    return this.query.commands._execute<{ sgid: string }>('servergroupadd', params);
   }
 
-  servergroupdel() {
-    throw new Error('Not implemented');
+  servergroupdel(params: { sgid: number; force?: boolean }) {
+    return this.query.commands._execute<void>('servergroupdel', params);
   }
 
-  servergrouprename() {
-    throw new Error('Not implemented');
+  servergrouprename(params: { sgid: number; name: string }) {
+    return this.query.commands._execute<void>('servergrouprename', params);
   }
 
   servergrouppermlist() {

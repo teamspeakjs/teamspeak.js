@@ -190,6 +190,15 @@ export default class Channel extends Base {
   }
 
   /**
+   * Deletes the channel.
+   * @param {boolean} [force=false] Whether to force the deletion. Forcing deletion will kick all clients from the channel.
+   * @returns {Promise<void>}
+   */
+  delete(force: boolean = false): Promise<void> {
+    return this.query.channels.delete(this, force);
+  }
+
+  /**
    * Kicks a client from the channel.
    * @param {ClientResolvable} client The client to kick.
    * @param {string} [reason] The reason for the kick.
@@ -197,14 +206,5 @@ export default class Channel extends Base {
    */
   kickClient(client: ClientResolvable, reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(client, reason);
-  }
-
-  /**
-   * Deletes the channel.
-   * @param {boolean} [force=false] Whether to force the deletion. Forcing deletion will kick all clients from the channel.
-   * @returns {Promise<void>}
-   */
-  delete(force: boolean = false): Promise<void> {
-    return this.query.channels.delete(this, force);
   }
 }

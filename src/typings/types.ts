@@ -1,5 +1,6 @@
 import Channel from '../structures/channel';
 import Client from '../structures/client';
+import ServerGroup from '../structures/server-group';
 import TextMessage from '../structures/text-message';
 
 export type Constructable<Entity> = new (...args: any[]) => Entity;
@@ -7,6 +8,8 @@ export type Constructable<Entity> = new (...args: any[]) => Entity;
 export type ClientResolvable = Client | number;
 
 export type ChannelResolvable = Channel | number;
+
+export type ServerGroupResolvable = ServerGroup | number;
 
 export type If<Value extends boolean, TrueResult, FalseResult = null> = Value extends true
   ? TrueResult
@@ -32,6 +35,10 @@ export type EventTypes = {
   ];
 
   TextMessage: [textMessage: TextMessage];
+
+  ServerGroupCreate: [serverGroup: ServerGroup];
+  ServerGroupDelete: [serverGroup: ServerGroup];
+  ServerGroupUpdate: [before: ServerGroup, after: ServerGroup];
 };
 
 export type BaseFetchOptions = {

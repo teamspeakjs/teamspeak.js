@@ -11,4 +11,8 @@ export const Events = {
   ClientMove: 'ClientMove',
 
   TextMessage: 'TextMessage',
+
+  ServerGroupCreate: 'ServerGroupCreate',
+  ServerGroupDelete: 'ServerGroupDelete',
+  ServerGroupUpdate: 'ServerGroupUpdate',
 } as const;

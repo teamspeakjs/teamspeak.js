@@ -368,3 +368,16 @@ export type RawServerConnectionInfo = {
   connection_packetloss_total: string;
   connection_ping: string;
 };
+
+export type RawServerGroup = {
+  sgid: string;
+  name: string;
+  type: string;
+  iconid: string;
+  savedb: string;
+  sortid: string;
+  namemode: string;
+  n_modifyp: string;
+  n_member_addp: string;
+  n_member_removep: string;
+};

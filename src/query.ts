@@ -19,6 +19,7 @@ import {
   RawVersion,
   TextMessageTargetMode,
 } from './typings/teamspeak';
+import ServerGroupManager from './managers/server-group-manager';
 
 interface ClientOptions {
   host: string;
@@ -37,6 +38,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public notifications = new NotificationManager(this);
   public client = null as unknown as QueryClient; // Overwrite type
   public actions = new ActionManager(this);
+  public serverGroups = new ServerGroupManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
   protected virtualServerId: number | null = null;
