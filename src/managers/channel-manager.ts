@@ -4,21 +4,32 @@ import Channel from '../structures/channel';
 import CachedManager from './cached-manager';
 import { BaseFetchOptions, ChannelResolvable } from '../typings/types';
 import { stringifyValues } from '../utils/helpers';
-import { RawChannel, RawChannelFindItem } from '../typings/teamspeak';
+import { Codec, RawChannel, RawChannelFindItem } from '../typings/teamspeak';
 import CommandError from '../errors/command-error';
 
-type ChannelCreateOptions = {
+export type ChannelType = 'temporary' | 'semi-permanent' | 'permanent';
+
+type ChannelCreateOptions = ChannelEditOptions & {
   name: string;
-  topic?: string;
-  description?: string;
-  type?: 'temporary' | 'permanent';
-  default?: boolean;
 };
 
 export type ChannelEditOptions = {
   name?: string;
   topic?: string;
   description?: string;
+  password?: string;
+  codec?: Codec;
+  codecQuality?: number;
+  maxClients?: number;
+  maxFamilyClients?: number;
+  order?: number;
+  type?: ChannelType;
+  default?: true;
+  maxClientsUnlimited?: boolean;
+  maxFamilyClientsUnlimited?: boolean;
+  maxFamilyClientsInherited?: boolean;
+  neededTalkPower?: number;
+  namePhonetic?: string;
 };
 
 /**
@@ -109,17 +120,30 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
    * @param {ChannelCreateOptions} options The options for creating the channel.
    * @returns {Promise<Channel>} The created channel.
    */
-  async create(options: ChannelCreateOptions): Promise<Channel> {
-    const data = await this.query.commands.channelcreate({
-      channel_name: options.name,
-      channel_topic: options.topic,
-      channel_description: options.description,
-      channel_flag_temporary: options.type === 'temporary',
-      channel_flag_permanent: options.type === 'permanent',
-      channel_flag_default: options.default,
+  async create(data: ChannelCreateOptions): Promise<Channel> {
+    const newData = await this.query.commands.channelcreate({
+      channel_name: data.name,
+      channel_topic: data.topic,
+      channel_description: data.description,
+      channel_password: data.password,
+      channel_flag_password: data.password !== undefined,
+      channel_codec: data.codec,
+      channel_codec_quality: data.codecQuality,
+      channel_maxclients: data.maxClients,
+      channel_maxfamilyclients: data.maxFamilyClients,
+      channel_order: data.order,
+      channel_flag_permanent: data.type === 'permanent' || undefined,
+      channel_flag_semi_permanent: data.type === 'semi-permanent' || undefined,
+      channel_flag_temporary: data.type === 'temporary' || undefined,
+      channel_flag_default: data.default,
+      channel_flag_maxclients_unlimited: data.maxClientsUnlimited,
+      channel_flag_maxfamilyclients_unlimited: data.maxFamilyClientsUnlimited,
+      channel_flag_maxfamilyclients_inherited: data.maxFamilyClientsInherited,
+      channel_needed_talk_power: data.neededTalkPower,
+      channel_name_phonetic: data.namePhonetic,
     });
 
-    return this.query.actions.ChannelCreate.handle(data).channel;
+    return this.query.actions.ChannelCreate.handle(newData).channel;
   }
 
   //TODO: Find a cleaner approach for this payload stuff?
@@ -138,6 +162,22 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
       channel_name: data.name,
       channel_topic: data.topic,
       channel_description: data.description,
+      channel_password: data.password,
+      channel_flag_password: data.password !== undefined,
+      channel_codec: data.codec,
+      channel_codec_quality: data.codecQuality,
+      channel_maxclients: data.maxClients,
+      channel_maxfamilyclients: data.maxFamilyClients,
+      channel_order: data.order,
+      channel_flag_permanent: data.type === 'permanent' || undefined,
+      channel_flag_semi_permanent: data.type === 'semi-permanent' || undefined,
+      channel_flag_temporary: data.type === 'temporary' || undefined,
+      channel_flag_default: data.default,
+      channel_flag_maxclients_unlimited: data.maxClientsUnlimited,
+      channel_flag_maxfamilyclients_unlimited: data.maxFamilyClientsUnlimited,
+      channel_flag_maxfamilyclients_inherited: data.maxFamilyClientsInherited,
+      channel_needed_talk_power: data.neededTalkPower,
+      channel_name_phonetic: data.namePhonetic,
     };
 
     await this.query.commands.channeledit(payload);

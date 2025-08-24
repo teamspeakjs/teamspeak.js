@@ -4,7 +4,12 @@ import Client from '../structures/client';
 import CachedManager from './cached-manager';
 import { BaseFetchOptions, ChannelResolvable, ClientResolvable } from '../typings/types';
 import CommandError from '../errors/command-error';
-import { RawClient, RawClientFindItem } from '../typings/teamspeak';
+import {
+  KickReasonIdentifier,
+  RawClient,
+  RawClientFindItem,
+  TextMessageTargetMode,
+} from '../typings/teamspeak';
 import { stringifyValues } from '../utils/helpers';
 
 export type ClientEditOptions = {
@@ -130,7 +135,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     const id = this.resolveId(client);
     return this.query.commands.clientkick({
       clid: id,
-      reasonid: 4,
+      reasonid: KickReasonIdentifier.CHANNEL,
       reasonmsg: reason,
     });
   }
@@ -139,7 +144,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     const id = this.resolveId(client);
     return this.query.commands.clientkick({
       clid: id,
-      reasonid: 5,
+      reasonid: KickReasonIdentifier.SERVER,
       reasonmsg: reason,
     });
   }
@@ -148,7 +153,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     const id = this.resolveId(client);
 
     return this.query.commands.sendtextmessage({
-      targetmode: 1,
+      targetmode: TextMessageTargetMode.CLIENT,
       target: id,
       msg: content,
     });

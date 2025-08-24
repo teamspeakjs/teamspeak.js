@@ -197,7 +197,7 @@ export default class CommandManager extends CommandExecutor {
     channel_description?: string;
     channel_password?: string;
     channel_flag_password?: boolean;
-    channel_codec?: string;
+    channel_codec?: number;
     channel_codec_quality?: number;
     channel_maxclients?: number;
     channel_maxfamilyclients?: number;
@@ -222,7 +222,7 @@ export default class CommandManager extends CommandExecutor {
     channel_description?: string;
     channel_password?: string;
     channel_flag_password?: boolean;
-    channel_codec?: string;
+    channel_codec?: number;
     channel_codec_quality?: number;
     channel_maxclients?: number;
     channel_maxfamilyclients?: number;

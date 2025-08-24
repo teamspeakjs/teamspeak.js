@@ -16,6 +16,7 @@ import {
   RawHostInfo,
   RawServer,
   RawVersion,
+  TextMessageTargetMode,
 } from './typings/teamspeak';
 
 interface ClientOptions {
@@ -170,7 +171,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   sendServerMessage(content: string): Promise<void> {
     return this.commands.sendtextmessage({
       target: this.virtualServerId!,
-      targetmode: 3,
+      targetmode: TextMessageTargetMode.SERVER,
       msg: content,
     });
   }
@@ -181,7 +182,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   sendChannelMessage(content: string): Promise<void> {
     return this.commands.sendtextmessage({
-      targetmode: 2,
+      targetmode: TextMessageTargetMode.CHANNEL,
       target: this.client.channelId!,
       msg: content,
     });

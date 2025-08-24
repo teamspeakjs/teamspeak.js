@@ -1,3 +1,34 @@
+export enum HostMessageMode {
+  LOG = 1,
+  MODAL,
+  MODALQUIT,
+}
+
+export enum Codec {
+  SPEEX_NARROWBAND = 0,
+  SPEEX_WIDEBAND,
+  SPEEX_ULTRAWIDEBAND,
+  CELT_MONO,
+}
+
+export enum TextMessageTargetMode {
+  CLIENT = 1,
+  CHANNEL,
+  SERVER,
+}
+
+export enum LogLevel {
+  ERROR = 1,
+  WARNING,
+  DEBUG,
+  INFO,
+}
+
+export enum KickReasonIdentifier {
+  CHANNEL = 4,
+  SERVER,
+}
+
 export type RawCommandError = {
   id: number;
   msg: string;
