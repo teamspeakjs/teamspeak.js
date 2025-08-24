@@ -1,9 +1,10 @@
 # 🚀 Teamspeak 3 ServerQuery Client
 
-[![Discord server](https://img.shields.io/discord/920801635649880064?color=5865F2&logo=discord&logoColor=white)](https://lix.qa/dc/)
+[![Discord server](https://img.shields.io/discord/920801635649880064?color=5865F2&logo=discord&logoColor=white)](https://lix.qa/tjs-dc/)
 [![npm version](https://img.shields.io/npm/v/teamspeak3.js.svg?maxAge=3600)](https://www.npmjs.com/package/teamspeak3.js)
 [![npm downloads](https://img.shields.io/npm/dt/teamspeak3.js.svg?maxAge=3600)](https://www.npmjs.com/package/teamspeak3.js)
 [![Last commit.](https://img.shields.io/github/last-commit/teamspeakjs/teamspeak3.js.svg?logo=github&logoColor=ffffff)](https://github.com/teamspeakjs/teamspeak3.js/commits/main)
+[![GitHub stars](https://img.shields.io/github/stars/teamspeakjs/teamspeak3.js?style=flat&color=5865F2&logo=github&logoColor=ffffff)](https://github.com/teamspeakjs/teamspeak3.js/stargazers)
 
 A fully typesafe and easy-to-use Node.js client for interacting with Teamspeak 3 servers via ServerQuery.
 
