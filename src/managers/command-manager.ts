@@ -10,6 +10,7 @@ import {
   RawClientFindItem,
   RawClientIds,
   RawClientName,
+  RawClientServerGroup,
   RawHostInfo,
   RawInstance,
   RawServer,
@@ -578,8 +579,11 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('servergrouprename', params);
   }
 
-  servergroupsbyclientid() {
-    throw new Error('Not implemented');
+  servergroupsbyclientid(params: { cldbid: number }) {
+    return this.query.commands._execute<RawClientServerGroup | RawClientServerGroup[]>(
+      'servergroupsbyclientid',
+      params,
+    );
   }
 
   serveridgetbyport(params: { virtualserver_port: number }) {

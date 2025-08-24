@@ -1,9 +1,11 @@
+import { Collection } from '@discordjs/collection';
 import { ClientEditOptions } from '../managers/client-manager';
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
 import { ChannelResolvable, ServerGroupResolvable } from '../typings/types';
 import Base from './base';
 import Channel from './channel';
+import ServerGroup from './server-group';
 
 export default class Client extends Base {
   channelId: number | null = null;
@@ -158,6 +160,10 @@ export default class Client extends Base {
 
   removeServerGroup(serverGroup: ServerGroupResolvable): Promise<void> {
     return this.query.clients.removeServerGroup(this, serverGroup);
+  }
+
+  async fetchServerGroups(): Promise<Collection<number, ServerGroup>> {
+    return this.query.clients.fetchServerGroups(this);
   }
 
   toString(): string {

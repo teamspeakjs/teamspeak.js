@@ -381,3 +381,9 @@ export type RawServerGroup = {
   n_member_addp: string;
   n_member_removep: string;
 };
+
+export type RawClientServerGroup = {
+  name: string;
+  sgid: string;
+  cldbid: string;
+};

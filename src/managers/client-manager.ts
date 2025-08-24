@@ -16,6 +16,7 @@ import {
   TextMessageTargetMode,
 } from '../typings/teamspeak';
 import { stringifyValues } from '../utils/helpers';
+import ServerGroup from '../structures/server-group';
 
 export type ClientEditOptions = {
   nickname?: string;
@@ -266,7 +267,7 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     const clientId = this.resolveId(client);
     const serverGroupId = this.query.serverGroups.resolveId(serverGroup);
 
-    const fetchedClient = await this.query.clients.fetch(clientId, { force: true });
+    const fetchedClient = await this.fetch(clientId, { force: true });
 
     await this.query.commands.servergroupaddclient({
       sgid: serverGroupId,
@@ -281,11 +282,31 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     const clientId = this.resolveId(client);
     const serverGroupId = this.query.serverGroups.resolveId(serverGroup);
 
-    const fetchedClient = await this.query.clients.fetch(clientId, { force: true });
+    const fetchedClient = await this.fetch(clientId, { force: true });
 
     await this.query.commands.servergroupdelclient({
       sgid: serverGroupId,
       cldbid: fetchedClient.databaseId!,
     });
+  }
+
+  async fetchServerGroups(client: ClientResolvable): Promise<Collection<number, ServerGroup>> {
+    const clientId = this.resolveId(client);
+
+    const fetchedClient = await this.fetch(clientId, { force: true });
+
+    const _data = await this.query.commands.servergroupsbyclientid({
+      cldbid: fetchedClient.databaseId!,
+    });
+
+    const data = Array.isArray(_data) ? _data : [_data];
+
+    const serverGroups = new Collection<number, ServerGroup>();
+
+    for (const group of data) {
+      serverGroups.set(Number(group.sgid), this.query.serverGroups._add(group));
+    }
+
+    return serverGroups;
   }
 }
