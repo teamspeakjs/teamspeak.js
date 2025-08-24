@@ -528,8 +528,9 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<{ sgid: string }>('servergroupadd', params);
   }
 
-  servergroupaddclient() {
-    throw new Error('Not implemented');
+  //Note: Possibly, there are more properties to edit than just the nickname
+  servergroupaddclient(params: { sgid: number; cldbid: number; _continueonerror?: true }) {
+    return this.query.commands._execute<void>('servergroupaddclient', params);
   }
 
   servergroupaddperm() {
@@ -556,8 +557,9 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('servergroupdel', params);
   }
 
-  servergroupdelclient() {
-    throw new Error('Not implemented');
+  //Note: Possibly, there are more properties to edit than just the nickname
+  servergroupdelclient(params: { sgid: number; cldbid: number; _continueonerror?: true }) {
+    return this.query.commands._execute<void>('servergroupdelclient', params);
   }
 
   servergroupdelperm() {

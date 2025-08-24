@@ -3,7 +3,7 @@ import { Query } from '../query';
 import ServerGroup from '../structures/server-group';
 import { RawServerGroup } from '../typings/teamspeak';
 import CachedManager from './cached-manager';
-import { ServerGroupResolvable } from '../typings/types';
+import { ClientResolvable, ServerGroupResolvable } from '../typings/types';
 
 export default class ServerGroupManager extends CachedManager<ServerGroup, RawServerGroup> {
   constructor(query: Query) {
@@ -43,5 +43,13 @@ export default class ServerGroupManager extends CachedManager<ServerGroup, RawSe
     const id = this.resolveId(serverGroup);
     await this.query.commands.servergroupdel({ sgid: id, force });
     this.query.actions.ServerGroupDelete.handle({ sgid: id.toString() });
+  }
+
+  addClient(serverGroup: ServerGroupResolvable, client: ClientResolvable): Promise<void> {
+    return this.query.clients.addServerGroup(client, serverGroup);
+  }
+
+  removeClient(serverGroup: ServerGroupResolvable, client: ClientResolvable): Promise<void> {
+    return this.query.clients.removeServerGroup(client, serverGroup);
   }
 }

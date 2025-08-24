@@ -157,7 +157,7 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
   async edit(channel: ChannelResolvable, data: ChannelEditOptions): Promise<Channel> {
     const id = this.resolveId(channel);
 
-    const payload: Parameters<typeof this.query.commands.channeledit>[0] = {
+    const payload = {
       cid: id,
       channel_name: data.name,
       channel_topic: data.topic,

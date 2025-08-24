@@ -1,7 +1,7 @@
 import { ClientEditOptions } from '../managers/client-manager';
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
-import { ChannelResolvable } from '../typings/types';
+import { ChannelResolvable, ServerGroupResolvable } from '../typings/types';
 import Base from './base';
 import Channel from './channel';
 
@@ -150,6 +150,14 @@ export default class Client extends Base {
    */
   setTalker(isTalker: boolean): Promise<Client> {
     return this.query.clients.edit(this, { isTalker });
+  }
+
+  addServerGroup(serverGroup: ServerGroupResolvable): Promise<void> {
+    return this.query.clients.addServerGroup(this, serverGroup);
+  }
+
+  removeServerGroup(serverGroup: ServerGroupResolvable): Promise<void> {
+    return this.query.clients.removeServerGroup(this, serverGroup);
   }
 
   toString(): string {

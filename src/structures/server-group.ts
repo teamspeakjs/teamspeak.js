@@ -1,5 +1,6 @@
 import { Query } from '../query';
 import { RawServerGroup } from '../typings/teamspeak';
+import { ClientResolvable } from '../typings/types';
 import Base from './base';
 
 export default class ServerGroup extends Base {
@@ -59,5 +60,13 @@ export default class ServerGroup extends Base {
 
   delete(force: boolean = false): Promise<void> {
     return this.query.serverGroups.delete(this, force);
+  }
+
+  addClient(client: ClientResolvable): Promise<void> {
+    return this.query.serverGroups.addClient(this, client);
+  }
+
+  removeClient(client: ClientResolvable): Promise<void> {
+    return this.query.serverGroups.removeClient(this, client);
   }
 }

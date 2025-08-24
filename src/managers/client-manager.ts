@@ -2,7 +2,12 @@ import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import Client from '../structures/client';
 import CachedManager from './cached-manager';
-import { BaseFetchOptions, ChannelResolvable, ClientResolvable } from '../typings/types';
+import {
+  BaseFetchOptions,
+  ChannelResolvable,
+  ClientResolvable,
+  ServerGroupResolvable,
+} from '../typings/types';
 import CommandError from '../errors/command-error';
 import {
   KickReasonIdentifier,
@@ -252,5 +257,35 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
       invokername: this.query.client.nickname!,
       invokeruid: this.query.client.uniqueId!,
     }).client!;
+  }
+
+  async addServerGroup(
+    client: ClientResolvable,
+    serverGroup: ServerGroupResolvable,
+  ): Promise<void> {
+    const clientId = this.resolveId(client);
+    const serverGroupId = this.query.serverGroups.resolveId(serverGroup);
+
+    const fetchedClient = await this.query.clients.fetch(clientId, { force: true });
+
+    await this.query.commands.servergroupaddclient({
+      sgid: serverGroupId,
+      cldbid: fetchedClient.databaseId!,
+    });
+  }
+
+  async removeServerGroup(
+    client: ClientResolvable,
+    serverGroup: ServerGroupResolvable,
+  ): Promise<void> {
+    const clientId = this.resolveId(client);
+    const serverGroupId = this.query.serverGroups.resolveId(serverGroup);
+
+    const fetchedClient = await this.query.clients.fetch(clientId, { force: true });
+
+    await this.query.commands.servergroupdelclient({
+      sgid: serverGroupId,
+      cldbid: fetchedClient.databaseId!,
+    });
   }
 }
