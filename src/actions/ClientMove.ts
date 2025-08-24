@@ -24,7 +24,10 @@ export default class ClientMoveAction extends Action {
     newChannel: Channel | null;
     invoker: Client | null;
   } {
-    const client = this.query.clients.cache.get(Number(data.clid));
+    const client =
+      Number(data.clid) === this.query.client.id
+        ? this.query.client
+        : this.query.clients.cache.get(Number(data.clid));
     if (client) {
       const oldChannel = client.channel;
       const newChannel = this.query.channels._add({ cid: data.ctid });
