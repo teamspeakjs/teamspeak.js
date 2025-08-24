@@ -36,11 +36,21 @@ export default class NotificationManager extends BaseManager {
     this.textmessage = new TextMessageNotification(this.query);
   }
 
+  /**
+   * Subscribe to all notifications.
+   */
   async subscribeAll(): Promise<void> {
-    await this.query.commands._execute('servernotifyregister', { event: 'server' });
-    await this.query.commands._execute('servernotifyregister', { event: 'channel', id: 0 });
-    await this.query.commands._execute('servernotifyregister', { event: 'textserver' });
-    await this.query.commands._execute('servernotifyregister', { event: 'textchannel' });
-    await this.query.commands._execute('servernotifyregister', { event: 'textprivate' });
+    await this.query.commands.servernotifyregister({ event: 'server' });
+    await this.query.commands.servernotifyregister({ event: 'channel', id: 0 });
+    await this.query.commands.servernotifyregister({ event: 'textserver' });
+    await this.query.commands.servernotifyregister({ event: 'textchannel' });
+    await this.query.commands.servernotifyregister({ event: 'textprivate' });
+  }
+
+  /**
+   * Unsubscribe from all notifications.
+   */
+  unsubscribeAll(): Promise<void> {
+    return this.query.commands.servernotifyunregister();
   }
 }

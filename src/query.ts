@@ -15,6 +15,7 @@ import {
   RawClientName,
   RawHostInfo,
   RawServer,
+  RawServerConnectionInfo,
   RawVersion,
   TextMessageTargetMode,
 } from './typings/teamspeak';
@@ -221,5 +222,12 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   getRawClientNameFromDatabaseId(dbid: string): Promise<RawClientName> {
     return this.commands.clientgetnamefromdbid({ cldbid: dbid });
+  }
+
+  /**
+   * Get the raw server connection info.
+   */
+  getRawServerConnectionInfo(): Promise<RawServerConnectionInfo> {
+    return this.commands.serverrequestconnectioninfo();
   }
 }

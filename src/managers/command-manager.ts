@@ -13,6 +13,7 @@ import {
   RawHostInfo,
   RawInstance,
   RawServer,
+  RawServerConnectionInfo,
   RawServerListItem,
   RawServerQueryInfo,
   RawVersion,
@@ -97,7 +98,7 @@ export default class CommandManager extends CommandExecutor {
   }
 
   serverrequestconnectioninfo() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawServerConnectionInfo>('serverrequestconnectioninfo');
   }
 
   serveredit() {
@@ -148,12 +149,12 @@ export default class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  servernotifyregister() {
-    throw new Error('Not implemented');
+  servernotifyregister(params: { event: string; id?: number }) {
+    return this.query.commands._execute<void>('servernotifyregister', params);
   }
 
   servernotifyunregister() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<void>('servernotifyunregister');
   }
 
   gm(params: { msg: string }) {

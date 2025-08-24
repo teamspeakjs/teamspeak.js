@@ -350,3 +350,21 @@ export type RawTextMessage = {
   invokername: string;
   invokeruid: string;
 };
+
+export type RawServerConnectionInfo = {
+  connection_filetransfer_bandwidth_sent: string;
+  connection_filetransfer_bandwidth_received: string;
+  connection_filetransfer_bytes_sent_total: string;
+  connection_filetransfer_bytes_received_total: string;
+  connection_packets_sent_total: string;
+  connection_bytes_sent_total: string;
+  connection_packets_received_total: string;
+  connection_bytes_received_total: string;
+  connection_bandwidth_sent_last_second_total: string;
+  connection_bandwidth_sent_last_minute_total: string;
+  connection_bandwidth_received_last_second_total: string;
+  connection_bandwidth_received_last_minute_total: string;
+  connection_connected_time: string;
+  connection_packetloss_total: string;
+  connection_ping: string;
+};
