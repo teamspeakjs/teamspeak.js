@@ -67,6 +67,7 @@ export default abstract class CommandExecutor extends BaseManager {
   ): string {
     return Object.entries(params)
       .map(([key, value]) => {
+        if (key.startsWith('_') && value === true) return `-${key.slice(1)}`;
         if (Array.isArray(value)) {
           return value.map((v) => `${key}=${this.escapeText(v.toString())}`).join('|');
         }

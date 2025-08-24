@@ -222,7 +222,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * Get the raw client name from its database ID.
    * @param dbid The database ID of the client.
    */
-  getRawClientNameFromDatabaseId(dbid: string): Promise<RawClientName> {
+  getRawClientNameFromDatabaseId(dbid: number): Promise<RawClientName> {
     return this.commands.clientgetnamefromdbid({ cldbid: dbid });
   }
 
