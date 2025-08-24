@@ -45,6 +45,13 @@ export default defineConfig([
           allowTypedFunctionExpressions: true,
         },
       ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_', // ignore args starting with _
+          varsIgnorePattern: '^_', // ignore variables starting with _
+        },
+      ],
     },
     ignores: ['node_modules/**', 'dist/**'],
   },

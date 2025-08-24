@@ -86,6 +86,14 @@ export default class Client extends Base {
     return this.query.clients.move(this, channel, channelPassword);
   }
 
+  setDescription(description: string): Promise<Client> {
+    return this.query.clients.edit(this, { description });
+  }
+
+  setTalker(isTalker: boolean): Promise<Client> {
+    return this.query.clients.edit(this, { isTalker });
+  }
+
   toString(): string {
     return `[URL=client://${this.id}/${this.uniqueId}~${this.nickname}]${this.nickname}[/URL]`;
   }
