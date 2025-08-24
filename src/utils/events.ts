@@ -9,4 +9,6 @@ export const Events = {
   ClientLeaveView: 'ClientLeaveView',
   ClientUpdate: 'ClientUpdate',
   ClientMove: 'ClientMove',
+
+  TextMessage: 'TextMessage',
 } as const;

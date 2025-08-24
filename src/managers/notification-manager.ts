@@ -4,6 +4,7 @@ import ChannelEditedNotification from '../notifications/channeledited';
 import ClientEnterViewNotification from '../notifications/cliententerview';
 import ClientLeftViewNotification from '../notifications/clientleftview';
 import ClientMovedNotification from '../notifications/clientmoved';
+import TextMessageNotification from '../notifications/textmessage';
 import { Query } from '../query';
 import BaseManager from './base-manager';
 
@@ -18,6 +19,9 @@ export default class NotificationManager extends BaseManager {
   clientleftview: ClientLeftViewNotification;
   clientmoved: ClientMovedNotification;
 
+  // TEXT MESSAGES
+  textmessage: TextMessageNotification;
+
   constructor(query: Query) {
     super(query);
 
@@ -28,6 +32,8 @@ export default class NotificationManager extends BaseManager {
     this.cliententerview = new ClientEnterViewNotification(this.query);
     this.clientleftview = new ClientLeftViewNotification(this.query);
     this.clientmoved = new ClientMovedNotification(this.query);
+
+    this.textmessage = new TextMessageNotification(this.query);
   }
 
   async subscribeAll(): Promise<void> {

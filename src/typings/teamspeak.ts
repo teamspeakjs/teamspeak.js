@@ -310,3 +310,12 @@ export type RawClientName = {
   cldbid: string;
   name: string;
 };
+
+export type RawTextMessage = {
+  targetmode: string;
+  msg: string;
+  target: string;
+  invokerid: string;
+  invokername: string;
+  invokeruid: string;
+};

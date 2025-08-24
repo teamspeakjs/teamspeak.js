@@ -1,5 +1,6 @@
 import Channel from '../structures/channel';
 import Client from '../structures/client';
+import TextMessage from '../structures/text-message';
 
 export type Constructable<Entity> = new (...args: any[]) => Entity;
 
@@ -24,6 +25,8 @@ export type EventTypes = {
   ClientLeaveView: [client: Client];
   ClientUpdate: [before: Client, after: Client];
   ClientMove: [client: Client, oldChannel: Channel, newChannel: Channel, invoker: Client | null];
+
+  TextMessage: [textMessage: TextMessage];
 };
 
 export type BaseFetchOptions = {

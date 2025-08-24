@@ -63,5 +63,11 @@ query.on('ChannelUpdate', (before, after) => {
   }
 });
 
+query.on('TextMessage', (message) => {
+  console.log(
+    `Received a ${message.mode}-message from ${message.invoker.nickname || message.invoker.id || 'Unknown Client'}: ${message.content}`,
+  );
+});
+
 query.connect();
 ```
