@@ -14,12 +14,13 @@ import {
   RawClientIds,
   RawClientName,
   RawHostInfo,
-  RawServer,
+  RawVirtualServer,
   RawServerConnectionInfo,
   RawVersion,
   TextMessageTargetMode,
 } from './typings/teamspeak';
 import ServerGroupManager from './managers/server-group-manager';
+import VirtualServerManager from './managers/virtual-server-manager';
 
 interface ClientOptions {
   host: string;
@@ -39,6 +40,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public client = null as unknown as QueryClient; // Overwrite type
   public actions = new ActionManager(this);
   public serverGroups = new ServerGroupManager(this);
+  public virtualServers = new VirtualServerManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
   protected virtualServerId: number | null = null;
@@ -90,6 +92,9 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Select a virtual server by its ID.
    * @param id The virtual server ID.
+   * @returns {Promise<void>}
+   *
+   * @deprecated Use Query.virtualServers.use(...) instead.
    */
   async useVirtualServer(id: number): Promise<void> {
     this.virtualServerId = id;
@@ -109,6 +114,9 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Select a virtual server by its port.
    * @param port The virtual server port.
+   * @returns {Promise<void>}
+   *
+   * @deprecated Use Query.virtualServers.use(...) instead.
    */
   async useVirtualServerByPort(port: number): Promise<void> {
     const { server_id } = await this.getRawServerIdByPort(port);
@@ -150,7 +158,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Get the raw Server information.
    */
-  getRawServerInfo(): Promise<RawServer> {
+  getRawServerInfo(): Promise<RawVirtualServer> {
     return this.commands.serverinfo();
   }
 

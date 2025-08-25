@@ -11,10 +11,10 @@ export interface Structure<Holds, RawHolds> {
 }
 
 export default abstract class CachedManager<Holds extends Base, RawHolds> extends BaseManager {
-  holds: Constructable<Holds>;
-  idKey: string;
+  private holds: Constructable<Holds>;
+  private idKey: string;
 
-  private _cache = new Collection<number, Holds>();
+  private readonly _cache = new Collection<number, Holds>();
 
   constructor(query: Query, holds: Constructable<Holds>, idKey: string) {
     super(query);

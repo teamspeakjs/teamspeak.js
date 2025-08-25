@@ -13,10 +13,10 @@ import {
   RawClientServerGroup,
   RawHostInfo,
   RawInstance,
-  RawServer,
+  RawVirtualServer,
   RawServerConnectionInfo,
   RawServerGroup,
-  RawServerListItem,
+  RawVirtualServerListItem,
   RawServerQueryInfo,
   RawVersion,
 } from '../typings/teamspeak';
@@ -591,11 +591,11 @@ export default class CommandManager extends CommandExecutor {
   }
 
   serverinfo() {
-    return this.query.commands._execute<RawServer>('serverinfo');
+    return this.query.commands._execute<RawVirtualServer>('serverinfo');
   }
 
-  serverlist(params: { _uid?: true; _short?: true; _all?: true; _onlyoffline?: true }) {
-    return this.query.commands._execute<RawServerListItem[]>('serverlist', params);
+  serverlist(params: { _uid?: true; _short?: true; _all?: true; _onlyoffline?: true } = {}) {
+    return this.query.commands._execute<RawVirtualServerListItem[]>('serverlist', params);
   }
 
   servernotifyregister(params: { event: string; id?: number }) {

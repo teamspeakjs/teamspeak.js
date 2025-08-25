@@ -2,6 +2,7 @@ import Channel from '../structures/channel';
 import Client from '../structures/client';
 import ServerGroup from '../structures/server-group';
 import TextMessage from '../structures/text-message';
+import VirtualServer from '../structures/virtual-server';
 
 export type Constructable<Entity> = new (...args: any[]) => Entity;
 
@@ -10,6 +11,8 @@ export type ClientResolvable = Client | number;
 export type ChannelResolvable = Channel | number;
 
 export type ServerGroupResolvable = ServerGroup | number;
+
+export type VirtualServerResolvable = VirtualServer | number;
 
 export type If<Value extends boolean, TrueResult, FalseResult = null> = Value extends true
   ? TrueResult

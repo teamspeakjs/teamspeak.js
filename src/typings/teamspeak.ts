@@ -188,7 +188,7 @@ export type RawHostInfo = {
   connection_bandwidth_received_last_minute_total: string;
 };
 
-export type RawServerListItem = {
+export type RawVirtualServerListItem = {
   virtualserver_id: string;
   virtualserver_port: string;
   virtualserver_status: string;
@@ -210,7 +210,7 @@ export type RawChannelListItem = {
   channel_needed_subscribe_power: string;
 };
 
-export type RawServer = {
+export type RawVirtualServer = {
   virtualserver_unique_identifier: string;
   virtualserver_name: string;
   virtualserver_welcomemessage: string;
