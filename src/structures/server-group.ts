@@ -20,6 +20,10 @@ export default class ServerGroup extends Base {
     this._patch(data);
   }
 
+  /**
+   * Patches the server group with new data.
+   * @param {Partial<RawServerGroup>} data The new data to patch the server group with.
+   */
   _patch(data: Partial<RawServerGroup>): void {
     if ('name' in data) {
       this.name = data.name!;
@@ -50,22 +54,46 @@ export default class ServerGroup extends Base {
     }
   }
 
+  /**
+   * Checks if the server group is partially filled.
+   * @returns {boolean} Whether the server group is partially filled.
+   */
   get partial(): boolean {
     return typeof this.name !== 'string' || typeof this.type !== 'number';
   }
 
+  /**
+   * Renames the server group.
+   * @param {string} name The new name for the server group.
+   * @returns {Promise<ServerGroup>} The updated server group.
+   */
   rename(name: string): Promise<ServerGroup> {
     return this.query.serverGroups.rename(this, name);
   }
 
+  /**
+   * Deletes the server group.
+   * @param {boolean} [force=false] Whether to force the deletion. Force deletion will remove the server group from all clients.
+   * @returns {Promise<void>} A promise that resolves when the server group has been deleted.
+   */
   delete(force: boolean = false): Promise<void> {
     return this.query.serverGroups.delete(this, force);
   }
 
+  /**
+   * Adds a client to the server group.
+   * @param {ClientResolvable} client The client to add.
+   * @returns {Promise<void>} A promise that resolves when the client has been added.
+   */
   addClient(client: ClientResolvable): Promise<void> {
     return this.query.serverGroups.addClient(this, client);
   }
 
+  /**
+   * Removes a client from the server group.
+   * @param {ClientResolvable} client The client to remove.
+   * @returns {Promise<void>} A promise that resolves when the client has been removed.
+   */
   removeClient(client: ClientResolvable): Promise<void> {
     return this.query.serverGroups.removeClient(this, client);
   }

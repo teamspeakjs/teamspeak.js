@@ -155,24 +155,49 @@ export default class Client extends Base {
     return this.query.clients.edit(this, { isTalker });
   }
 
+  /**
+   * Adds a server group to the client.
+   * @param {ServerGroupResolvable} serverGroup The server group to add.
+   * @returns {Promise<void>} A promise that resolves when the server group has been added.
+   */
   addServerGroup(serverGroup: ServerGroupResolvable): Promise<void> {
     return this.query.clients.addServerGroup(this, serverGroup);
   }
 
+  /**
+   * Removes a server group from the client.
+   * @param {ServerGroupResolvable} serverGroup The server group to remove.
+   * @returns {Promise<void>} A promise that resolves when the server group has been removed.
+   */
   removeServerGroup(serverGroup: ServerGroupResolvable): Promise<void> {
     return this.query.clients.removeServerGroup(this, serverGroup);
   }
 
+  /**
+   * Fetches the server groups the client belongs to.
+   * @returns {Promise<Collection<number, ServerGroup>>} The server groups the client belongs to.
+   */
   async fetchServerGroups(): Promise<Collection<number, ServerGroup>> {
     return this.query.clients.fetchServerGroups(this);
   }
 
+  /**
+   * Bans the client from the server.
+   * @param {Object} options The options for the ban.
+   * @param {number} [options.duration] The duration of the ban in seconds (Optional, defaults to 0, which means permanent).
+   * @param {string} [options.reason] The reason for the ban (Optional).
+   * @returns {Promise<Collection<number, Ban>>} The bans applied to the client. TeamSpeak creates multiple ban entries for one client.
+   */
   ban({ duration, reason }: { duration?: number; reason?: string } = {}): Promise<
     Collection<number, Ban>
   > {
     return this.query.bans.banClient(this, { duration, reason });
   }
 
+  /**
+   * Converts the client to a string representation.
+   * @returns {string} The string representation of the client.
+   */
   toString(): string {
     return `[URL=client://${this.id}/${this.uniqueId}~${this.nickname}]${this.nickname}[/URL]`;
   }
