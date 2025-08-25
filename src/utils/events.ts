@@ -15,4 +15,7 @@ export const Events = {
   ServerGroupCreate: 'ServerGroupCreate',
   ServerGroupDelete: 'ServerGroupDelete',
   ServerGroupUpdate: 'ServerGroupUpdate',
+
+  BanCreate: 'BanCreate',
+  BanDelete: 'BanDelete',
 } as const;

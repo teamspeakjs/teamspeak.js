@@ -400,3 +400,19 @@ export type RawApiKey = {
 };
 
 export type ApiKeyScope = 'manage' | 'write' | 'read';
+
+export type RawBan = {
+  banid: string;
+  ip: string;
+  name: string;
+  uid: string;
+  mytsid: string;
+  lastnickname: string;
+  created: string;
+  duration: string;
+  invokername: string;
+  invokercldbid: string;
+  invokeruid: string;
+  reason: string;
+  enforcements: string;
+};

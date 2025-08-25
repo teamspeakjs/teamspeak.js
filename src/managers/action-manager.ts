@@ -1,3 +1,5 @@
+import BanCreateAction from '../actions/BanCreate';
+import BanDeleteAction from '../actions/BanDelete';
 import ChannelCreateAction from '../actions/ChannelCreate';
 import ChannelDeleteAction from '../actions/ChannelDelete';
 import ChannelUpdateAction from '../actions/ChannelUpdate';
@@ -23,9 +25,14 @@ export default class ActionManager extends BaseManager {
   ClientUpdate: ClientUpdateAction;
   ClientMove: ClientMoveAction;
 
+  // SERVER GROUPS
   ServerGroupCreate: ServerGroupCreateAction;
   ServerGroupDelete: ServerGroupDeleteAction;
   ServerGroupUpdate: ServerGroupUpdateAction;
+
+  // BANS
+  BanCreate: BanCreateAction;
+  BanDelete: BanDeleteAction;
 
   constructor(query: Query) {
     super(query);
@@ -42,5 +49,8 @@ export default class ActionManager extends BaseManager {
     this.ServerGroupCreate = new ServerGroupCreateAction(query);
     this.ServerGroupDelete = new ServerGroupDeleteAction(query);
     this.ServerGroupUpdate = new ServerGroupUpdateAction(query);
+
+    this.BanCreate = new BanCreateAction(query);
+    this.BanDelete = new BanDeleteAction(query);
   }
 }

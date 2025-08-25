@@ -23,6 +23,7 @@ import {
 } from './typings/teamspeak';
 import ServerGroupManager from './managers/server-group-manager';
 import VirtualServerManager from './managers/virtual-server-manager';
+import BanManager from './managers/ban-manager';
 
 interface ClientOptions {
   host: string;
@@ -43,6 +44,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public actions = new ActionManager(this);
   public serverGroups = new ServerGroupManager(this);
   public virtualServers = new VirtualServerManager(this);
+  public bans = new BanManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
   protected virtualServerId: number | null = null;
@@ -94,6 +96,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.clients.cache.clear();
     this.serverGroups.cache.clear();
     this.virtualServers.cache.clear();
+    this.bans.cache.clear();
   }
 
   /**
@@ -289,7 +292,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     start?: number;
     duration?: number;
     count?: true;
-  }): Promise<RawApiKey[]> {
+  }): Promise<RawApiKey | RawApiKey[]> {
     return this.commands.apikeylist({
       cldbid,
       start,

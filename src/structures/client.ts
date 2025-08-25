@@ -6,6 +6,7 @@ import { ChannelResolvable, ServerGroupResolvable } from '../typings/types';
 import Base from './base';
 import Channel from './channel';
 import ServerGroup from './server-group';
+import Ban from './ban';
 
 export default class Client extends Base {
   channelId: number | null = null;
@@ -164,6 +165,12 @@ export default class Client extends Base {
 
   async fetchServerGroups(): Promise<Collection<number, ServerGroup>> {
     return this.query.clients.fetchServerGroups(this);
+  }
+
+  ban({ duration, reason }: { duration?: number; reason?: string } = {}): Promise<
+    Collection<number, Ban>
+  > {
+    return this.query.bans.banClient(this, { duration, reason });
   }
 
   toString(): string {

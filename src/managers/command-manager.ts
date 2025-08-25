@@ -20,6 +20,7 @@ import {
   RawServerQueryInfo,
   RawVersion,
   RawApiKey,
+  RawBan,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -38,27 +39,39 @@ export default class CommandManager extends CommandExecutor {
   }
 
   apikeylist(params: { cldbid: number | '*'; start?: number; duration?: number; _count?: true }) {
-    return this.query.commands._execute<RawApiKey[]>('apikeylist', params);
+    return this.query.commands._execute<RawApiKey | RawApiKey[]>('apikeylist', params);
   }
 
-  banadd() {
-    throw new Error('Not implemented');
+  banadd(params: {
+    ip?: string;
+    name?: string;
+    uid?: string;
+    mytsid?: string;
+    time?: number;
+    banreason?: string;
+    lastnickname?: string;
+  }) {
+    return this.query.commands._execute<void>('banadd', params);
   }
 
-  banclient() {
-    throw new Error('Not implemented');
+  //Note: This theoratically supports multiple clients.
+  banclient(params: { clid: number; time?: number; banreason?: string; _continueonerror?: true }) {
+    return this.query.commands._execute<{ banid: string } | { banid: string }[]>(
+      'banclient',
+      params,
+    );
   }
 
-  bandel() {
-    throw new Error('Not implemented');
+  bandel(params: { banid: number }) {
+    return this.query.commands._execute<void>('bandel', params);
   }
 
   bandelall() {
     throw new Error('Not implemented');
   }
 
-  banlist() {
-    throw new Error('Not implemented');
+  banlist(params: { start?: number; duration?: number; _count?: true } = {}) {
+    return this.query.commands._execute<RawBan | RawBan[]>('banlist', params);
   }
 
   bindinglist() {
@@ -530,7 +543,7 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<{ sgid: string }>('servergroupadd', params);
   }
 
-  //Note: Possibly, there are more properties to edit than just the nickname
+  //Note: This theoratically supports multiple clients.
   servergroupaddclient(params: { sgid: number; cldbid: number; _continueonerror?: true }) {
     return this.query.commands._execute<void>('servergroupaddclient', params);
   }
@@ -559,7 +572,7 @@ export default class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('servergroupdel', params);
   }
 
-  //Note: Possibly, there are more properties to edit than just the nickname
+  //Note: This theoratically supports multiple clients.
   servergroupdelclient(params: { sgid: number; cldbid: number; _continueonerror?: true }) {
     return this.query.commands._execute<void>('servergroupdelclient', params);
   }
