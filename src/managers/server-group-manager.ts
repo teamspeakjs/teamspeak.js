@@ -5,16 +5,28 @@ import { RawServerGroup } from '../typings/teamspeak';
 import CachedManager from './cached-manager';
 import { ClientResolvable, ServerGroupResolvable } from '../typings/types';
 
+/**
+ * Manages the clients in the TeamSpeak server.
+ */
 export default class ServerGroupManager extends CachedManager<ServerGroup, RawServerGroup> {
   constructor(query: Query) {
     super(query, ServerGroup, 'sgid');
   }
 
+  /**
+   * Resolves a server group ID.
+   * @param {ServerGroupResolvable} serverGroup The object to resolve.
+   * @returns {number} The server group ID.
+   */
   resolveId(serverGroup: ServerGroupResolvable): number {
     if (serverGroup instanceof ServerGroup) return serverGroup.id;
     return serverGroup;
   }
 
+  /**
+   * Obtains all server groups from TeamSpeak.
+   * @returns {Promise<Collection<number, ServerGroup>>} The server groups.
+   */
   async fetch(): Promise<Collection<number, ServerGroup>> {
     const _data = await this.query.commands.servergrouplist();
     const data = Array.isArray(_data) ? _data : [_data];
@@ -28,27 +40,56 @@ export default class ServerGroupManager extends CachedManager<ServerGroup, RawSe
     return groups;
   }
 
+  /**
+   * Creates a new server group.
+   * @param {string} name The name of the server group.
+   * @returns {Promise<ServerGroup>} The created server group.
+   */
   async create(name: string): Promise<ServerGroup> {
     const data = await this.query.commands.servergroupadd({ name });
     return this.query.actions.ServerGroupCreate.handle({ sgid: data.sgid, name }).serverGroup;
   }
 
+  /**
+   * Renames a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to rename.
+   * @param {string} name The new name for the server group.
+   * @returns {Promise<ServerGroup>} The updated server group.
+   */
   async rename(serverGroup: ServerGroupResolvable, name: string): Promise<ServerGroup> {
     const id = this.resolveId(serverGroup);
     await this.query.commands.servergrouprename({ sgid: id, name });
     return this.query.actions.ServerGroupUpdate.handle({ sgid: id.toString(), name }).after!;
   }
 
+  /**
+   * Deletes a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to delete.
+   * @param {boolean} [force=false] Whether to force the deletion. Force deletion will remove the server group from all clients.
+   * @returns {Promise<void>} A promise that resolves when the server group has been deleted.
+   */
   async delete(serverGroup: ServerGroupResolvable, force: boolean = false): Promise<void> {
     const id = this.resolveId(serverGroup);
     await this.query.commands.servergroupdel({ sgid: id, force });
     this.query.actions.ServerGroupDelete.handle({ sgid: id.toString() });
   }
 
+  /**
+   * Adds a client to a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to add the client to.
+   * @param {ClientResolvable} client The client to add.
+   * @returns {Promise<void>} A promise that resolves when the client has been added.
+   */
   addClient(serverGroup: ServerGroupResolvable, client: ClientResolvable): Promise<void> {
     return this.query.clients.addServerGroup(client, serverGroup);
   }
 
+  /**
+   * Removes a client from a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to remove the client from.
+   * @param {ClientResolvable} client The client to remove.
+   * @returns {Promise<void>} A promise that resolves when the client has been removed.
+   */
   removeClient(serverGroup: ServerGroupResolvable, client: ClientResolvable): Promise<void> {
     return this.query.clients.removeServerGroup(client, serverGroup);
   }
