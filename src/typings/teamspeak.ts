@@ -387,3 +387,16 @@ export type RawClientServerGroup = {
   sgid: string;
   cldbid: string;
 };
+
+export type RawApiKey = {
+  apikey: string;
+  id: string;
+  sid: string;
+  cldbid: string;
+  scope: string;
+  time_left: string;
+  created_at: string;
+  expires_at: string;
+};
+
+export type ApiKeyScope = 'manage' | 'write' | 'read';

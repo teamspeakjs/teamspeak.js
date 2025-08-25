@@ -18,6 +18,8 @@ import {
   RawServerConnectionInfo,
   RawVersion,
   TextMessageTargetMode,
+  RawApiKey,
+  ApiKeyScope,
 } from './typings/teamspeak';
 import ServerGroupManager from './managers/server-group-manager';
 import VirtualServerManager from './managers/virtual-server-manager';
@@ -78,6 +80,23 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
+   * Close the connection and destroy the Query instance.
+   */
+  destroy(): void {
+    if (this._pingInterval) {
+      clearInterval(this._pingInterval);
+      this._pingInterval = null;
+    }
+    this.ws.destroy();
+    this.removeAllListeners();
+
+    this.channels.cache.clear();
+    this.clients.cache.clear();
+    this.serverGroups.cache.clear();
+    this.virtualServers.cache.clear();
+  }
+
+  /**
    * Login to the ServerQuery.
    * @param username The username to login with.
    * @param password The password to login with.
@@ -125,52 +144,6 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
-   * Close the connection and destroy the Query instance.
-   */
-  destroy(): void {
-    if (this._pingInterval) {
-      clearInterval(this._pingInterval);
-      this._pingInterval = null;
-    }
-    this.ws.destroy();
-    this.removeAllListeners();
-
-    this.channels.cache.clear();
-    this.clients.cache.clear();
-  }
-
-  // TODO: Move all raw data fetching methods to a separate structures & managers.
-
-  /**
-   * Get the raw ServerQuery version information.
-   */
-  getRawServerVersion(): Promise<RawVersion> {
-    return this.commands.version();
-  }
-
-  /**
-   * Get the raw ServerQuery host information.
-   */
-  getRawHostInfo(): Promise<RawHostInfo> {
-    return this.commands.hostinfo();
-  }
-
-  /**
-   * Get the raw Server information.
-   */
-  getRawServerInfo(): Promise<RawVirtualServer> {
-    return this.commands.serverinfo();
-  }
-
-  /**
-   * Get the raw Server ID by its port.
-   * @param port The virtual server port.
-   */
-  getRawServerIdByPort(port: number): Promise<{ server_id: string }> {
-    return this.commands.serveridgetbyport({ virtualserver_port: port });
-  }
-
-  /**
    * Sends a server message to virtual servers in the TeamSpeak 3 Server instance.
    * @param message The message to send.
    */
@@ -200,6 +173,39 @@ export class Query extends AsyncEventEmitter<EventTypes> {
       target: this.client.channelId!,
       msg: content,
     });
+  }
+
+  /**
+   * Notice: All methods below this line are considered "raw" and return unprocessed data from the server. These methods will be deprecated and replaced with higher-level abstractions (e.g. Query.apiKeys.create(...)).
+   */
+
+  /**
+   * Get the raw ServerQuery version information.
+   */
+  getRawServerVersion(): Promise<RawVersion> {
+    return this.commands.version();
+  }
+
+  /**
+   * Get the raw ServerQuery host information.
+   */
+  getRawHostInfo(): Promise<RawHostInfo> {
+    return this.commands.hostinfo();
+  }
+
+  /**
+   * Get the raw Server information.
+   */
+  getRawServerInfo(): Promise<RawVirtualServer> {
+    return this.commands.serverinfo();
+  }
+
+  /**
+   * Get the raw Server ID by its port.
+   * @param port The virtual server port.
+   */
+  getRawServerIdByPort(port: number): Promise<{ server_id: string }> {
+    return this.commands.serveridgetbyport({ virtualserver_port: port });
   }
 
   /**
@@ -239,5 +245,64 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   getRawServerConnectionInfo(): Promise<RawServerConnectionInfo> {
     return this.commands.serverrequestconnectioninfo();
+  }
+
+  /**
+   * Create a new API key.
+   *
+   * scope: Scope of the API key (required).
+   *
+   * lifetime: Lifetime in days (optional, default: 14). Use 0 for no expiration.
+   *
+   * cldbid: Client Database ID of the client the key should be assigned to (optional). Otherwise, the invoker will be used.
+   */
+  createRawApiKey({
+    scope,
+    lifetime,
+    cldbid,
+  }: {
+    scope: ApiKeyScope;
+    lifetime?: number;
+    cldbid?: number;
+  }): Promise<RawApiKey> {
+    return this.commands.apikeyadd({ scope, lifetime, cldbid });
+  }
+
+  /**
+   * Get a list of API keys.
+   *
+   * cldbid: Client Database ID or "*" to get all keys.
+   *
+   * start: Starting index (optional, default: 0).
+   *
+   * duration: Maximum number of keys to return (optional, default: 100).
+   *
+   * count: Include total count (optional, default: false).
+   */
+  getRawApiKeys({
+    cldbid,
+    start,
+    duration,
+    count,
+  }: {
+    cldbid: number | '*';
+    start?: number;
+    duration?: number;
+    count?: true;
+  }): Promise<RawApiKey[]> {
+    return this.commands.apikeylist({
+      cldbid,
+      start,
+      duration,
+      _count: count,
+    });
+  }
+
+  /**
+   * Delete an API key by its ID.
+   * @param id The ID of the API key to delete.
+   */
+  deleteRawApiKey(id: number): Promise<void> {
+    return this.commands.apikeydel({ id });
   }
 }

@@ -19,6 +19,7 @@ import {
   RawVirtualServerListItem,
   RawServerQueryInfo,
   RawVersion,
+  RawApiKey,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -28,16 +29,16 @@ export default class CommandManager extends CommandExecutor {
     super(query);
   }
 
-  apikeyadd() {
-    throw new Error('Not implemented');
+  apikeyadd(params: { scope: string; lifetime?: number; cldbid?: number }) {
+    return this.query.commands._execute<RawApiKey>('apikeyadd', params);
   }
 
-  apikeydel() {
-    throw new Error('Not implemented');
+  apikeydel(params: { id: number }) {
+    return this.query.commands._execute<void>('apikeydel', params);
   }
 
-  apikeylist() {
-    throw new Error('Not implemented');
+  apikeylist(params: { cldbid: number | '*'; start?: number; duration?: number; _count?: true }) {
+    return this.query.commands._execute<RawApiKey[]>('apikeylist', params);
   }
 
   banadd() {
