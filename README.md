@@ -16,6 +16,8 @@ Stay tuned for installation instructions, more usage examples, and more.
 
 ✨ **More features are coming soon!** Feel free to contribute and help improve the project.
 
+🔗 [Website](https://teamspeak.js.org)
+
 🔗 [View on npm](https://www.npmjs.com/package/teamspeak3.js)
 
 ## Examples
