@@ -260,6 +260,11 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     }).client!;
   }
 
+  /**
+   * Adds a client to a server group.
+   * @param {ClientResolvable} client The client to add.
+   * @param {ServerGroupResolvable} serverGroup The server group to add the client to.
+   */
   async addServerGroup(
     client: ClientResolvable,
     serverGroup: ServerGroupResolvable,
@@ -275,6 +280,11 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
+  /**
+   * Removes a client from a server group.
+   * @param {ClientResolvable} client The client to remove.
+   * @param {ServerGroupResolvable} serverGroup The server group to remove the client from.
+   */
   async removeServerGroup(
     client: ClientResolvable,
     serverGroup: ServerGroupResolvable,
@@ -290,6 +300,11 @@ export default class ClientManager extends CachedManager<Client, RawClient> {
     });
   }
 
+  /**
+   * Fetches the server groups a client is in.
+   * @param {ClientResolvable} client The client to fetch server groups for.
+   * @returns {Promise<Collection<number, ServerGroup>>} A promise that resolves to a collection of server groups.
+   */
   async fetchServerGroups(client: ClientResolvable): Promise<Collection<number, ServerGroup>> {
     const clientId = this.resolveId(client);
 
