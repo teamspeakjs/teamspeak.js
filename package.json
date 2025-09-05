@@ -1,5 +1,5 @@
 {
-  "name": "teamspeak3.js",
+  "name": "teamspeak.js",
   "version": "1.6.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/teamspeakjs/teamspeak3.js.git"
+    "url": "git+https://github.com/teamspeakjs/teamspeak.js.git"
   },
   "author": "Lixqa",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/teamspeakjs/teamspeak3.js/issues"
+    "url": "https://github.com/teamspeakjs/teamspeak.js/issues"
   },
   "homepage": "https://teamspeak.js.org",
   "description": "A TypeScript library for interacting with a Teamspeak 3 server using the ServerQuery protocol. It provides a type-safe way for managing server users, channels, and more.",

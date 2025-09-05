@@ -1,4 +1,4 @@
-# Contributing to teamspeak3.js
+# Contributing to teamspeak.js
 
 Thank you for your interest in contributing! Your help makes this project better for everyone. 🎉
 
@@ -29,7 +29,7 @@ git commit -m "Add awesome feature"
 git push origin feature/my-feature
 ```
 
-6. Open a **Pull Request (PR)** from your fork → `main` branch of `teamspeak3.js`.
+6. Open a **Pull Request (PR)** from your fork → `main` branch of `teamspeak.js`.
 
 ---
 
@@ -73,4 +73,4 @@ Be respectful and collaborative. See `CODE_OF_CONDUCT.md` for details.
 
 ---
 
-Thanks for helping make **teamspeak3.js** better! 🚀
+Thanks for helping make **teamspeak.js** better! 🚀
