@@ -25,7 +25,7 @@ type VirtualServerUseOptions = {
  * Manages the virtual servers in the TeamSpeak host.
  */
 export default class VirtualServerManager extends CachedManager<VirtualServer, RawVirtualServer> {
-  private currentId: number | null = null;
+  currentId: number | null = null;
 
   constructor(query: Query) {
     super(query, VirtualServer, 'virtualserver_id');

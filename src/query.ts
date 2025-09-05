@@ -48,7 +48,6 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public bans = new BanManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
-  protected virtualServerId: number | null = null;
 
   constructor(options: ClientOptions) {
     super();
@@ -120,8 +119,6 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * @deprecated Use Query.virtualServers.use(...) instead.
    */
   async useVirtualServer(id: number): Promise<void> {
-    this.virtualServerId = id;
-
     await this.commands.use({ sid: id });
 
     const serverQueryInfo = await this.commands.whoami();
@@ -160,8 +157,10 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * @param message The message to send.
    */
   sendServerMessage(content: string): Promise<void> {
+    if (!this.virtualServers.currentId) throw new Error('No virtual server selected.');
+
     return this.commands.sendtextmessage({
-      target: this.virtualServerId!,
+      target: this.virtualServers.currentId,
       targetmode: TextMessageTargetMode.SERVER,
       msg: content,
     });
