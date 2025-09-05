@@ -28,6 +28,7 @@ import BanManager from './managers/ban-manager';
 interface ClientOptions {
   host: string;
   port?: number;
+  protocol?: 'websocket' | 'ssh'; //TODO: implement proper logic for this
 }
 
 /**

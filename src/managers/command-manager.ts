@@ -67,7 +67,7 @@ export default class CommandManager extends CommandExecutor {
   }
 
   bandelall() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<void>('bandelall');
   }
 
   banlist(params: { start?: number; duration?: number; _count?: true } = {}) {

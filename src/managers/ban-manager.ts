@@ -92,4 +92,10 @@ export default class BanManager extends CachedManager<Ban, RawBan> {
     await this.query.commands.bandel({ banid: id });
     this.query.actions.BanDelete.handle({ banid: id.toString() });
   }
+
+  //TODO: Implement the Action for this properly
+  async deleteAll(): Promise<void> {
+    await this.query.commands.bandelall();
+    this.cache.clear();
+  }
 }
