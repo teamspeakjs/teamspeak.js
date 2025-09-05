@@ -25,8 +25,15 @@ type VirtualServerUseOptions = {
  * Manages the virtual servers in the TeamSpeak host.
  */
 export default class VirtualServerManager extends CachedManager<VirtualServer, RawVirtualServer> {
+  private currentId: number | null = null;
+
   constructor(query: Query) {
     super(query, VirtualServer, 'virtualserver_id');
+  }
+
+  get current(): VirtualServer | null {
+    if (this.currentId === null) return null;
+    return this.cache.get(this.currentId) ?? null;
   }
 
   /**
@@ -94,6 +101,8 @@ export default class VirtualServerManager extends CachedManager<VirtualServer, R
     }
 
     const serverQueryInfo = await this.query.commands.whoami();
+
+    this.currentId = Number(serverQueryInfo.virtualserver_id);
 
     const client = await this.query.commands.clientinfo({
       clid: Number(serverQueryInfo.client_id),

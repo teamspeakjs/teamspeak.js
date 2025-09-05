@@ -24,6 +24,9 @@ export type If<Value extends boolean, TrueResult, FalseResult = null> = Value ex
     : TrueResult | FalseResult;
 
 export type EventTypes = {
+  Ready: [];
+  Error: [error: unknown];
+  Close: [];
   Debug: [message: string];
 
   ChannelCreate: [channel: Channel, invoker: Client];

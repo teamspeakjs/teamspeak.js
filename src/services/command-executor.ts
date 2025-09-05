@@ -369,7 +369,7 @@ export default abstract class CommandExecutor extends BaseManager {
   }
 
   public registerWsEvents(): void {
-    this.query.ws.on('ready', () => this.query.emit('ready'));
+    this.query.ws.on('ready', () => this.query.emit('Ready'));
     // single raw handler to keep ordering deterministic
     this.query.ws.on('raw', (line: string) => {
       // always emit debug (raw string)
@@ -379,8 +379,8 @@ export default abstract class CommandExecutor extends BaseManager {
       // let protocol-level handler manage command responses
       this.handleProtocolLine(line);
     });
-    this.query.ws.on('error', (err: any) => this.query.emit('error', err));
-    this.query.ws.on('close', () => this.query.emit('close'));
+    this.query.ws.on('error', (err: unknown) => this.query.emit('Error', err));
+    this.query.ws.on('close', () => this.query.emit('Close'));
   }
 
   /**

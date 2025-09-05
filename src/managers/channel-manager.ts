@@ -121,7 +121,7 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
    * @returns {Promise<Channel>} The created channel.
    */
   async create(data: ChannelCreateOptions): Promise<Channel> {
-    const newData = await this.query.commands.channelcreate({
+    const payload = {
       channel_name: data.name,
       channel_topic: data.topic,
       channel_description: data.description,
@@ -141,9 +141,11 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
       channel_flag_maxfamilyclients_inherited: data.maxFamilyClientsInherited,
       channel_needed_talk_power: data.neededTalkPower,
       channel_name_phonetic: data.namePhonetic,
-    });
+    };
 
-    return this.query.actions.ChannelCreate.handle(newData).channel;
+    const { cid } = await this.query.commands.channelcreate(payload);
+
+    return this.query.actions.ChannelCreate.handle(stringifyValues({ cid, ...payload })).channel;
   }
 
   //TODO: Find a cleaner approach for this payload stuff?
