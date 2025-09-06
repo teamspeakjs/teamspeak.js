@@ -1,9 +1,14 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import CachedManager from './cached-manager';
-import { ChannelGroupResolvable } from '../typings/types';
+import { ChannelGroupResolvable, ChannelGroupType } from '../typings/types';
 import ChannelGroup from '../structures/channel-group';
 import { RawChannelGroup } from '../typings/teamspeak';
+
+type ChannelGroupCreateOptions = {
+  name: string;
+  type?: ChannelGroupType;
+};
 
 /**
  * Manages the channel groups in the TeamSpeak server.
@@ -42,12 +47,15 @@ export default class ChannelGroupManager extends CachedManager<ChannelGroup, Raw
 
   /**
    * Creates a new channel group.
-   * @param {string} name The name of the channel group.
+   * @param {ChannelGroupCreateOptions} options The options for creating the channel group.
+   * @property {string} options.name The name of the channel group.
+   * @property {ChannelGroupType} [options.type=1] The type of the channel group. Default is 1 (Regular).
    * @returns {Promise<ChannelGroup>} The created channel group.
    */
-  async create(name: string): Promise<ChannelGroup> {
-    const data = await this.query.commands.channelgroupadd({ name });
-    return this.query.actions.ChannelGroupCreate.handle({ cgid: data.cgid, name }).channelGroup;
+  async create(options: ChannelGroupCreateOptions): Promise<ChannelGroup> {
+    const data = await this.query.commands.channelgroupadd(options);
+    return this.query.actions.ChannelGroupCreate.handle({ cgid: data.cgid, ...options })
+      .channelGroup;
   }
 
   /**

@@ -64,3 +64,15 @@ export type BaseFetchOptions = {
   cache?: boolean;
   force?: boolean;
 };
+
+export enum ServerGroupType {
+  Template,
+  Regular,
+  Query,
+}
+
+export enum ChannelGroupType {
+  Template,
+  Regular,
+  Query,
+}

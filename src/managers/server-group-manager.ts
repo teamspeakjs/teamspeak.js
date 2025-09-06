@@ -3,7 +3,12 @@ import { Query } from '../query';
 import ServerGroup from '../structures/server-group';
 import { RawServerGroup } from '../typings/teamspeak';
 import CachedManager from './cached-manager';
-import { ClientResolvable, ServerGroupResolvable } from '../typings/types';
+import { ClientResolvable, ServerGroupResolvable, ServerGroupType } from '../typings/types';
+
+type ServerGroupCreateOptions = {
+  name: string;
+  type?: ServerGroupType;
+};
 
 /**
  * Manages the server groups in the TeamSpeak server.
@@ -42,12 +47,14 @@ export default class ServerGroupManager extends CachedManager<ServerGroup, RawSe
 
   /**
    * Creates a new server group.
-   * @param {string} name The name of the server group.
+   * @param {ServerGroupCreateOptions} options The options for creating the server group.
+   * @property {string} options.name The name of the server group.
+   * @property {ServerGroupType} [options.type=1] The type of the server group. Default is 1 (Regular).
    * @returns {Promise<ServerGroup>} The created server group.
    */
-  async create(name: string): Promise<ServerGroup> {
-    const data = await this.query.commands.servergroupadd({ name });
-    return this.query.actions.ServerGroupCreate.handle({ sgid: data.sgid, name }).serverGroup;
+  async create(options: ServerGroupCreateOptions): Promise<ServerGroup> {
+    const data = await this.query.commands.servergroupadd(options);
+    return this.query.actions.ServerGroupCreate.handle({ sgid: data.sgid, ...options }).serverGroup;
   }
 
   /**
