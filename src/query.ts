@@ -198,6 +198,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Get the raw Server information.
+   *
+   * @deprecated Please use Query.virtualServers.fetchCurrent() instead.
    */
   getRawServerInfo(): Promise<RawVirtualServer> {
     return this.commands.serverinfo();
@@ -206,6 +208,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Get the raw Server ID by its port.
    * @param port The virtual server port.
+   *
+   * @deprecated Please use Query.virtualServers.fetchServerIdByPort(port) instead.
    */
   getRawServerIdByPort(port: number): Promise<{ server_id: string }> {
     return this.commands.serveridgetbyport({ virtualserver_port: port });

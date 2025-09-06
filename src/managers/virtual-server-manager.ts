@@ -113,4 +113,15 @@ export default class VirtualServerManager extends CachedManager<VirtualServer, R
       clid: serverQueryInfo.client_id,
     });
   }
+
+  /**
+   * Fetches a virtual server id by its port.
+   * @param port The virtual server port.
+   * @returns {Promise<number>} The virtual server ID.
+   */
+  async fetchServerIdByPort(port: number): Promise<number> {
+    const { server_id } = await this.query.commands.serveridgetbyport({ virtualserver_port: port });
+
+    return Number(server_id);
+  }
 }
