@@ -325,7 +325,7 @@ export type RawClientFindItem = {
 
 export type RawClientIds = [RawClientIdsItem, ...Omit<RawClientIdsItem, 'cluid'>[]];
 
-type RawClientIdsItem = {
+export type RawClientIdsItem = {
   cluid: string;
   clid: string;
   name: string;

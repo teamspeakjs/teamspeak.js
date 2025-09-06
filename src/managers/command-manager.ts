@@ -21,6 +21,7 @@ import {
   RawVersion,
   RawApiKey,
   RawBan,
+  RawClientIdsItem,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -275,7 +276,7 @@ export default class CommandManager extends CommandExecutor {
   }
 
   clientgetids(params: { cluid: string }) {
-    return this.query.commands._execute<RawClientIds>('clientgetids', params);
+    return this.query.commands._execute<RawClientIdsItem | RawClientIds>('clientgetids', params);
   }
 
   clientgetnamefromdbid(params: { cldbid: number }) {

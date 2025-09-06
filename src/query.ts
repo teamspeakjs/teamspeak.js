@@ -20,6 +20,7 @@ import {
   TextMessageTargetMode,
   RawApiKey,
   ApiKeyScope,
+  RawClientIdsItem,
 } from './typings/teamspeak';
 import ServerGroupManager from './managers/server-group-manager';
 import VirtualServerManager from './managers/virtual-server-manager';
@@ -219,7 +220,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * Get the client IDs and nicknames by their unique identifier.
    * @param uniqueId The unique identifier of the client.
    */
-  getRawClientIds(uniqueId: string): Promise<RawClientIds> {
+  getRawClientIds(uniqueId: string): Promise<RawClientIdsItem | RawClientIds> {
     return this.commands.clientgetids({ cluid: uniqueId });
   }
 
