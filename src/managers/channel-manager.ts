@@ -120,27 +120,27 @@ export default class ChannelManager extends CachedManager<Channel, RawChannel> {
    * @param {ChannelCreateOptions} options The options for creating the channel.
    * @returns {Promise<Channel>} The created channel.
    */
-  async create(data: ChannelCreateOptions): Promise<Channel> {
+  async create(options: ChannelCreateOptions): Promise<Channel> {
     const payload = {
-      channel_name: data.name,
-      channel_topic: data.topic,
-      channel_description: data.description,
-      channel_password: data.password,
-      channel_flag_password: data.password !== undefined,
-      channel_codec: data.codec,
-      channel_codec_quality: data.codecQuality,
-      channel_maxclients: data.maxClients,
-      channel_maxfamilyclients: data.maxFamilyClients,
-      channel_order: data.order,
-      channel_flag_permanent: data.type === 'permanent' || undefined,
-      channel_flag_semi_permanent: data.type === 'semi-permanent' || undefined,
-      channel_flag_temporary: data.type === 'temporary' || undefined,
-      channel_flag_default: data.default,
-      channel_flag_maxclients_unlimited: data.maxClientsUnlimited,
-      channel_flag_maxfamilyclients_unlimited: data.maxFamilyClientsUnlimited,
-      channel_flag_maxfamilyclients_inherited: data.maxFamilyClientsInherited,
-      channel_needed_talk_power: data.neededTalkPower,
-      channel_name_phonetic: data.namePhonetic,
+      channel_name: options.name,
+      channel_topic: options.topic,
+      channel_description: options.description,
+      channel_password: options.password,
+      channel_flag_password: options.password !== undefined,
+      channel_codec: options.codec,
+      channel_codec_quality: options.codecQuality,
+      channel_maxclients: options.maxClients,
+      channel_maxfamilyclients: options.maxFamilyClients,
+      channel_order: options.order,
+      channel_flag_permanent: options.type === 'permanent' || undefined,
+      channel_flag_semi_permanent: options.type === 'semi-permanent' || undefined,
+      channel_flag_temporary: options.type === 'temporary' || undefined,
+      channel_flag_default: options.default,
+      channel_flag_maxclients_unlimited: options.maxClientsUnlimited,
+      channel_flag_maxfamilyclients_unlimited: options.maxFamilyClientsUnlimited,
+      channel_flag_maxfamilyclients_inherited: options.maxFamilyClientsInherited,
+      channel_needed_talk_power: options.neededTalkPower,
+      channel_name_phonetic: options.namePhonetic,
     };
 
     const { cid } = await this.query.commands.channelcreate(payload);
