@@ -6,7 +6,7 @@ import CachedManager from './cached-manager';
 import { ClientResolvable, ServerGroupResolvable } from '../typings/types';
 
 /**
- * Manages the clients in the TeamSpeak server.
+ * Manages the server groups in the TeamSpeak server.
  */
 export default class ServerGroupManager extends CachedManager<ServerGroup, RawServerGroup> {
   constructor(query: Query) {
@@ -51,18 +51,6 @@ export default class ServerGroupManager extends CachedManager<ServerGroup, RawSe
   }
 
   /**
-   * Renames a server group.
-   * @param {ServerGroupResolvable} serverGroup The server group to rename.
-   * @param {string} name The new name for the server group.
-   * @returns {Promise<ServerGroup>} The updated server group.
-   */
-  async rename(serverGroup: ServerGroupResolvable, name: string): Promise<ServerGroup> {
-    const id = this.resolveId(serverGroup);
-    await this.query.commands.servergrouprename({ sgid: id, name });
-    return this.query.actions.ServerGroupUpdate.handle({ sgid: id.toString(), name }).after!;
-  }
-
-  /**
    * Deletes a server group.
    * @param {ServerGroupResolvable} serverGroup The server group to delete.
    * @param {boolean} [force=false] Whether to force the deletion. Force deletion will remove the server group from all clients.
@@ -72,6 +60,18 @@ export default class ServerGroupManager extends CachedManager<ServerGroup, RawSe
     const id = this.resolveId(serverGroup);
     await this.query.commands.servergroupdel({ sgid: id, force });
     this.query.actions.ServerGroupDelete.handle({ sgid: id.toString() });
+  }
+
+  /**
+   * Renames a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to rename.
+   * @param {string} name The new name for the server group.
+   * @returns {Promise<ServerGroup>} The updated server group.
+   */
+  async rename(serverGroup: ServerGroupResolvable, name: string): Promise<ServerGroup> {
+    const id = this.resolveId(serverGroup);
+    await this.query.commands.servergrouprename({ sgid: id, name });
+    return this.query.actions.ServerGroupUpdate.handle({ sgid: id.toString(), name }).after!;
   }
 
   /**

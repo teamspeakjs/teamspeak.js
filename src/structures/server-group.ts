@@ -63,21 +63,21 @@ export default class ServerGroup extends Base {
   }
 
   /**
-   * Renames the server group.
-   * @param {string} name The new name for the server group.
-   * @returns {Promise<ServerGroup>} The updated server group.
-   */
-  rename(name: string): Promise<ServerGroup> {
-    return this.query.serverGroups.rename(this, name);
-  }
-
-  /**
    * Deletes the server group.
    * @param {boolean} [force=false] Whether to force the deletion. Force deletion will remove the server group from all clients.
    * @returns {Promise<void>} A promise that resolves when the server group has been deleted.
    */
   delete(force: boolean = false): Promise<void> {
     return this.query.serverGroups.delete(this, force);
+  }
+
+  /**
+   * Renames the server group.
+   * @param {string} name The new name for the server group.
+   * @returns {Promise<ServerGroup>} The updated server group.
+   */
+  rename(name: string): Promise<ServerGroup> {
+    return this.query.serverGroups.rename(this, name);
   }
 
   /**

@@ -416,3 +416,16 @@ export type RawBan = {
   reason: string;
   enforcements: string;
 };
+
+export type RawChannelGroup = {
+  cgid: string;
+  name: string;
+  type: string;
+  iconid: string;
+  savedb: string;
+  sortid: string;
+  namemode: string;
+  n_modifyp: string;
+  n_member_addp: string;
+  n_member_removep: string;
+};

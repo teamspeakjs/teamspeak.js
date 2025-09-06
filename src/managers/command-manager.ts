@@ -22,6 +22,7 @@ import {
   RawApiKey,
   RawBan,
   RawClientIdsItem,
+  RawChannelGroup,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -163,8 +164,8 @@ export default class CommandManager extends CommandExecutor {
     );
   }
 
-  channelgroupadd() {
-    throw new Error('Not implemented');
+  channelgroupadd(params: { name: string; type?: number }) {
+    return this.query.commands._execute<{ cgid: string }>('channelgroupadd', params);
   }
 
   channelgroupaddperm() {
@@ -179,8 +180,8 @@ export default class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  channelgroupdel() {
-    throw new Error('Not implemented');
+  channelgroupdel(params: { cgid: number; force?: boolean }) {
+    return this.query.commands._execute<void>('channelgroupdel', params);
   }
 
   channelgroupdelperm() {
@@ -188,7 +189,7 @@ export default class CommandManager extends CommandExecutor {
   }
 
   channelgrouplist() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawChannelGroup | RawChannelGroup[]>('channelgrouplist');
   }
 
   channelgrouppermlist() {

@@ -2,6 +2,9 @@ import BanCreateAction from '../actions/BanCreate';
 import BanDeleteAction from '../actions/BanDelete';
 import ChannelCreateAction from '../actions/ChannelCreate';
 import ChannelDeleteAction from '../actions/ChannelDelete';
+import ChannelGroupCreateAction from '../actions/ChannelGroupCreate';
+import ChannelGroupDeleteAction from '../actions/ChannelGroupDelete';
+import ChannelGroupUpdateAction from '../actions/ChannelGroupUpdate';
 import ChannelUpdateAction from '../actions/ChannelUpdate';
 import ClientEnterViewAction from '../actions/ClientEnterView';
 import ClientLeaveViewAction from '../actions/ClientLeaveView';
@@ -34,6 +37,11 @@ export default class ActionManager extends BaseManager {
   BanCreate: BanCreateAction;
   BanDelete: BanDeleteAction;
 
+  // CHANNEL GROUPS
+  ChannelGroupCreate: ChannelGroupCreateAction;
+  ChannelGroupDelete: ChannelGroupDeleteAction;
+  ChannelGroupUpdate: ChannelGroupUpdateAction;
+
   constructor(query: Query) {
     super(query);
 
@@ -52,5 +60,9 @@ export default class ActionManager extends BaseManager {
 
     this.BanCreate = new BanCreateAction(query);
     this.BanDelete = new BanDeleteAction(query);
+
+    this.ChannelGroupCreate = new ChannelGroupCreateAction(query);
+    this.ChannelGroupDelete = new ChannelGroupDeleteAction(query);
+    this.ChannelGroupUpdate = new ChannelGroupUpdateAction(query);
   }
 }

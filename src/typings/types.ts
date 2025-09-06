@@ -1,5 +1,6 @@
 import Ban from '../structures/ban';
 import Channel from '../structures/channel';
+import ChannelGroup from '../structures/channel-group';
 import Client from '../structures/client';
 import ServerGroup from '../structures/server-group';
 import TextMessage from '../structures/text-message';
@@ -16,6 +17,8 @@ export type ServerGroupResolvable = ServerGroup | number;
 export type VirtualServerResolvable = VirtualServer | number;
 
 export type BanResolvable = Ban | number;
+
+export type ChannelGroupResolvable = ChannelGroup | number;
 
 export type If<Value extends boolean, TrueResult, FalseResult = null> = Value extends true
   ? TrueResult
@@ -51,6 +54,10 @@ export type EventTypes = {
 
   BanCreate: [ban: Ban];
   BanDelete: [ban: Ban];
+
+  ChannelGroupCreate: [channelGroup: ChannelGroup];
+  ChannelGroupDelete: [channelGroup: ChannelGroup];
+  ChannelGroupUpdate: [before: ChannelGroup, after: ChannelGroup];
 };
 
 export type BaseFetchOptions = {

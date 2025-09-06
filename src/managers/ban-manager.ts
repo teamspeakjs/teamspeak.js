@@ -16,6 +16,9 @@ type BanCreateOptions = {
   lastNickname?: string;
 };
 
+/**
+ * Manages the bans in the TeamSpeak server.
+ */
 export default class BanManager extends CachedManager<Ban, RawBan> {
   constructor(query: Query) {
     super(query, Ban, 'banid');

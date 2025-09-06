@@ -25,6 +25,7 @@ import {
 import ServerGroupManager from './managers/server-group-manager';
 import VirtualServerManager from './managers/virtual-server-manager';
 import BanManager from './managers/ban-manager';
+import ChannelGroupManager from './managers/channel-group-manager';
 
 interface ClientOptions {
   host: string;
@@ -47,6 +48,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public serverGroups = new ServerGroupManager(this);
   public virtualServers = new VirtualServerManager(this);
   public bans = new BanManager(this);
+  public channelGroups = new ChannelGroupManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
 
@@ -98,6 +100,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.serverGroups.cache.clear();
     this.virtualServers.cache.clear();
     this.bans.cache.clear();
+    this.channelGroups.cache.clear();
   }
 
   /**

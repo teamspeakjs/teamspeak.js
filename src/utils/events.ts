@@ -18,4 +18,8 @@ export const Events = {
 
   BanCreate: 'BanCreate',
   BanDelete: 'BanDelete',
+
+  ChannelGroupCreate: 'ChannelGroupCreate',
+  ChannelGroupDelete: 'ChannelGroupDelete',
+  ChannelGroupUpdate: 'ChannelGroupUpdate',
 } as const;
