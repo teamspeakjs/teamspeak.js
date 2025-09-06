@@ -97,4 +97,12 @@ export default class ServerGroup extends Base {
   removeClient(client: ClientResolvable): Promise<void> {
     return this.query.serverGroups.removeClient(this, client);
   }
+
+  /**
+   * Fetches the client database IDs from this server group.
+   * @returns {Promise<number[]>} A promise that resolves with the client database IDs.
+   */
+  fetchClientDatabaseIds(): Promise<number[]> {
+    return this.query.serverGroups.fetchClientDatabaseIds(this);
+  }
 }

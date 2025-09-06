@@ -100,4 +100,18 @@ export default class ServerGroupManager extends CachedManager<ServerGroup, RawSe
   removeClient(serverGroup: ServerGroupResolvable, client: ClientResolvable): Promise<void> {
     return this.query.clients.removeServerGroup(client, serverGroup);
   }
+
+  /**
+   * Fetches the client database IDs from a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to fetch the client database IDs from.
+   * @returns {Promise<number[]>} A promise that resolves with the client database IDs.
+   */
+  async fetchClientDatabaseIds(serverGroup: ServerGroupResolvable): Promise<number[]> {
+    const id = this.resolveId(serverGroup);
+    const _data = await this.query.commands.servergroupclientlist({ sgid: id }); //TODO: Add support for _names
+    if (_data === null) return [];
+    const data = Array.isArray(_data) ? _data : [_data];
+
+    return data.map(({ cldbid }) => Number(cldbid));
+  }
 }

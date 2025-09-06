@@ -429,3 +429,9 @@ export type RawChannelGroup = {
   n_member_addp: string;
   n_member_removep: string;
 };
+
+export type RawServerGroupClientListItem = {
+  cldbid: string;
+  client_nickname: string;
+  client_unique_identifier: string;
+};

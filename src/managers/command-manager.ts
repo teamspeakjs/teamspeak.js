@@ -23,6 +23,7 @@ import {
   RawBan,
   RawClientIdsItem,
   RawChannelGroup,
+  RawServerGroupClientListItem,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -562,8 +563,10 @@ export default class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  servergroupclientlist() {
-    throw new Error('Not implemented');
+  servergroupclientlist(params: { sgid: number; _names?: true }) {
+    return this.query.commands._execute<
+      RawServerGroupClientListItem | RawServerGroupClientListItem[] | null
+    >('servergroupclientlist', params);
   }
 
   servergroupcopy() {
