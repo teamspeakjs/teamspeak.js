@@ -1,9 +1,15 @@
 {
-  "entryPoints": ["src/index.ts"],
+  "entryPoints": [
+    "src/index.ts",
+    "src/managers",
+    "src/structures",
+    "src/typings",
+    "src/utils/events.ts"
+  ],
   "out": "docs-build",
   "excludePrivate": true,
   "excludeProtected": true,
-  "excludeExternals": false,
+  "excludeExternals": true,
   "hideGenerator": true,
   "theme": "default",
   "includeVersion": true
