@@ -69,4 +69,13 @@ export class ChannelGroup extends Base {
   delete(force: boolean = false): Promise<void> {
     return this.query.channelGroups.delete(this, force);
   }
+
+  /**
+   * Renames the channel group.
+   * @param {string} name The new name for the channel group.
+   * @returns {Promise<ChannelGroup>} The updated channel group.
+   */
+  rename(name: string): Promise<ChannelGroup> {
+    return this.query.channelGroups.rename(this, name);
+  }
 }

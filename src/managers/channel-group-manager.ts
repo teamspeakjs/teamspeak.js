@@ -69,4 +69,16 @@ export class ChannelGroupManager extends CachedManager<ChannelGroup, RawChannelG
     await this.query.commands.channelgroupdel({ cgid: id, force });
     this.query.actions.ChannelGroupDelete.handle({ cgid: id.toString() });
   }
+
+  /**
+   * Renames a channel group.
+   * @param {ChannelGroupResolvable} channelGroup The channel group to rename.
+   * @param {string} name The new name for the channel group.
+   * @returns {Promise<ChannelGroup>} The updated channel group.
+   */
+  async rename(channelGroup: ChannelGroupResolvable, name: string): Promise<ChannelGroup> {
+    const id = this.resolveId(channelGroup);
+    await this.query.commands.channelgrouprename({ cgid: id, name });
+    return this.query.actions.ChannelGroupUpdate.handle({ cgid: id.toString(), name }).after!;
+  }
 }

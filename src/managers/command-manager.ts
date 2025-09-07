@@ -197,8 +197,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  channelgrouprename() {
-    throw new Error('Not implemented');
+  channelgrouprename(params: { cgid: number; name: string }) {
+    return this.query.commands._execute<void>('channelgrouprename', params);
   }
 
   channelinfo(params: { cid: number }) {
