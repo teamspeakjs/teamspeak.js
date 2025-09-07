@@ -5,10 +5,42 @@ import { RawServerGroup } from '../typings/teamspeak';
 import { CachedManager } from './cached-manager';
 import { ClientResolvable, ServerGroupResolvable, ServerGroupType } from '../typings/types';
 
-type ServerGroupCreateOptions = {
+interface ServerGroupCreateOptions {
+  /**
+   * The name of the server group.
+   */
   name: string;
+
+  /**
+   * The type of the server group. Default is 1 (Regular).
+   */
   type?: ServerGroupType;
-};
+}
+
+interface ServerGroupCopyOptions {
+  /**
+   * The type of the new server group.
+   */
+  type: ServerGroupType;
+}
+
+interface ServerGroupCopyOptions_Create extends ServerGroupCopyOptions {
+  /**
+   * The name of the new server group.
+   */
+  name: string;
+
+  targetGroup?: never;
+}
+
+interface ServerGroupCopyOptions_Target extends ServerGroupCopyOptions {
+  /**
+   * The target server group to copy to.
+   */
+  targetGroup: ServerGroupResolvable;
+
+  name?: never;
+}
 
 /**
  * Manages the server groups in the TeamSpeak server.
@@ -48,8 +80,6 @@ export class ServerGroupManager extends CachedManager<ServerGroup, RawServerGrou
   /**
    * Creates a new server group.
    * @param {ServerGroupCreateOptions} options The options for creating the server group.
-   * @property {string} options.name The name of the server group.
-   * @property {ServerGroupType} [options.type=1] The type of the server group. Default is 1 (Regular).
    * @returns {Promise<ServerGroup>} The created server group.
    */
   async create(options: ServerGroupCreateOptions): Promise<ServerGroup> {
@@ -123,37 +153,29 @@ export class ServerGroupManager extends CachedManager<ServerGroup, RawServerGrou
    * Copies a server group into a new server group.
    *
    * @param {ServerGroup} sourceGroup The source server group to copy.
-   * @param {object} options The options for copying the server group.
-   * @property {ServerGroupType} type The type of the new server group.
-   * @property {string} name The name of the new server group.
+   * @param {ServerGroupCopyOptions_Create} options The options for copying the server group.
    * @returns {Promise<ServerGroup>} The created server group.
    */
   async copy(
     sourceGroup: ServerGroupResolvable,
-    options: { type: ServerGroupType; targetGroup?: never; name: string },
+    options: ServerGroupCopyOptions_Create,
   ): Promise<ServerGroup>;
 
   /**
    * Copies a server group into an existing server group.
    *
    * @param {ServerGroup} sourceGroup The source server group to copy.
-   * @param {object} options The options for copying the server group.
-   * @property {ServerGroupType} type The type of the new server group.
-   * @property {ServerGroup} targetGroup The target server group to copy to.
+   * @param {ServerGroupCopyOptions_Target} options The options for copying the server group.
    * @returns {Promise<null>} A promise that resolves when the server group has been copied.
    */
   async copy(
     sourceGroup: ServerGroupResolvable,
-    options: { type: ServerGroupType; targetGroup: ServerGroupResolvable; name?: never },
+    options: ServerGroupCopyOptions_Target,
   ): Promise<null>;
 
   async copy(
     sourceGroup: ServerGroupResolvable,
-    options: {
-      type: ServerGroupType;
-      targetGroup?: ServerGroupResolvable | never;
-      name?: string | never;
-    },
+    options: ServerGroupCopyOptions_Create | ServerGroupCopyOptions_Target,
   ): Promise<ServerGroup | null> {
     const sourceId = this.resolveId(sourceGroup);
     const targetId = options.targetGroup ? this.resolveId(options.targetGroup) : 0; // Teamspeak requires tsgid to be set to 0 when creating a new group.
