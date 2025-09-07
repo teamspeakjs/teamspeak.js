@@ -5,7 +5,8 @@ import { Events } from '../utils/events';
 
 type Payload = {
   sgid: string;
-  name: string;
+  name?: string;
+  type?: string;
 };
 
 export class ServerGroupCreateAction extends Action {

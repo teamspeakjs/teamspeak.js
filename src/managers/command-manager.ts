@@ -1,3 +1,4 @@
+import { ServerGroupType } from '../docs';
 import { Query } from '../query';
 
 import { CommandExecutor } from '../services/command-executor';
@@ -569,8 +570,13 @@ export class CommandManager extends CommandExecutor {
     >('servergroupclientlist', params);
   }
 
-  servergroupcopy() {
-    throw new Error('Not implemented');
+  servergroupcopy(params: {
+    ssgid: number;
+    tsgid?: number;
+    name?: string;
+    type?: ServerGroupType;
+  }) {
+    return this.query.commands._execute<{ sgid: string }>('servergroupcopy', params);
   }
 
   servergroupdel(params: { sgid: number; force?: boolean }) {

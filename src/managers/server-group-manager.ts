@@ -54,7 +54,11 @@ export class ServerGroupManager extends CachedManager<ServerGroup, RawServerGrou
    */
   async create(options: ServerGroupCreateOptions): Promise<ServerGroup> {
     const data = await this.query.commands.servergroupadd(options);
-    return this.query.actions.ServerGroupCreate.handle({ sgid: data.sgid, ...options }).serverGroup;
+    return this.query.actions.ServerGroupCreate.handle({
+      sgid: data.sgid,
+      name: options.name,
+      type: options.type ? options.type.toString() : undefined,
+    }).serverGroup;
   }
 
   /**
@@ -113,5 +117,62 @@ export class ServerGroupManager extends CachedManager<ServerGroup, RawServerGrou
     const data = Array.isArray(_data) ? _data : [_data];
 
     return data.map(({ cldbid }) => Number(cldbid));
+  }
+
+  /**
+   * Copies a server group into a new server group.
+   *
+   * @param {ServerGroup} sourceGroup The source server group to copy.
+   * @param {object} options The options for copying the server group.
+   * @property {ServerGroupType} type The type of the new server group.
+   * @property {string} name The name of the new server group.
+   * @returns {Promise<ServerGroup>} The created server group.
+   */
+  async copy(
+    sourceGroup: ServerGroupResolvable,
+    options: { type: ServerGroupType; targetGroup?: never; name: string },
+  ): Promise<ServerGroup>;
+
+  /**
+   * Copies a server group into an existing server group.
+   *
+   * @param {ServerGroup} sourceGroup The source server group to copy.
+   * @param {object} options The options for copying the server group.
+   * @property {ServerGroupType} type The type of the new server group.
+   * @property {ServerGroup} targetGroup The target server group to copy to.
+   * @returns {Promise<null>} A promise that resolves when the server group has been copied.
+   */
+  async copy(
+    sourceGroup: ServerGroupResolvable,
+    options: { type: ServerGroupType; targetGroup: ServerGroupResolvable; name?: never },
+  ): Promise<null>;
+
+  async copy(
+    sourceGroup: ServerGroupResolvable,
+    options: {
+      type: ServerGroupType;
+      targetGroup?: ServerGroupResolvable | never;
+      name?: string | never;
+    },
+  ): Promise<ServerGroup | null> {
+    const sourceId = this.resolveId(sourceGroup);
+    const targetId = options.targetGroup ? this.resolveId(options.targetGroup) : 0; // Teamspeak requires tsgid to be set to 0 when creating a new group.
+
+    const data = await this.query.commands.servergroupcopy({
+      ssgid: sourceId,
+      tsgid: targetId,
+      name: options.name ?? 'copy', // TeamSpeak requires a name when copying to a target group, even if its ignored.
+      type: options.type,
+    });
+
+    if (options.targetGroup) {
+      return null;
+    } else {
+      return this.query.actions.ServerGroupCreate.handle({
+        sgid: data.sgid,
+        name: options.name,
+        type: options.type.toString(),
+      }).serverGroup;
+    }
   }
 }
