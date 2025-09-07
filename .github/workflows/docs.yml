@@ -1,0 +1,43 @@
+name: Build & Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build docs with TypeDoc
+        run: npx typedoc
+
+      - name: Push to docs repo
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.DOCS_TOKEN }}
+          external_repository: teamspeakjs/docs
+          publish_branch: main
+          publish_dir: ./docs-build
+          keep_files: false
+
+      - name: Push to website repo
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.DOCS_TOKEN }}
+          external_repository: teamspeakjs/teamspeak.js.org
+          publish_branch: gh-pages
+          publish_dir: ./docs-build
+          destination_dir: docs
+          keep_files: false
