@@ -1,6 +1,6 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import ChannelGroup from '../structures/channel-group';
+import { Action } from '../structures/action';
+import { ChannelGroup } from '../structures/channel-group';
 import { Events } from '../utils/events';
 
 type Payload = {
@@ -8,7 +8,7 @@ type Payload = {
   name: string;
 };
 
-export default class ChannelGroupCreateAction extends Action {
+export class ChannelGroupCreateAction extends Action {
   constructor(query: Query) {
     super(query);
   }

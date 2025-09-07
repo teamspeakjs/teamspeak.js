@@ -1,14 +1,14 @@
-import ChannelCreatedNotification from '../notifications/channelcreated';
-import ChannelDeletedNotification from '../notifications/channeldeleted';
-import ChannelEditedNotification from '../notifications/channeledited';
-import ClientEnterViewNotification from '../notifications/cliententerview';
-import ClientLeftViewNotification from '../notifications/clientleftview';
-import ClientMovedNotification from '../notifications/clientmoved';
-import TextMessageNotification from '../notifications/textmessage';
+import { ChannelCreatedNotification } from '../notifications/channelcreated';
+import { ChannelDeletedNotification } from '../notifications/channeldeleted';
+import { ChannelEditedNotification } from '../notifications/channeledited';
+import { ClientEnterViewNotification } from '../notifications/cliententerview';
+import { ClientLeftViewNotification } from '../notifications/clientleftview';
+import { ClientMovedNotification } from '../notifications/clientmoved';
+import { TextMessageNotification } from '../notifications/textmessage';
 import { Query } from '../query';
-import BaseManager from './base-manager';
+import { BaseManager } from './base-manager';
 
-export default class NotificationManager extends BaseManager {
+export class NotificationManager extends BaseManager {
   // CHANNELS
   channelcreated: ChannelCreatedNotification;
   channeldeleted: ChannelDeletedNotification;

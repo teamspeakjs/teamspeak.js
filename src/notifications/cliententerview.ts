@@ -1,5 +1,5 @@
 import { Query } from '../query';
-import Notification from '../structures/notification';
+import { Notification } from '../structures/notification';
 import { RawClient } from '../typings/teamspeak';
 
 type Payload = RawClient & {
@@ -8,7 +8,7 @@ type Payload = RawClient & {
   reasonid: string;
 };
 
-export default class ClientEnterViewNotification extends Notification {
+export class ClientEnterViewNotification extends Notification {
   constructor(query: Query) {
     super(query);
   }

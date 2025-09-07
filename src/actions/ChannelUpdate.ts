@@ -1,7 +1,7 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import Channel from '../structures/channel';
-import Client from '../structures/client';
+import { Action } from '../structures/action';
+import { Channel } from '../structures/channel';
+import { Client } from '../structures/client';
 import { Events } from '../utils/events';
 
 type Payload = {
@@ -19,7 +19,7 @@ type Payload = {
   invokeruid?: string;
 };
 
-export default class ChannelUpdateAction extends Action {
+export class ChannelUpdateAction extends Action {
   constructor(query: Query) {
     super(query);
   }

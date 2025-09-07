@@ -1,6 +1,6 @@
 import { Query } from '../query';
 
-export default class Notification {
+export class Notification {
   query: Query;
 
   constructor(query: Query) {

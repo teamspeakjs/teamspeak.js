@@ -1,13 +1,13 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import ServerGroup from '../structures/server-group';
+import { Action } from '../structures/action';
+import { ServerGroup } from '../structures/server-group';
 import { Events } from '../utils/events';
 
 type Payload = {
   sgid: string;
 };
 
-export default class ServerGroupDeleteAction extends Action {
+export class ServerGroupDeleteAction extends Action {
   constructor(query: Query) {
     super(query);
   }

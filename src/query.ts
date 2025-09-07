@@ -1,11 +1,10 @@
-// src/client/Client.ts
-import WebSocketManager from './managers/websocket-manager';
-import ChannelManager from './managers/channel-manager';
-import ClientManager from './managers/client-manager';
-import CommandManager from './managers/command-manager';
-import NotificationManager from './managers/notification-manager';
-import QueryClient from './structures/query-client';
-import ActionManager from './managers/action-manager';
+import { WebSocketManager } from './managers/websocket-manager';
+import { ChannelManager } from './managers/channel-manager';
+import { ClientManager } from './managers/client-manager';
+import { CommandManager } from './managers/command-manager';
+import { NotificationManager } from './managers/notification-manager';
+import { QueryClient } from './structures/query-client';
+import { ActionManager } from './managers/action-manager';
 import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
 import { EventTypes } from './typings/types';
 import { Events } from './utils/events';
@@ -22,10 +21,10 @@ import {
   ApiKeyScope,
   RawClientIdsItem,
 } from './typings/teamspeak';
-import ServerGroupManager from './managers/server-group-manager';
-import VirtualServerManager from './managers/virtual-server-manager';
-import BanManager from './managers/ban-manager';
-import ChannelGroupManager from './managers/channel-group-manager';
+import { ServerGroupManager } from './managers/server-group-manager';
+import { VirtualServerManager } from './managers/virtual-server-manager';
+import { BanManager } from './managers/ban-manager';
+import { ChannelGroupManager } from './managers/channel-group-manager';
 
 interface ClientOptions {
   host: string;
@@ -42,7 +41,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * The Channel Manager of the Query instance.
    */
-  public channels: ChannelManager = new ChannelManager(this);
+  public channels = new ChannelManager(this);
   public clients = new ClientManager(this);
   public commands = new CommandManager(this);
   public notifications = new NotificationManager(this);
@@ -153,7 +152,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Sends a server message to virtual servers in the TeamSpeak 3 Server instance.
-   * @param message The message to send.
+   * @param content The message to send.
    */
   sendHostMessage(content: string): Promise<void> {
     return this.commands.gm({ msg: content });
@@ -161,7 +160,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Sends a server message to the current virtual server.
-   * @param message The message to send.
+   * @param content The message to send.
    */
   sendServerMessage(content: string): Promise<void> {
     if (!this.virtualServers.currentId) throw new Error('No virtual server selected.');

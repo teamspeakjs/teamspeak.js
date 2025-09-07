@@ -1,10 +1,10 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import { RawVirtualServer } from '../typings/teamspeak';
-import CachedManager from './cached-manager';
+import { CachedManager } from './cached-manager';
 import { VirtualServerResolvable } from '../typings/types';
-import VirtualServer from '../structures/virtual-server';
-import QueryClient from '../structures/query-client';
+import { VirtualServer } from '../structures/virtual-server';
+import { QueryClient } from '../structures/query-client';
 
 type VirtualServerUseOptions = {
   /**
@@ -24,7 +24,7 @@ type VirtualServerUseOptions = {
 /**
  * Manages the virtual servers in the TeamSpeak host.
  */
-export default class VirtualServerManager extends CachedManager<VirtualServer, RawVirtualServer> {
+export class VirtualServerManager extends CachedManager<VirtualServer, RawVirtualServer> {
   currentId: number | null = null;
 
   constructor(query: Query) {

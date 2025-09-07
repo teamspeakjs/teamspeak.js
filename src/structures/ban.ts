@@ -1,8 +1,8 @@
 import { Query } from '../query';
 import { RawBan } from '../typings/teamspeak';
-import Base from './base';
+import { Base } from './base';
 
-export default class Ban extends Base {
+export class Ban extends Base {
   ip: string | null = null;
   name: string | null = null;
   uniqueId: string | null = null;

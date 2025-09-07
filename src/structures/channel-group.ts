@@ -1,8 +1,8 @@
 import { Query } from '../query';
 import { RawChannelGroup } from '../typings/teamspeak';
-import Base from './base';
+import { Base } from './base';
 
-export default class ChannelGroup extends Base {
+export class ChannelGroup extends Base {
   name: string | null = null;
   type: number | null = null;
   iconId: number | null = null;

@@ -1,6 +1,6 @@
 import { Query } from '../query';
 
-import CommandExecutor from '../services/command-executor';
+import { CommandExecutor } from '../services/command-executor';
 import {
   RawChannel,
   RawChannelFindItem,
@@ -28,7 +28,7 @@ import {
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-export default class CommandManager extends CommandExecutor {
+export class CommandManager extends CommandExecutor {
   constructor(query: Query) {
     super(query);
   }

@@ -1,10 +1,10 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import { RawBan } from '../typings/teamspeak';
-import CachedManager from './cached-manager';
+import { CachedManager } from './cached-manager';
 import { BanResolvable, ClientResolvable } from '../typings/types';
-import Ban from '../structures/ban';
-import CommandError from '../errors/command-error';
+import { Ban } from '../structures/ban';
+import { CommandError } from '../errors/command-error';
 
 type BanCreateOptions = {
   ip?: string;
@@ -19,7 +19,7 @@ type BanCreateOptions = {
 /**
  * Manages the bans in the TeamSpeak server.
  */
-export default class BanManager extends CachedManager<Ban, RawBan> {
+export class BanManager extends CachedManager<Ban, RawBan> {
   constructor(query: Query) {
     super(query, Ban, 'banid');
   }

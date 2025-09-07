@@ -1,13 +1,13 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import Ban from '../structures/ban';
+import { Action } from '../structures/action';
+import { Ban } from '../structures/ban';
 import { Events } from '../utils/events';
 
 type Payload = {
   banid: string;
 };
 
-export default class BanCreateAction extends Action {
+export class BanCreateAction extends Action {
   constructor(query: Query) {
     super(query);
   }

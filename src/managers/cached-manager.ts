@@ -1,8 +1,8 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
 import { Constructable } from '../typings/types';
-import Base from '../structures/base';
-import BaseManager from './base-manager';
+import { Base } from '../structures/base';
+import { BaseManager } from './base-manager';
 
 export interface Structure<Holds, RawHolds> {
   id: number;
@@ -10,7 +10,7 @@ export interface Structure<Holds, RawHolds> {
   _clone(): Holds;
 }
 
-export default abstract class CachedManager<Holds extends Base, RawHolds> extends BaseManager {
+export abstract class CachedManager<Holds extends Base, RawHolds> extends BaseManager {
   private holds: Constructable<Holds>;
   private idKey: string;
 

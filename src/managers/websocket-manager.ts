@@ -1,7 +1,7 @@
 import * as net from 'net';
 import { EventEmitter } from 'events';
 
-export default class WebSocketManager extends EventEmitter {
+export class WebSocketManager extends EventEmitter {
   private host: string;
   private port: number;
   private onOutgoing: (data: string) => void;

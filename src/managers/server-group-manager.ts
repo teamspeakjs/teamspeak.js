@@ -1,8 +1,8 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
-import ServerGroup from '../structures/server-group';
+import { ServerGroup } from '../structures/server-group';
 import { RawServerGroup } from '../typings/teamspeak';
-import CachedManager from './cached-manager';
+import { CachedManager } from './cached-manager';
 import { ClientResolvable, ServerGroupResolvable, ServerGroupType } from '../typings/types';
 
 type ServerGroupCreateOptions = {
@@ -13,7 +13,7 @@ type ServerGroupCreateOptions = {
 /**
  * Manages the server groups in the TeamSpeak server.
  */
-export default class ServerGroupManager extends CachedManager<ServerGroup, RawServerGroup> {
+export class ServerGroupManager extends CachedManager<ServerGroup, RawServerGroup> {
   constructor(query: Query) {
     super(query, ServerGroup, 'sgid');
   }

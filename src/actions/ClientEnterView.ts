@@ -1,6 +1,6 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import Client from '../structures/client';
+import { Action } from '../structures/action';
+import { Client } from '../structures/client';
 import { RawClient } from '../typings/teamspeak';
 import { Events } from '../utils/events';
 
@@ -11,7 +11,7 @@ type Payload = Omit<RawClient, 'cid'> & {
 };
 
 //TODO: Add fromChannel and toChannel. First I have to figure out how the enterview and leftview notifications and the cfid and ctid are handled. Permissions?
-export default class ClientEnterViewAction extends Action {
+export class ClientEnterViewAction extends Action {
   constructor(query: Query) {
     super(query);
   }

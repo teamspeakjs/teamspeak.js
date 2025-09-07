@@ -1,5 +1,5 @@
 import { Query } from '../query';
-import Notification from '../structures/notification';
+import { Notification } from '../structures/notification';
 
 type Payload = {
   ctid: string;
@@ -10,7 +10,7 @@ type Payload = {
   clid: string;
 };
 
-export default class ClientMovedNotification extends Notification {
+export class ClientMovedNotification extends Notification {
   constructor(query: Query) {
     super(query);
   }

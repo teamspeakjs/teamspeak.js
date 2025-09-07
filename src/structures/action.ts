@@ -1,6 +1,6 @@
 import { Query } from '../query';
 
-export default class Action {
+export class Action {
   query: Query;
 
   constructor(query: Query) {

@@ -1,8 +1,8 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
-import CachedManager from './cached-manager';
+import { CachedManager } from './cached-manager';
 import { ChannelGroupResolvable, ChannelGroupType } from '../typings/types';
-import ChannelGroup from '../structures/channel-group';
+import { ChannelGroup } from '../structures/channel-group';
 import { RawChannelGroup } from '../typings/teamspeak';
 
 type ChannelGroupCreateOptions = {
@@ -13,7 +13,7 @@ type ChannelGroupCreateOptions = {
 /**
  * Manages the channel groups in the TeamSpeak server.
  */
-export default class ChannelGroupManager extends CachedManager<ChannelGroup, RawChannelGroup> {
+export class ChannelGroupManager extends CachedManager<ChannelGroup, RawChannelGroup> {
   constructor(query: Query) {
     super(query, ChannelGroup, 'cgid');
   }

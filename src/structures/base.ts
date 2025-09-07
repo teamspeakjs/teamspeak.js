@@ -1,6 +1,6 @@
 import { Query } from '../query';
 
-export default abstract class Base {
+export abstract class Base {
   protected query: Query;
   id: number;
 

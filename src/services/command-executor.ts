@@ -1,6 +1,6 @@
-import CommandError from '../errors/command-error';
+import { CommandError } from '../errors/command-error';
 import { Query } from '../query';
-import BaseManager from '../managers/base-manager';
+import { BaseManager } from '../managers/base-manager';
 import { RawCommandError } from '../typings/teamspeak';
 
 type QueueItem = {
@@ -10,7 +10,7 @@ type QueueItem = {
   timeout?: NodeJS.Timeout;
 };
 
-export default abstract class CommandExecutor extends BaseManager {
+export abstract class CommandExecutor extends BaseManager {
   private queue: QueueItem[] = [];
 
   // protocol state for serialized requests

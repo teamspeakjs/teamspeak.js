@@ -1,10 +1,10 @@
-import Ban from '../structures/ban';
-import Channel from '../structures/channel';
-import ChannelGroup from '../structures/channel-group';
-import Client from '../structures/client';
-import ServerGroup from '../structures/server-group';
-import TextMessage from '../structures/text-message';
-import VirtualServer from '../structures/virtual-server';
+import { Ban } from '../structures/ban';
+import { Channel } from '../structures/channel';
+import { ChannelGroup } from '../structures/channel-group';
+import { Client } from '../structures/client';
+import { ServerGroup } from '../structures/server-group';
+import { TextMessage } from '../structures/text-message';
+import { VirtualServer } from '../structures/virtual-server';
 
 export type Constructable<Entity> = new (...args: any[]) => Entity;
 

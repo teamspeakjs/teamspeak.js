@@ -3,9 +3,9 @@ import { ChannelEditOptions, ChannelType } from '../managers/channel-manager';
 import { Query } from '../query';
 import { Codec, RawChannel } from '../typings/teamspeak';
 import { ClientResolvable } from '../typings/types';
-import Base from './base';
+import { Base } from './base';
 
-export default class Channel extends Base {
+export class Channel extends Base {
   parentId: number | null = null;
   name: string | null = null;
   topic: string | null = null;

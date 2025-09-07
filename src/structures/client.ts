@@ -3,12 +3,12 @@ import { ClientEditOptions } from '../managers/client-manager';
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
 import { ChannelResolvable, ServerGroupResolvable } from '../typings/types';
-import Base from './base';
-import Channel from './channel';
-import ServerGroup from './server-group';
-import Ban from './ban';
+import { Base } from './base';
+import { Channel } from './channel';
+import { ServerGroup } from './server-group';
+import { Ban } from './ban';
 
-export default class Client extends Base {
+export class Client extends Base {
   channelId: number | null = null;
   databaseId: number | null = null;
   uniqueId: string | null = null;

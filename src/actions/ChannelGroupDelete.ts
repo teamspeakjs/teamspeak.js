@@ -1,13 +1,13 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import ChannelGroup from '../structures/channel-group';
+import { Action } from '../structures/action';
+import { ChannelGroup } from '../structures/channel-group';
 import { Events } from '../utils/events';
 
 type Payload = {
   cgid: string;
 };
 
-export default class ChannelGroupDeleteAction extends Action {
+export class ChannelGroupDeleteAction extends Action {
   constructor(query: Query) {
     super(query);
   }

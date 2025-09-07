@@ -1,8 +1,8 @@
 import { Query } from '../query';
 import { RawVirtualServer } from '../typings/teamspeak';
-import Base from './base';
+import { Base } from './base';
 
-export default class VirtualServer extends Base {
+export class VirtualServer extends Base {
   uniqueId: string | null = null;
   name: string | null = null;
   welcomeMessage: string | null = null;

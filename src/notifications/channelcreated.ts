@@ -1,5 +1,5 @@
 import { Query } from '../query';
-import Notification from '../structures/notification';
+import { Notification } from '../structures/notification';
 import { RawChannel } from '../typings/teamspeak';
 
 // TODO: Fix those notification payloads. Can be done better. (Everywhere; Actions and Notifications)
@@ -10,7 +10,7 @@ type Payload = RawChannel & {
   invokeruid: string;
 };
 
-export default class ChannelCreatedNotification extends Notification {
+export class ChannelCreatedNotification extends Notification {
   constructor(query: Query) {
     super(query);
   }

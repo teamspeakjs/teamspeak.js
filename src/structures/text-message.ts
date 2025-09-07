@@ -1,11 +1,11 @@
 import { Query } from '../query';
 import { RawTextMessage } from '../typings/teamspeak';
-import Base from './base';
-import Client from './client';
+import { Base } from './base';
+import { Client } from './client';
 
 type TextMessageMode = 'client' | 'channel' | 'server';
 
-export default class TextMessage extends Base {
+export class TextMessage extends Base {
   mode: TextMessageMode | null = null;
   content: string | null = null;
   targetId: number | null = null;

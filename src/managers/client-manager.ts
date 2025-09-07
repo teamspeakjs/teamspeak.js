@@ -1,14 +1,14 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
-import Client from '../structures/client';
-import CachedManager from './cached-manager';
+import { Client } from '../structures/client';
+import { CachedManager } from './cached-manager';
 import {
   BaseFetchOptions,
   ChannelResolvable,
   ClientResolvable,
   ServerGroupResolvable,
 } from '../typings/types';
-import CommandError from '../errors/command-error';
+import { CommandError } from '../errors/command-error';
 import {
   KickReasonIdentifier,
   RawClient,
@@ -16,7 +16,7 @@ import {
   TextMessageTargetMode,
 } from '../typings/teamspeak';
 import { stringifyValues } from '../utils/helpers';
-import ServerGroup from '../structures/server-group';
+import { ServerGroup } from '../structures/server-group';
 
 export type ClientEditOptions = {
   nickname?: string;
@@ -27,7 +27,7 @@ export type ClientEditOptions = {
 /**
  * Manages the clients in the TeamSpeak server.
  */
-export default class ClientManager extends CachedManager<Client, RawClient> {
+export class ClientManager extends CachedManager<Client, RawClient> {
   constructor(query: Query) {
     super(query, Client, 'clid');
   }

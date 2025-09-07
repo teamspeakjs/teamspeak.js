@@ -1,6 +1,6 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import Client from '../structures/client';
+import { Action } from '../structures/action';
+import { Client } from '../structures/client';
 import { Events } from '../utils/events';
 
 type Payload = {
@@ -11,7 +11,7 @@ type Payload = {
   clid: string;
 };
 
-export default class ClientLeaveViewAction extends Action {
+export class ClientLeaveViewAction extends Action {
   constructor(query: Query) {
     super(query);
   }

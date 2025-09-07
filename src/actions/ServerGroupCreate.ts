@@ -1,6 +1,6 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import ServerGroup from '../structures/server-group';
+import { Action } from '../structures/action';
+import { ServerGroup } from '../structures/server-group';
 import { Events } from '../utils/events';
 
 type Payload = {
@@ -8,7 +8,7 @@ type Payload = {
   name: string;
 };
 
-export default class ServerGroupCreateAction extends Action {
+export class ServerGroupCreateAction extends Action {
   constructor(query: Query) {
     super(query);
   }

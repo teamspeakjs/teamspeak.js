@@ -1,9 +1,9 @@
 import { Query } from '../query';
 import { RawServerGroup } from '../typings/teamspeak';
 import { ClientResolvable } from '../typings/types';
-import Base from './base';
+import { Base } from './base';
 
-export default class ServerGroup extends Base {
+export class ServerGroup extends Base {
   name: string | null = null;
   type: number | null = null;
   iconId: number | null = null;

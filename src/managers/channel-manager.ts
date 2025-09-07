@@ -1,15 +1,15 @@
 import { Collection } from '@discordjs/collection';
 import { Query } from '../query';
-import Channel from '../structures/channel';
-import CachedManager from './cached-manager';
+import { Channel } from '../structures/channel';
+import { CachedManager } from './cached-manager';
 import { BaseFetchOptions, ChannelResolvable } from '../typings/types';
 import { stringifyValues } from '../utils/helpers';
 import { Codec, RawChannel, RawChannelFindItem } from '../typings/teamspeak';
-import CommandError from '../errors/command-error';
+import { CommandError } from '../errors/command-error';
 
 export type ChannelType = 'temporary' | 'semi-permanent' | 'permanent';
 
-type ChannelCreateOptions = ChannelEditOptions & {
+export type ChannelCreateOptions = ChannelEditOptions & {
   name: string;
 };
 
@@ -35,7 +35,7 @@ export type ChannelEditOptions = {
 /**
  * Manages the channels in the TeamSpeak server.
  */
-export default class ChannelManager extends CachedManager<Channel, RawChannel> {
+export class ChannelManager extends CachedManager<Channel, RawChannel> {
   constructor(query: Query) {
     super(query, Channel, 'cid');
   }

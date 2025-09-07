@@ -1,5 +1,5 @@
 import { Query } from '../query';
-import Notification from '../structures/notification';
+import { Notification } from '../structures/notification';
 
 type Payload = {
   cid: string;
@@ -15,7 +15,7 @@ type Payload = {
   invokeruid: string;
 };
 
-export default class ChannelEditedNotification extends Notification {
+export class ChannelEditedNotification extends Notification {
   constructor(query: Query) {
     super(query);
   }

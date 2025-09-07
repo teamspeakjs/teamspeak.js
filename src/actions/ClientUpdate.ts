@@ -1,6 +1,6 @@
 import { Query } from '../query';
-import Action from '../structures/action';
-import Client from '../structures/client';
+import { Action } from '../structures/action';
+import { Client } from '../structures/client';
 import { Events } from '../utils/events';
 
 type Payload = {
@@ -10,7 +10,7 @@ type Payload = {
   client_description: string;
 };
 
-export default class ClientUpdateAction extends Action {
+export class ClientUpdateAction extends Action {
   constructor(query: Query) {
     super(query);
   }
