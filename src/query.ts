@@ -35,6 +35,18 @@ interface ClientOptions {
 
 /**
  * Represents a ServerQuery connection.
+ *
+ * @property {WebSocketManager} ws The WebSocket manager.
+ * @property {ChannelManager} channels The channel manager.
+ * @property {ClientManager} clients The client manager.
+ * @property {CommandManager} commands The command manager.
+ * @property {NotificationManager} notifications The notification manager.
+ * @property {QueryClient} client The query client.
+ * @property {ActionManager} actions The action manager.
+ * @property {ServerGroupManager} serverGroups The server group manager.
+ * @property {VirtualServerManager} virtualServers The virtual server manager.
+ * @property {BanManager} bans The ban manager.
+ * @property {ChannelGroupManager} channelGroups The channel group manager.
  */
 export class Query extends AsyncEventEmitter<EventTypes> {
   public ws: WebSocketManager;
