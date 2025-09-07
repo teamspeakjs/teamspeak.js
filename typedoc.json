@@ -6,5 +6,10 @@
   "excludeExternals": true,
   "hideGenerator": true,
   "theme": "default",
-  "includeVersion": true
+  "includeVersion": true,
+
+  "plugin": ["typedoc-plugin-coverage"],
+
+  "coverageLabel": "docs",
+  "coverageSvgWidth": 80
 }
