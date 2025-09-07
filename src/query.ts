@@ -42,7 +42,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * The Channel Manager of the Query instance.
    */
-  public channels = new ChannelManager(this);
+  public channels: ChannelManager = new ChannelManager(this);
   public clients = new ClientManager(this);
   public commands = new CommandManager(this);
   public notifications = new NotificationManager(this);
