@@ -7,3 +7,4 @@ tsconfig.json
 .prettierrc
 eslint.config.mjs
 tsconfig.json
+/docs-build
