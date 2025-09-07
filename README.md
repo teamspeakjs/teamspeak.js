@@ -5,18 +5,17 @@
 [![npm downloads](https://img.shields.io/npm/dt/teamspeak.js.svg?maxAge=3600)](https://www.npmjs.com/package/teamspeak.js)
 [![Last commit.](https://img.shields.io/github/last-commit/teamspeakjs/teamspeak.js.svg?logo=github&logoColor=ffffff)](https://github.com/teamspeakjs/teamspeak.js/commits/main)
 [![GitHub stars](https://img.shields.io/github/stars/teamspeakjs/teamspeak.js?style=flat&color=5865F2&logo=github&logoColor=ffffff)](https://github.com/teamspeakjs/teamspeak.js/stargazers)
+[![Docs coverage](https://raw.githubusercontent.com/teamspeakjs/docs/refs/heads/main/coverage.svg)](https://teamspeak.js.org/docs)
 
 A fully typesafe and easy-to-use Node.js client for interacting with Teamspeak 3 servers via ServerQuery.
 
 💡 **Inspired by [Discord.js](https://discord.js.org/),** bringing a similar event-driven and easy-to-use interface to Teamspeak 3.
 
-**Documentation coming soon!**
-
-Stay tuned for installation instructions, more usage examples, and more.
-
 ✨ **More features are coming soon!** Feel free to contribute and help improve the project.
 
 🔗 [Website](https://teamspeak.js.org)
+
+🔗 [Documents](https://teamspeak.js.org/docs)
 
 🔗 [View on npm](https://www.npmjs.com/package/teamspeak.js)
 
@@ -74,3 +73,5 @@ query.on('TextMessage', (message) => {
 
 query.connect();
 ```
+
+**More examples coming soon!**
