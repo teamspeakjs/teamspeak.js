@@ -3,7 +3,7 @@
   "out": "docs-build",
   "excludePrivate": true,
   "excludeProtected": true,
-  "excludeExternals": true,
+  "excludeExternals": false,
   "hideGenerator": true,
   "theme": "default",
   "includeVersion": true
