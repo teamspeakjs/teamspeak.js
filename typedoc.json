@@ -1,11 +1,5 @@
 {
-  "entryPoints": [
-    "src/index.ts",
-    "src/managers",
-    "src/structures",
-    "src/typings",
-    "src/utils/events.ts"
-  ],
+  "entryPoints": ["src/index.ts"],
   "out": "docs-build",
   "excludePrivate": true,
   "excludeProtected": true,

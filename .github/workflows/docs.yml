@@ -1,9 +1,10 @@
-name: Build & Deploy Docs
+name: Build and Deploy Docs
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ['Lint and Build']
+    types:
+      - completed
 
 jobs:
   build-docs:
@@ -17,13 +18,13 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install deps
+      - name: 📦 Install deps
         run: npm ci
 
-      - name: Build docs with TypeDoc
+      - name: 📚 Build docs with TypeDoc
         run: npx typedoc
 
-      - name: Push to docs repo
+      - name: 🚀 Push to docs repo
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.DOCS_TOKEN }}
@@ -32,7 +33,7 @@ jobs:
           publish_dir: ./docs-build
           keep_files: false
 
-      - name: Push to website repo
+      - name: 🚀 Push to website repo
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.DOCS_TOKEN }}
