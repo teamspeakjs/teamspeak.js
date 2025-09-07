@@ -20,12 +20,6 @@ export type BanResolvable = Ban | number;
 
 export type ChannelGroupResolvable = ChannelGroup | number;
 
-export type If<Value extends boolean, TrueResult, FalseResult = null> = Value extends true
-  ? TrueResult
-  : Value extends false
-    ? FalseResult
-    : TrueResult | FalseResult;
-
 export type EventTypes = {
   Ready: [];
   Error: [error: unknown];
