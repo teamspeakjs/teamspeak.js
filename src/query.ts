@@ -42,14 +42,50 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * The Channel Manager of the Query instance.
    */
   public channels = new ChannelManager(this);
+
+  /**
+   * The Client Manager of the Query instance.
+   */
   public clients = new ClientManager(this);
+
+  /**
+   * The Command Manager of the Query instance.
+   */
   public commands = new CommandManager(this);
+
+  /**
+   * The Notification Manager of the Query instance.
+   */
   public notifications = new NotificationManager(this);
+
+  /**
+   * The Query Client of the Query instance.
+   */
   public client = null as unknown as QueryClient; // Overwrite type
+
+  /**
+   * The Action Manager of the Query instance.
+   */
   public actions = new ActionManager(this);
+
+  /**
+   * The Server Group Manager of the Query instance.
+   */
   public serverGroups = new ServerGroupManager(this);
+
+  /**
+   * The Virtual Server Manager of the Query instance.
+   */
   public virtualServers = new VirtualServerManager(this);
+
+  /**
+   * The Ban Manager of the Query instance.
+   */
   public bans = new BanManager(this);
+
+  /**
+   * The Channel Group Manager of the Query instance.
+   */
   public channelGroups = new ChannelGroupManager(this);
 
   private _pingInterval: NodeJS.Timeout | null = null;
