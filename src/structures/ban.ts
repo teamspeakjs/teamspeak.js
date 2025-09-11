@@ -2,6 +2,9 @@ import { Query } from '../query';
 import { RawBan } from '../typings/teamspeak';
 import { Base } from './base';
 
+/**
+ * Represents a ban.
+ */
 export class Ban extends Base {
   ip: string | null = null;
   name: string | null = null;
@@ -22,6 +25,10 @@ export class Ban extends Base {
     this._patch(data);
   }
 
+  /**
+   * Patches the ban with new data.
+   * @param {Partial<RawBan>} data The new data to patch the ban with.
+   */
   _patch(data: Partial<RawBan>): void {
     if ('ip' in data) {
       this.ip = data.ip!;
@@ -61,6 +68,10 @@ export class Ban extends Base {
     }
   }
 
+  /**
+   * Deletes the ban.
+   * @returns {Promise<void>} A promise that resolves when the ban has been deleted.
+   */
   delete(): Promise<void> {
     return this.query.bans.delete(this);
   }

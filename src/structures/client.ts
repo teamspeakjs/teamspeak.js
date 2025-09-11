@@ -7,6 +7,7 @@ import { Base } from './base';
 import { Channel } from './channel';
 import { ServerGroup } from './server-group';
 import { Ban } from './ban';
+import { BanClientOptions } from '../docs';
 
 export class Client extends Base {
   channelId: number | null = null;
@@ -182,16 +183,12 @@ export class Client extends Base {
   }
 
   /**
-   * Bans the client from the server.
-   * @param {Object} options The options for the ban.
-   * @param {number} [options.duration] The duration of the ban in seconds (Optional, defaults to 0, which means permanent).
-   * @param {string} [options.reason] The reason for the ban (Optional).
+   * Bans the client from the server. Since TeamSpeak creates multiple ban entries for one client, this returns a collection of bans.
+   * @param {BanClientOptions} options The options for the ban.
    * @returns {Promise<Collection<number, Ban>>} The bans applied to the client. TeamSpeak creates multiple ban entries for one client.
    */
-  ban({ duration, reason }: { duration?: number; reason?: string } = {}): Promise<
-    Collection<number, Ban>
-  > {
-    return this.query.bans.banClient(this, { duration, reason });
+  ban(options: BanClientOptions = {}): Promise<Collection<number, Ban>> {
+    return this.query.bans.banClient(this, options);
   }
 
   /**

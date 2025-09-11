@@ -7,13 +7,52 @@ import { Ban } from '../structures/ban';
 import { CommandError } from '../errors/command-error';
 
 type BanCreateOptions = {
+  /**
+   * The IP address to ban.
+   */
   ip?: string;
+
+  /**
+   * The name to ban.
+   */
   name?: string;
+
+  /**
+   * The unique ID to ban.
+   */
   uniqueId?: string;
+
+  /**
+   * The MyTeamspeak ID to ban.
+   */
   myTeamspeakId?: string;
+
+  /**
+   * The duration of the ban in seconds. Defaults to 0, which means permanent.
+   */
   duration?: number;
+
+  /**
+   * The reason for the ban.
+   */
   reason?: string;
+
+  /**
+   * The last nickname of the client.
+   */
   lastNickname?: string;
+};
+
+export type BanClientOptions = {
+  /**
+   * The duration of the ban in seconds. Defaults to 0, which means permanent.
+   */
+  duration?: number;
+
+  /**
+   * The reason for the ban.
+   */
+  reason?: string;
 };
 
 /**
@@ -24,11 +63,20 @@ export class BanManager extends CachedManager<Ban, RawBan> {
     super(query, Ban, 'banid');
   }
 
+  /**
+   * Resolves a ban ID.
+   * @param {BanResolvable} ban The object to resolve.
+   * @returns {number} The ban ID.
+   */
   resolveId(ban: BanResolvable): number {
     if (ban instanceof Ban) return ban.id;
     return ban;
   }
 
+  /**
+   * Fetches all bans.
+   * @returns {Promise<Collection<number, Ban>>} A promise that resolves with a collection of bans.
+   */
   async fetch(): Promise<Collection<number, Ban>> {
     let _data: RawBan | RawBan[] = [];
     try {
@@ -53,6 +101,12 @@ export class BanManager extends CachedManager<Ban, RawBan> {
   }
 
   //Notice: This does not trigger the Action since it does not return anything
+
+  /**
+   * Creates a ban.
+   * @param {BanCreateOptions} data The options for creating the ban.
+   * @returns {Promise<void>} A promise that resolves when the ban has been created.
+   */
   async create(data: BanCreateOptions): Promise<void> {
     const payload = {
       ip: data.ip,
@@ -67,14 +121,20 @@ export class BanManager extends CachedManager<Ban, RawBan> {
     return this.query.commands.banadd(payload);
   }
 
+  /**
+   * Bans a client. Since TeamSpeak creates multiple ban entries for one client, this returns a collection of bans.
+   * @param {ClientResolvable} client The client to ban.
+   * @param {BanClientOptions} options The options for banning the client.
+   * @returns {Promise<Collection<number, Ban>>} A promise that resolves with a collection of bans.
+   */
   async banClient(
     client: ClientResolvable,
-    { duration, reason }: { duration?: number; reason?: string } = {},
+    options: BanClientOptions = {},
   ): Promise<Collection<number, Ban>> {
     const payload = {
       clid: this.query.clients.resolveId(client),
-      time: duration,
-      banreason: reason,
+      time: options.duration,
+      banreason: options.reason,
     };
 
     const _data = await this.query.commands.banclient(payload);
@@ -90,6 +150,11 @@ export class BanManager extends CachedManager<Ban, RawBan> {
     return bans;
   }
 
+  /**
+   * Deletes a ban.
+   * @param {BanResolvable} ban The ban to delete.
+   * @returns {Promise<void>} A promise that resolves when the ban has been deleted.
+   */
   async delete(ban: BanResolvable): Promise<void> {
     const id = this.resolveId(ban);
     await this.query.commands.bandel({ banid: id });
@@ -97,6 +162,11 @@ export class BanManager extends CachedManager<Ban, RawBan> {
   }
 
   //TODO: Implement the Action for this properly
+
+  /**
+   * Deletes all bans.
+   * @returns {Promise<void>} A promise that resolves when the bans have been deleted.
+   */
   async deleteAll(): Promise<void> {
     await this.query.commands.bandelall();
     this.cache.clear();
