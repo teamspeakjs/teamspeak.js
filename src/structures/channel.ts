@@ -1,5 +1,5 @@
 import { Collection } from '@discordjs/collection';
-import { ChannelEditOptions, ChannelType } from '../managers/channel-manager';
+import { ChannelEditOptions, ChannelMoveOptions, ChannelType } from '../managers/channel-manager';
 import { Query } from '../query';
 import { Codec, RawChannel } from '../typings/teamspeak';
 import { ClientResolvable } from '../typings/types';
@@ -206,5 +206,9 @@ export class Channel extends Base {
    */
   kickClient(client: ClientResolvable, reason?: string): Promise<void> {
     return this.query.clients.kickFromChannel(client, reason);
+  }
+
+  move(options: ChannelMoveOptions): Promise<Channel> {
+    return this.query.channels.move(this, options);
   }
 }

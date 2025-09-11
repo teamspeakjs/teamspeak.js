@@ -32,6 +32,11 @@ export type ChannelEditOptions = {
   namePhonetic?: string;
 };
 
+export type ChannelMoveOptions = {
+  parent?: ChannelResolvable;
+  below?: ChannelResolvable;
+};
+
 /**
  * Manages the channels in the TeamSpeak server.
  */
@@ -222,5 +227,19 @@ export class ChannelManager extends CachedManager<Channel, RawChannel> {
     }
 
     return channels;
+  }
+
+  async move(channel: ChannelResolvable, options: ChannelMoveOptions): Promise<Channel> {
+    const id = this.resolveId(channel);
+    const parentId = options.parent ? this.resolveId(options.parent) : 0;
+    const belowId = options.below ? this.resolveId(options.below) : 0;
+
+    await this.query.commands.channelmove({ cid: id, cpid: parentId, order: belowId });
+
+    return this.query.actions.ChannelUpdate.handle({
+      cid: id.toString(),
+      pid: parentId.toString(),
+      channel_order: belowId.toString(),
+    }).after!;
   }
 }

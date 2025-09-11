@@ -220,8 +220,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawChannelListItem[]>('channellist', params);
   }
 
-  channelmove() {
-    throw new Error('Not implemented');
+  channelmove(params: { cid: number; cpid: number; order?: number }) {
+    return this.query.commands._execute<void>('channelmove', params);
   }
 
   channelpermlist() {
