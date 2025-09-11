@@ -1,3 +1,7 @@
+import {
+  ServerGroupCopyOptions_Create,
+  ServerGroupCopyOptions_Target,
+} from '../managers/server-group-manager';
 import { Query } from '../query';
 import { RawServerGroup } from '../typings/teamspeak';
 import { ClientResolvable } from '../typings/types';
@@ -104,5 +108,31 @@ export class ServerGroup extends Base {
    */
   fetchClientDatabaseIds(): Promise<number[]> {
     return this.query.serverGroups.fetchClientDatabaseIds(this);
+  }
+
+  /**
+   * Copies this server group into a new server group.
+   *
+   * @param {ServerGroupCopyOptions_Create} options The options for copying the server group.
+   * @returns {Promise<ServerGroup>} The created server group.
+   */
+  async copy(options: ServerGroupCopyOptions_Create): Promise<ServerGroup>;
+
+  /**
+   * Copies this server group into an existing server group.
+   *
+   * @param {ServerGroupCopyOptions_Target} options The options for copying the server group.
+   * @returns {Promise<null>} A promise that resolves when the server group has been copied.
+   */
+  async copy(options: ServerGroupCopyOptions_Target): Promise<null>;
+
+  async copy(
+    options: ServerGroupCopyOptions_Create | ServerGroupCopyOptions_Target,
+  ): Promise<ServerGroup | null> {
+    if ('name' in options) {
+      return this.query.serverGroups.copy(this, options as ServerGroupCopyOptions_Create);
+    } else {
+      return this.query.serverGroups.copy(this, options as ServerGroupCopyOptions_Target);
+    }
   }
 }

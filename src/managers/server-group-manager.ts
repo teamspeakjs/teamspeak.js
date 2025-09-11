@@ -17,14 +17,14 @@ interface ServerGroupCreateOptions {
   type?: ServerGroupType;
 }
 
-interface ServerGroupCopyOptions {
+export interface ServerGroupCopyOptions {
   /**
    * The type of the new server group.
    */
   type: ServerGroupType;
 }
 
-interface ServerGroupCopyOptions_Create extends ServerGroupCopyOptions {
+export interface ServerGroupCopyOptions_Create extends ServerGroupCopyOptions {
   /**
    * The name of the new server group.
    */
@@ -33,7 +33,7 @@ interface ServerGroupCopyOptions_Create extends ServerGroupCopyOptions {
   targetGroup?: never;
 }
 
-interface ServerGroupCopyOptions_Target extends ServerGroupCopyOptions {
+export interface ServerGroupCopyOptions_Target extends ServerGroupCopyOptions {
   /**
    * The target server group to copy to.
    */
