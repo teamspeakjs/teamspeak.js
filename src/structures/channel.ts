@@ -208,6 +208,11 @@ export class Channel extends Base {
     return this.query.clients.kickFromChannel(client, reason);
   }
 
+  /**
+   * Moves the channel.
+   * @param {ChannelMoveOptions} options The options for moving the channel.
+   * @returns {Promise<Channel>} The moved channel.
+   */
   move(options: ChannelMoveOptions): Promise<Channel> {
     return this.query.channels.move(this, options);
   }

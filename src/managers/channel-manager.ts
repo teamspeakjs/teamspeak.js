@@ -33,7 +33,14 @@ export type ChannelEditOptions = {
 };
 
 export type ChannelMoveOptions = {
+  /**
+   * The parent channel to move the channel to.
+   */
   parent?: ChannelResolvable;
+
+  /**
+   * The channel to move the channel below.
+   */
   below?: ChannelResolvable;
 };
 
@@ -229,6 +236,12 @@ export class ChannelManager extends CachedManager<Channel, RawChannel> {
     return channels;
   }
 
+  /**
+   * Moves a channel.
+   * @param {ChannelResolvable} channel The channel to move.
+   * @param {ChannelMoveOptions} options The options for moving the channel.
+   * @returns {Promise<Channel>} The moved channel.
+   */
   async move(channel: ChannelResolvable, options: ChannelMoveOptions): Promise<Channel> {
     const id = this.resolveId(channel);
     const parentId = options.parent ? this.resolveId(options.parent) : 0;
