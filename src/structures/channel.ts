@@ -5,6 +5,9 @@ import { Codec, RawChannel } from '../typings/teamspeak';
 import { ClientResolvable } from '../typings/types';
 import { Base } from './base';
 
+/**
+ * Represents a channel.
+ */
 export class Channel extends Base {
   parentId: number | null = null;
   name: string | null = null;

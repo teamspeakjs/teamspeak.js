@@ -7,6 +7,9 @@ import { RawServerGroup } from '../typings/teamspeak';
 import { ClientResolvable } from '../typings/types';
 import { Base } from './base';
 
+/**
+ * Represents a server group.
+ */
 export class ServerGroup extends Base {
   name: string | null = null;
   type: number | null = null;

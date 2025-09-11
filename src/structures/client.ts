@@ -9,6 +9,9 @@ import { ServerGroup } from './server-group';
 import { Ban } from './ban';
 import { BanClientOptions } from '../docs';
 
+/**
+ * Represents a client.
+ */
 export class Client extends Base {
   channelId: number | null = null;
   databaseId: number | null = null;

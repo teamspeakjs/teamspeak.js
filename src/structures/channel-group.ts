@@ -2,6 +2,9 @@ import { Query } from '../query';
 import { RawChannelGroup } from '../typings/teamspeak';
 import { Base } from './base';
 
+/**
+ * Represents a channel group.
+ */
 export class ChannelGroup extends Base {
   name: string | null = null;
   type: number | null = null;

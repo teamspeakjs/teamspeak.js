@@ -2,6 +2,9 @@ import { Query } from '../query';
 import { RawVirtualServer } from '../typings/teamspeak';
 import { Base } from './base';
 
+/**
+ * Represents a virtual server.
+ */
 export class VirtualServer extends Base {
   uniqueId: string | null = null;
   name: string | null = null;

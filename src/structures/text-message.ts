@@ -5,6 +5,9 @@ import { Client } from './client';
 
 type TextMessageMode = 'client' | 'channel' | 'server';
 
+/**
+ * Represents a text message.
+ */
 export class TextMessage extends Base {
   mode: TextMessageMode | null = null;
   content: string | null = null;
