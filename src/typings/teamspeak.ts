@@ -470,3 +470,10 @@ export type RawClientDbInfo = {
   client_base64HashClientUID: string;
   client_lastip: string;
 };
+
+export type RawClientUid = {
+  clid: string;
+  cluid: string;
+  nickname: string;
+  mytsid: string;
+};

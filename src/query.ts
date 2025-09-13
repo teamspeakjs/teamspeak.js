@@ -24,6 +24,7 @@ import {
   RawServerSnapshot,
   RawBinding,
   RawClientDbInfo,
+  RawClientUid,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -433,5 +434,9 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   getRawClientDatabaseProperties(clientDatabaseId: number): Promise<RawClientDbInfo> {
     return this.commands.clientdbinfo({ cldbid: clientDatabaseId });
+  }
+
+  getRawClientUniqueIdFromClientId(clientId: number): Promise<RawClientUid | RawClientUid[]> {
+    return this.commands.clientgetuidfromclid({ clid: clientId });
   }
 }

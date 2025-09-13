@@ -29,6 +29,7 @@ import {
   RawServerSnapshot,
   RawBinding,
   RawClientDbInfo,
+  RawClientUid,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -294,8 +295,12 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawClientName>('clientgetnamefromuid', params);
   }
 
-  clientgetuidfromclid() {
-    throw new Error('Not implemented');
+  //Note: This theoratically supports multiple clients.
+  clientgetuidfromclid(params: { clid: number }) {
+    return this.query.commands._execute<RawClientUid | RawClientUid[]>(
+      'clientgetuidfromclid',
+      params,
+    );
   }
 
   clientinfo(params: { clid: number }) {
