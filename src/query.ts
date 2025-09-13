@@ -23,6 +23,7 @@ import {
   RawComplain,
   RawServerSnapshot,
   RawBinding,
+  RawClientDbInfo,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -428,5 +429,9 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     subsystem?: 'voice' | 'query' | 'filetransfer',
   ): Promise<RawBinding | RawBinding[]> {
     return this.commands.bindinglist({ subsystem });
+  }
+
+  getRawClientDatabaseProperties(clientDatabaseId: number): Promise<RawClientDbInfo> {
+    return this.commands.clientdbinfo({ cldbid: clientDatabaseId });
   }
 }

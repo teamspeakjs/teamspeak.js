@@ -453,3 +453,20 @@ export type RawServerSnapshot = {
 export type RawBinding = {
   ip: string;
 };
+
+export type RawClientDbInfo = {
+  client_unique_identifier: string;
+  client_nickname: string;
+  client_database_id: string;
+  client_created: string;
+  client_lastconnected: string;
+  client_totalconnections: string;
+  client_flag_avatar: string;
+  client_description: string;
+  client_month_bytes_uploaded: string;
+  client_month_bytes_downloaded: string;
+  client_total_bytes_uploaded: string;
+  client_total_bytes_downloaded: string;
+  client_base64HashClientUID: string;
+  client_lastip: string;
+};

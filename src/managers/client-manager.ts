@@ -324,4 +324,8 @@ export class ClientManager extends CachedManager<Client, RawClient> {
 
     return serverGroups;
   }
+
+  async deleteDatabaseProperties(clientDatabaseId: number): Promise<void> {
+    await this.query.commands.clientdbdelete({ cldbid: clientDatabaseId });
+  }
 }

@@ -28,6 +28,7 @@ import {
   RawComplain,
   RawServerSnapshot,
   RawBinding,
+  RawClientDbInfo,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -235,8 +236,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  clientdbdelete() {
-    throw new Error('Not implemented');
+  clientdbdelete(params: { cldbid: number }) {
+    return this.query.commands._execute<void>('clientdbdelete', params);
   }
 
   clientdbedit() {
@@ -247,8 +248,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  clientdbinfo() {
-    throw new Error('Not implemented');
+  clientdbinfo(params: { cldbid: number }) {
+    return this.query.commands._execute<RawClientDbInfo>('clientdbinfo', params);
   }
 
   clientdblist() {
