@@ -226,6 +226,19 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
+   * Update the login credentials for the current ServerQuery. You can only pass the username, the password will be generated automatically.
+   * @param username The username to set.
+   * @returns {Promise<string>} The generated password.
+   */
+  async updateLoginCredentials(username: string): Promise<string> {
+    const { client_login_password } = await this.commands.clientsetserverquerylogin({
+      client_login_name: username,
+    });
+
+    return client_login_password;
+  }
+
+  /**
    * Notice: All methods below this line are considered "raw" and return unprocessed data from the server. These methods will be deprecated and replaced with higher-level abstractions (e.g. Query.apiKeys.create(...)).
    */
 

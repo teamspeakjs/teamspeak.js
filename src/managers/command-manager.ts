@@ -347,8 +347,11 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('clientpoke', params);
   }
 
-  clientsetserverquerylogin() {
-    throw new Error('Not implemented');
+  clientsetserverquerylogin(params: { client_login_name: string }) {
+    return this.query.commands._execute<{ client_login_password: string }>(
+      'clientsetserverquerylogin',
+      params,
+    );
   }
 
   //Note: Possibly, there are more properties to edit than just the nickname
