@@ -159,6 +159,13 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
+   * Logout from the ServerQuery.
+   */
+  logout(): Promise<void> {
+    return this.commands.logout();
+  }
+
+  /**
    * Select a virtual server by its ID.
    * @param id The virtual server ID.
    * @returns {Promise<void>}

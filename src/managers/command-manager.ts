@@ -456,7 +456,7 @@ export class CommandManager extends CommandExecutor {
   }
 
   logout() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<void>('logout');
   }
 
   logview() {
