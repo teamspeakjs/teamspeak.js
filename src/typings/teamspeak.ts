@@ -477,3 +477,9 @@ export type RawClientUid = {
   nickname: string;
   mytsid: string;
 };
+
+export type RawPermission = {
+  permid: string;
+  permname: string;
+  permdesc: string;
+};

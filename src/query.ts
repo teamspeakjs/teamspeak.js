@@ -25,6 +25,7 @@ import {
   RawBinding,
   RawClientDbInfo,
   RawClientUid,
+  RawPermission,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -458,5 +459,12 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   getRawClientUniqueIdFromClientId(clientId: number): Promise<RawClientUid | RawClientUid[]> {
     return this.commands.clientgetuidfromclid({ clid: clientId });
+  }
+
+  /**
+   * Get a list of permissions on the TeamSpeak 3 Server instance.
+   */
+  getRawPermissions(): Promise<RawPermission[]> {
+    return this.commands.permissionlist();
   }
 }

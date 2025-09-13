@@ -30,6 +30,7 @@ import {
   RawBinding,
   RawClientDbInfo,
   RawClientUid,
+  RawPermission,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -496,7 +497,7 @@ export class CommandManager extends CommandExecutor {
   }
 
   permissionlist() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawPermission[]>('permissionlist');
   }
 
   permoverview() {
