@@ -435,4 +435,21 @@ export class VirtualServer extends Base {
       );
     }
   }
+
+  /**
+   * Start the virtual server.
+   * @returns {Promise<void>} A promise that resolves when the virtual server has started.
+   */
+  start(): Promise<void> {
+    return this.query.virtualServers.start(this);
+  }
+
+  /**
+   * Stop the virtual server.
+   * @param {string} reason The reason for stopping the virtual server. (optional)
+   * @returns {Promise<void>} A promise that resolves when the virtual server has stopped.
+   */
+  stop(reason?: string): Promise<void> {
+    return this.query.virtualServers.stop(this, reason);
+  }
 }

@@ -656,12 +656,12 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<unknown>('serversnapshotdeploy', params); //TODO: Add proper type for response
   }
 
-  serverstart() {
-    throw new Error('Not implemented');
+  serverstart(params: { sid: number }) {
+    return this.query.commands._execute<void>('serverstart', params);
   }
 
-  serverstop() {
-    throw new Error('Not implemented');
+  serverstop(params: { sid: number; reasonmsg?: string }) {
+    return this.query.commands._execute<void>('serverstop', params);
   }
 
   servertemppasswordadd() {

@@ -124,4 +124,26 @@ export class VirtualServerManager extends CachedManager<VirtualServer, RawVirtua
 
     return Number(server_id);
   }
+
+  /**
+   * Start a virtual server.
+   * @param {VirtualServerResolvable} virtualServer The virtual server to start.
+   * @returns {Promise<void>} A promise that resolves when the virtual server has started.
+   */
+  start(virtualServer: VirtualServerResolvable): Promise<void> {
+    return this.query.commands.serverstart({ sid: this.resolveId(virtualServer) });
+  }
+
+  /**
+   * Stop a virtual server.
+   * @param {VirtualServerResolvable} virtualServer The virtual server to stop.
+   * @param {string} reason The reason for stopping the virtual server. (optional)
+   * @returns {Promise<void>} A promise that resolves when the virtual server has stopped.
+   */
+  stop(virtualServer: VirtualServerResolvable, reason?: string): Promise<void> {
+    return this.query.commands.serverstop({
+      sid: this.resolveId(virtualServer),
+      reasonmsg: reason,
+    });
+  }
 }
