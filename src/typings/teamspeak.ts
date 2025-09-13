@@ -435,3 +435,17 @@ export type RawServerGroupClientListItem = {
   client_nickname: string;
   client_unique_identifier: string;
 };
+
+export type RawComplain = {
+  tcldbid: string;
+  tname: string;
+  fcldbid: string;
+  fname: string;
+  message: string;
+  timestamp: string;
+};
+
+export type RawServerSnapshot = {
+  version: string;
+  data: string;
+};

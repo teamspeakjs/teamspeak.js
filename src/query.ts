@@ -20,6 +20,8 @@ import {
   RawApiKey,
   ApiKeyScope,
   RawClientIdsItem,
+  RawComplain,
+  RawServerSnapshot,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -353,5 +355,71 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   deleteRawApiKey(id: number): Promise<void> {
     return this.commands.apikeydel({ id });
+  }
+
+  /**
+   * Get a list of complains.
+   * @param tcldbid The client database ID of the complained about client. (optional, otherwise all complains will be returned)
+   */
+  getRawComplains(tcldbid?: number): Promise<RawComplain | RawComplain[]> {
+    return this.commands.complainlist({ tcldbid });
+  }
+
+  /**
+   * Create a new complain.
+   * @param tcldbid The client database ID of the complained about client.
+   * @param message The message of the complain.
+   */
+  createRawComplain(tcldbid: number, message: string): Promise<void> {
+    return this.commands.complainadd({ tcldbid, message });
+  }
+
+  /**
+   * Delete a complain by its IDs.
+   * @param tcldbid The client database ID of the complained about client.
+   * @param fcldbid The client database ID of the complainee.
+   */
+  deleteRawComplain(tcldbid: number, fcldbid: number): Promise<void> {
+    return this.commands.complaindel({ tcldbid, fcldbid });
+  }
+
+  /**
+   * Delete all complains by the complainee's ID.
+   * @param tcldbid The client database ID of the complained about client.
+   */
+  deleteRawComplains(tcldbid: number): Promise<void> {
+    return this.commands.complaindelall({ tcldbid });
+  }
+
+  /**
+   * Create a new server snapshot.
+   */
+  createRawServerSnapshot(): Promise<RawServerSnapshot> {
+    return this.commands.serversnapshotcreate();
+  }
+
+  /**
+   * Deploy a server snapshot.
+   * @param version The version of the server snapshot.
+   * @param data The data of the server snapshot.
+   */
+  deployRawServerSnapshot(
+    version: number,
+    data: string,
+    {
+      password,
+      salt,
+      _keepfiles,
+      _mapping,
+    }: { password?: string; salt?: string; _keepfiles?: true; _mapping?: true } = {},
+  ): Promise<unknown> {
+    return this.commands.serversnapshotdeploy({
+      version,
+      data,
+      password,
+      salt,
+      _keepfiles,
+      _mapping,
+    });
   }
 }

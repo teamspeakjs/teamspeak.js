@@ -25,6 +25,8 @@ import {
   RawClientIdsItem,
   RawChannelGroup,
   RawServerGroupClientListItem,
+  RawComplain,
+  RawServerSnapshot,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -347,20 +349,20 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('clientupdate', params);
   }
 
-  complainadd() {
-    throw new Error('Not implemented');
+  complainadd(params: { tcldbid: number; message: string }) {
+    return this.query.commands._execute<void>('complainadd', params);
   }
 
-  complaindel() {
-    throw new Error('Not implemented');
+  complaindel(params: { tcldbid: number; fcldbid: number }) {
+    return this.query.commands._execute<void>('complaindel', params);
   }
 
-  complaindelall() {
-    throw new Error('Not implemented');
+  complaindelall(params: { tcldbid: number }) {
+    return this.query.commands._execute<void>('complaindelall', params);
   }
 
-  complainlist() {
-    throw new Error('Not implemented');
+  complainlist(params: { tcldbid?: number }) {
+    return this.query.commands._execute<RawComplain | RawComplain[]>('complainlist', params);
   }
 
   custominfo() {
@@ -640,11 +642,18 @@ export class CommandManager extends CommandExecutor {
   }
 
   serversnapshotcreate() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawServerSnapshot>('serversnapshotcreate');
   }
 
-  serversnapshotdeploy() {
-    throw new Error('Not implemented');
+  serversnapshotdeploy(params: {
+    version: number;
+    data: string;
+    password?: string;
+    salt?: string;
+    _keepfiles?: true;
+    _mapping?: true;
+  }) {
+    return this.query.commands._execute<unknown>('serversnapshotdeploy', params); //TODO: Add proper type for response
   }
 
   serverstart() {
