@@ -449,3 +449,7 @@ export type RawServerSnapshot = {
   version: string;
   data: string;
 };
+
+export type RawBinding = {
+  ip: string;
+};

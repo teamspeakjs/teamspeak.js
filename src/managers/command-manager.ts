@@ -27,6 +27,7 @@ import {
   RawServerGroupClientListItem,
   RawComplain,
   RawServerSnapshot,
+  RawBinding,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -80,8 +81,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawBan | RawBan[]>('banlist', params);
   }
 
-  bindinglist() {
-    throw new Error('Not implemented');
+  bindinglist(params: { subsystem?: 'voice' | 'query' | 'filetransfer' }) {
+    return this.query.commands._execute<RawBinding | RawBinding[]>('bindinglist', params);
   }
 
   channeladdperm() {

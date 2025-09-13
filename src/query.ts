@@ -22,6 +22,7 @@ import {
   RawClientIdsItem,
   RawComplain,
   RawServerSnapshot,
+  RawBinding,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -421,5 +422,11 @@ export class Query extends AsyncEventEmitter<EventTypes> {
       _keepfiles,
       _mapping,
     });
+  }
+
+  getRawBindings(
+    subsystem?: 'voice' | 'query' | 'filetransfer',
+  ): Promise<RawBinding | RawBinding[]> {
+    return this.commands.bindinglist({ subsystem });
   }
 }
