@@ -52,6 +52,8 @@ export type EventTypes = {
   ChannelGroupCreate: [channelGroup: ChannelGroup];
   ChannelGroupDelete: [channelGroup: ChannelGroup];
   ChannelGroupUpdate: [before: ChannelGroup, after: ChannelGroup];
+
+  VirtualServerDelete: [virtualServer: VirtualServer];
 };
 
 export type BaseFetchOptions = {

@@ -125,6 +125,12 @@ export class VirtualServerManager extends CachedManager<VirtualServer, RawVirtua
     return Number(server_id);
   }
 
+  async delete(virtualServer: VirtualServerResolvable): Promise<void> {
+    const id = this.resolveId(virtualServer);
+    await this.query.commands.serverdelete({ sid: id });
+    this.query.actions.VirtualServerDelete.handle({ sid: id.toString() });
+  }
+
   /**
    * Start a virtual server.
    * @param {VirtualServerResolvable} virtualServer The virtual server to start.

@@ -437,6 +437,15 @@ export class VirtualServer extends Base {
   }
 
   /**
+   * Delete the virtual server.
+   * Note: Only stopped virtual servers can be deleted.
+   * @returns {Promise<void>} A promise that resolves when the virtual server has been deleted.
+   */
+  delete(): Promise<void> {
+    return this.query.virtualServers.delete(this);
+  }
+
+  /**
    * Start the virtual server.
    * @returns {Promise<void>} A promise that resolves when the virtual server has started.
    */

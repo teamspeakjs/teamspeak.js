@@ -22,4 +22,6 @@ export const Events = {
   ChannelGroupCreate: 'ChannelGroupCreate',
   ChannelGroupDelete: 'ChannelGroupDelete',
   ChannelGroupUpdate: 'ChannelGroupUpdate',
+
+  VirtualServerDelete: 'VirtualServerDelete',
 } as const;

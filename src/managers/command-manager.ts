@@ -549,8 +549,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  serverdelete() {
-    throw new Error('Not implemented');
+  serverdelete(params: { sid: number }) {
+    return this.query.commands._execute<void>('serverdelete', params);
   }
 
   serveredit() {
