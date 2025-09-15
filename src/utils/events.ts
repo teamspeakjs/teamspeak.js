@@ -1,4 +1,7 @@
 export const Events = {
+  Ready: 'Ready',
+  Error: 'Error',
+  Close: 'Close',
   Debug: 'Debug',
 
   ChannelCreate: 'ChannelCreate',
