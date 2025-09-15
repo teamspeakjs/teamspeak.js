@@ -125,6 +125,12 @@ export class VirtualServerManager extends CachedManager<VirtualServer, RawVirtua
     return Number(server_id);
   }
 
+  /**
+   * Delete a virtual server.
+   * Note: Only stopped virtual servers can be deleted.
+   * @param {VirtualServerResolvable} virtualServer The virtual server to delete.
+   * @returns {Promise<void>} A promise that resolves when the virtual server has been deleted.
+   */
   async delete(virtualServer: VirtualServerResolvable): Promise<void> {
     const id = this.resolveId(virtualServer);
     await this.query.commands.serverdelete({ sid: id });
