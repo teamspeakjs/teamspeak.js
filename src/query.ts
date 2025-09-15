@@ -248,6 +248,14 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
+   * Stop the whole TeamSpeak 3 Server instance.
+   * @param {string} reason The reason for stopping the server process. (optional)
+   */
+  stopServerProcess(reason?: string): Promise<void> {
+    return this.commands.serverprocessstop({ reasonmsg: reason });
+  }
+
+  /**
    * Notice: All methods below this line are considered "raw" and return unprocessed data from the server. These methods will be deprecated and replaced with higher-level abstractions (e.g. Query.apiKeys.create(...)).
    */
 

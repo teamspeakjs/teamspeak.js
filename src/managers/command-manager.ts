@@ -645,8 +645,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('servernotifyunregister');
   }
 
-  serverprocessstop() {
-    throw new Error('Not implemented');
+  serverprocessstop(params: { reasonmsg?: string }) {
+    return this.query.commands._execute<void>('serverprocessstop', params);
   }
 
   serverrequestconnectioninfo() {
