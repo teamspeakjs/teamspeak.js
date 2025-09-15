@@ -150,8 +150,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Login to the ServerQuery.
-   * @param username The username to login with.
-   * @param password The password to login with.
+   * @param {string} username The username to login with.
+   * @param {string} password The password to login with.
    */
   login(username: string, password: string): Promise<void> {
     return this.commands.login({
@@ -169,7 +169,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Select a virtual server by its ID.
-   * @param id The virtual server ID.
+   * @param {number} id The virtual server ID.
    * @returns {Promise<void>}
    *
    * @deprecated Use Query.virtualServers.use(...) instead.
@@ -189,7 +189,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Select a virtual server by its port.
-   * @param port The virtual server port.
+   * @param {number} port The virtual server port.
    * @returns {Promise<void>}
    *
    * @deprecated Use Query.virtualServers.use(...) instead.
@@ -202,7 +202,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Sends a server message to virtual servers in the TeamSpeak 3 Server instance.
-   * @param content The message to send.
+   * @param {string} content The message to send.
    */
   sendHostMessage(content: string): Promise<void> {
     return this.commands.gm({ msg: content });
@@ -210,7 +210,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Sends a server message to the current virtual server.
-   * @param content The message to send.
+   * @param {string} content The message to send.
    */
   sendServerMessage(content: string): Promise<void> {
     if (!this.virtualServers.currentId) throw new Error('No virtual server selected.');
@@ -224,7 +224,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Sends a message to the current channel.
-   * @param content The message content.
+   * @param {string} content The message content.
    */
   sendChannelMessage(content: string): Promise<void> {
     return this.commands.sendtextmessage({
@@ -236,7 +236,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Update the login credentials for the current ServerQuery. You can only pass the username, the password will be generated automatically.
-   * @param username The username to set.
+   * @param {string} username The username to set.
    * @returns {Promise<string>} The generated password.
    */
   async updateLoginCredentials(username: string): Promise<string> {
