@@ -26,6 +26,7 @@ import {
   RawClientDbInfo,
   RawClientUid,
   RawPermission,
+  RawQueryLogin,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -466,5 +467,14 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   getRawPermissions(): Promise<RawPermission[]> {
     return this.commands.permissionlist();
+  }
+
+  /**
+   * Get a list of query logins across all virtual servers.
+   */
+  getRawQueryLogins(
+    params: { pattern?: string; start?: number; duration?: number; _count?: true } = {},
+  ): Promise<RawQueryLogin | RawQueryLogin[]> {
+    return this.commands.queryloginlist(params);
   }
 }

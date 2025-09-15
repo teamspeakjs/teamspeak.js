@@ -483,3 +483,9 @@ export type RawPermission = {
   permname: string;
   permdesc: string;
 };
+
+export type RawQueryLogin = {
+  cldbid: string;
+  sid: string;
+  client_login_name: string;
+};

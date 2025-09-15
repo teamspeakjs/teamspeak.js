@@ -31,6 +31,7 @@ import {
   RawClientDbInfo,
   RawClientUid,
   RawPermission,
+  RawQueryLogin,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -532,8 +533,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  queryloginlist() {
-    throw new Error('Not implemented');
+  queryloginlist(params: { pattern?: string; start?: number; duration?: number; _count?: true }) {
+    return this.query.commands._execute<RawQueryLogin | RawQueryLogin[]>('queryloginlist', params);
   }
 
   quit() {
