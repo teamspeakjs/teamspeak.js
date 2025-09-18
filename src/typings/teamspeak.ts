@@ -489,3 +489,17 @@ export type RawQueryLogin = {
   sid: string;
   client_login_name: string;
 };
+
+export type RawClientPermission = {
+  permid: string;
+  permvalue: string;
+  permnegated: string;
+  permskip: string;
+};
+
+export type RawChannelPermission = {
+  permid: string;
+  permvalue: string;
+  permnegated: string;
+  permskip: string;
+};

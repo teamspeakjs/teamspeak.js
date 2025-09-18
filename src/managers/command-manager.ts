@@ -32,6 +32,8 @@ import {
   RawClientUid,
   RawPermission,
   RawQueryLogin,
+  RawClientPermission,
+  RawChannelPermission,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -231,8 +233,11 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('channelmove', params);
   }
 
-  channelpermlist() {
-    throw new Error('Not implemented');
+  channelpermlist(params: { cid: number; _permsid?: true }) {
+    return this.query.commands._execute<RawChannelPermission | RawChannelPermission[]>(
+      'channelpermlist',
+      params,
+    );
   }
 
   clientaddperm() {
@@ -341,8 +346,11 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('clientmove', params);
   }
 
-  clientpermlist() {
-    throw new Error('Not implemented');
+  clientpermlist(params: { cldbid: number; _permsid?: true }) {
+    return this.query.commands._execute<RawClientPermission | RawClientPermission[]>(
+      'clientpermlist',
+      params,
+    );
   }
 
   clientpoke(params: { clid: number; msg: string }) {
