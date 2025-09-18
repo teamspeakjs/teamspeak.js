@@ -32,6 +32,7 @@ import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
 import { BanManager } from './managers/ban-manager';
 import { ChannelGroupManager } from './managers/channel-group-manager';
+import { PermissionManager } from './managers/permission-manager';
 
 interface ClientOptions {
   host: string;
@@ -95,6 +96,11 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   public channelGroups = new ChannelGroupManager(this);
 
+  /**
+   * The Permission Manager of the Query instance.
+   */
+  public permissions = new PermissionManager(this);
+
   private _pingInterval: NodeJS.Timeout | null = null;
 
   constructor(options: ClientOptions) {
@@ -146,6 +152,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.virtualServers.cache.clear();
     this.bans.cache.clear();
     this.channelGroups.cache.clear();
+    this.permissions.cache.clear();
   }
 
   /**
@@ -472,6 +479,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Get a list of permissions on the TeamSpeak 3 Server instance.
+   *
+   * @deprecated Please use Query.permissions.fetch() instead.
    */
   getRawPermissions(): Promise<RawPermission[]> {
     return this.commands.permissionlist();
