@@ -40,11 +40,46 @@ export class NotificationManager extends BaseManager {
    * Subscribe to all notifications.
    */
   async subscribeAll(): Promise<void> {
-    await this.query.commands.servernotifyregister({ event: 'server' });
-    await this.query.commands.servernotifyregister({ event: 'channel', id: 0 });
-    await this.query.commands.servernotifyregister({ event: 'textserver' });
-    await this.query.commands.servernotifyregister({ event: 'textchannel' });
-    await this.query.commands.servernotifyregister({ event: 'textprivate' });
+    await this.subscribeServer();
+    await this.subscribeChannel();
+    await this.subscribeTextServer();
+    await this.subscribeTextChannel();
+    await this.subscribeTextPrivate();
+  }
+
+  /**
+   * Subscribe to server notifications.
+   */
+  subscribeServer(): Promise<void> {
+    return this.query.commands.servernotifyregister({ event: 'server' });
+  }
+
+  /**
+   * Subscribe to channel notifications.
+   */
+  subscribeChannel(channelId: number = 0): Promise<void> {
+    return this.query.commands.servernotifyregister({ event: 'channel', id: channelId });
+  }
+
+  /**
+   * Subscribe to text server notifications.
+   */
+  subscribeTextServer(): Promise<void> {
+    return this.query.commands.servernotifyregister({ event: 'textserver' });
+  }
+
+  /**
+   * Subscribe to text channel notifications.
+   */
+  subscribeTextChannel(): Promise<void> {
+    return this.query.commands.servernotifyregister({ event: 'textchannel' });
+  }
+
+  /**
+   * Subscribe to text private notifications.
+   */
+  subscribeTextPrivate(): Promise<void> {
+    return this.query.commands.servernotifyregister({ event: 'textprivate' });
   }
 
   /**
