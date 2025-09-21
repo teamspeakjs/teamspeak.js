@@ -36,6 +36,7 @@ import { VirtualServerManager } from './managers/virtual-server-manager';
 import { BanManager } from './managers/ban-manager';
 import { ChannelGroupManager } from './managers/channel-group-manager';
 import { PermissionManager } from './managers/permission-manager';
+import { Instance } from './structures/instance';
 
 interface ClientOptions {
   host: string;
@@ -70,7 +71,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   public notifications = new NotificationManager(this);
 
   /**
-   * The Query Client of the Query instance.
+   * The Query Client of the Query instance. Will be null until the client is logged in.
    */
   public client = null as unknown as QueryClient; // Overwrite type
 
@@ -103,6 +104,11 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * The Permission Manager of the Query instance.
    */
   public permissions = new PermissionManager(this);
+
+  /**
+   * The Instance of the Query instance. Needs to be fetched first using fetchInstance().
+   */
+  public instance = null as unknown as Instance; // Overwrite type
 
   private _pingInterval: NodeJS.Timeout | null = null;
 
@@ -263,6 +269,13 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   stopServerProcess(reason?: string): Promise<void> {
     return this.commands.serverprocessstop({ reasonmsg: reason });
+  }
+
+  async fetchInstance(): Promise<Instance> {
+    const data = await this.commands.instanceinfo();
+    const instance = new Instance(this, data);
+    this.instance = instance;
+    return instance;
   }
 
   /**
