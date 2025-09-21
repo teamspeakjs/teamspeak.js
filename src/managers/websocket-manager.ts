@@ -51,6 +51,7 @@ export class WebSocketManager extends EventEmitter {
 
   destroy(): void {
     this.removeAllListeners();
-    this.socket.destroy();
+    // In tests or before connect(), the socket may not be initialized
+    this.socket?.destroy();
   }
 }
