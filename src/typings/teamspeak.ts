@@ -323,6 +323,10 @@ export type RawClientFindItem = {
   client_nickname: string;
 };
 
+export type RawClientFindDatabaseItem = {
+  cldbid: string;
+};
+
 export type RawClientIds = [RawClientIdsItem, ...Omit<RawClientIdsItem, 'cluid'>[]];
 
 export type RawClientIdsItem = {

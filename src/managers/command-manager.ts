@@ -34,6 +34,7 @@ import {
   RawQueryLogin,
   RawClientPermission,
   RawChannelPermission,
+  RawClientFindDatabaseItem,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -252,8 +253,11 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  clientdbfind() {
-    throw new Error('Not implemented');
+  clientdbfind(params: { pattern: string; _uid?: true }) {
+    return this.query.commands._execute<RawClientFindDatabaseItem | RawClientFindDatabaseItem[]>(
+      'clientdbfind',
+      params,
+    );
   }
 
   clientdbinfo(params: { cldbid: number }) {

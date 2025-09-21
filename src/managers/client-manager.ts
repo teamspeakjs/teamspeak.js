@@ -12,6 +12,7 @@ import { CommandError } from '../errors/command-error';
 import {
   KickReasonIdentifier,
   RawClient,
+  RawClientFindDatabaseItem,
   RawClientFindItem,
   TextMessageTargetMode,
 } from '../typings/teamspeak';
@@ -166,6 +167,50 @@ export class ClientManager extends CachedManager<Client, RawClient> {
     }
 
     return clients;
+  }
+
+  /**
+   * Searches for clients based on the client nickname or unique ID.
+   *
+   * Supports SQL-like pattern matching with "%"
+   *
+   * @param options The options for searching the client.
+   * @returns {Promise<number[]>} The found clients database IDs
+   */
+  async searchDatabase(
+    options:
+      | {
+          /**
+           * The nickname to search for.
+           */
+          nickname: string;
+          uniqueId?: never;
+        }
+      | {
+          nickname?: never;
+          /**
+           * The unique ID to search for.
+           */
+          uniqueId: string;
+        },
+  ): Promise<number[]> {
+    let _data: RawClientFindDatabaseItem | RawClientFindDatabaseItem[] = [];
+    try {
+      _data = await this.query.commands.clientdbfind({
+        pattern: options.nickname ?? options.uniqueId,
+        _uid: options.uniqueId ? true : undefined,
+      });
+    } catch (error) {
+      if (error instanceof CommandError && error.id === 512) {
+        return [];
+      }
+
+      throw error;
+    }
+
+    const data = Array.isArray(_data) ? _data : [_data];
+
+    return data.map(({ cldbid }) => Number(cldbid));
   }
 
   /**
