@@ -317,7 +317,7 @@ export class ClientManager extends CachedManager<Client, RawClient> {
     const clientId = this.resolveId(client);
     const serverGroupId = this.query.serverGroups.resolveId(serverGroup);
 
-    const fetchedClient = await this.fetch(clientId, { force: true });
+    const fetchedClient = await this.fetch(clientId);
 
     await this.query.commands.servergroupaddclient({
       sgid: serverGroupId,
@@ -337,7 +337,7 @@ export class ClientManager extends CachedManager<Client, RawClient> {
     const clientId = this.resolveId(client);
     const serverGroupId = this.query.serverGroups.resolveId(serverGroup);
 
-    const fetchedClient = await this.fetch(clientId, { force: true });
+    const fetchedClient = await this.fetch(clientId);
 
     await this.query.commands.servergroupdelclient({
       sgid: serverGroupId,
