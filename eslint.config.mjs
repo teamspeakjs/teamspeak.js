@@ -62,6 +62,12 @@ export default defineConfig([
     },
   },
   {
-    ignores: ['dist/**', 'src/generated/prisma/**', 'eslint-plugins/**', 'eslint.config.mjs'],
+    ignores: [
+      'dist/**',
+      'src/generated/prisma/**',
+      'eslint-plugins/**',
+      'eslint.config.mjs',
+      'docs-build/**',
+    ],
   },
 ]);
