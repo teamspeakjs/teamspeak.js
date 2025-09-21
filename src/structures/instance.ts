@@ -83,4 +83,13 @@ export class Instance extends Base {
       );
     }
   }
+
+  /**
+   * Stop the instance.
+   * @param {string} reason The reason for stopping the instance. (optional)
+   * @returns {Promise<void>} A promise that resolves when the instance has stopped.
+   */
+  stop(reason?: string): Promise<void> {
+    return this.query.stopServerProcess(reason);
+  }
 }
