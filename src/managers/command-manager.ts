@@ -566,8 +566,56 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('serverdelete', params);
   }
 
-  serveredit() {
-    throw new Error('Not implemented');
+  serveredit(params: {
+    virtualserver_name?: string;
+    virtualserver_port?: number;
+    virtualserver_autostart?: boolean;
+    virtualserver_status?: string;
+    virtualserver_log_client?: boolean;
+    virtualserver_log_query?: boolean;
+    virtualserver_log_channel?: boolean;
+    virtualserver_log_permissions?: boolean;
+    virtualserver_log_server?: boolean;
+    virtualserver_log_filetransfer?: boolean;
+    virtualserver_min_client_version?: number;
+    virtualserver_min_android_version?: number;
+    virtualserver_min_ios_version?: number;
+    virtualserver_needed_identity_security_level?: number;
+    virtualserver_name_phonetic?: string;
+    virtualserver_icon_id?: number;
+    virtualserver_reserved_slots?: number;
+    virtualserver_weblist_enabled?: boolean;
+    virtualserver_codec_encryption_mode?: string;
+    virtualserver_maxclients?: number;
+    virtualserver_welcomemessage?: string;
+    virtualserver_password?: string;
+    virtualserver_hostmessage?: string;
+    virtualserver_hostmessage_mode?: number;
+    virtualserver_default_server_group?: number;
+    virtualserver_default_channel_group?: number;
+    virtualserver_default_channel_admin_group?: number;
+    virtualserver_max_download_total_bandwidth?: number;
+    virtualserver_max_upload_total_bandwidth?: number;
+    virtualserver_download_quota?: number;
+    virtualserver_upload_quota?: number;
+    virtualserver_hostbanner_mode?: number;
+    virtualserver_hostbanner_url?: string;
+    virtualserver_hostbanner_gfx_url?: string;
+    virtualserver_hostbanner_gfx_interval?: number;
+    virtualserver_complain_autoban_count?: number;
+    virtualserver_complain_autoban_time?: number;
+    virtualserver_complain_remove_time?: number;
+    virtualserver_min_clients_in_channel_before_forced_silence?: number;
+    virtualserver_priority_speaker_dimm_modificator?: number;
+    virtualserver_antiflood_points_tick_reduce?: number;
+    virtualserver_antiflood_points_needed_command_block?: number;
+    virtualserver_antiflood_points_needed_plugin_block?: number;
+    virtualserver_antiflood_points_needed_ip_block?: number;
+    virtualserver_hostbutton_tooltip?: string;
+    virtualserver_hostbutton_gfx_url?: string;
+    virtualserver_hostbutton_url?: string;
+  }) {
+    return this.query.commands._execute<void>('serveredit', params);
   }
 
   servergroupadd(params: { name: string; type?: number }) {

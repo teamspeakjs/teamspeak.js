@@ -5,6 +5,7 @@ import { CachedManager } from './cached-manager';
 import { VirtualServerResolvable } from '../typings/types';
 import { VirtualServer } from '../structures/virtual-server';
 import { QueryClient } from '../structures/query-client';
+import { stringifyValues } from '../utils/helpers';
 
 type VirtualServerUseOptions = {
   /**
@@ -19,6 +20,13 @@ type VirtualServerUseOptions = {
    * The default client nickname.
    */
   nickname?: string;
+};
+
+// TODO: Add all the options
+export type VirtualServerEditOptions = {
+  name?: string;
+  port?: number;
+  autoStart?: boolean;
 };
 
 /**
@@ -123,6 +131,23 @@ export class VirtualServerManager extends CachedManager<VirtualServer, RawVirtua
     const { server_id } = await this.query.commands.serveridgetbyport({ virtualserver_port: port });
 
     return Number(server_id);
+  }
+
+  /**
+   * Edits the currently used virtual server.
+   * @param {VirtualServerEditOptions} options The options for editing the virtual server.
+   * @returns {Promise<VirtualServer>} The updated virtual server.
+   */
+  async edit(options: VirtualServerEditOptions): Promise<VirtualServer> {
+    const payload = {
+      virtualserver_name: options.name,
+      virtualserver_port: options.port,
+      virtualserver_autostart: options.autoStart,
+    };
+
+    await this.query.commands.serveredit(payload);
+
+    return this.query.actions.VirtualServerUpdate.handle(stringifyValues(payload)).after!;
   }
 
   /**

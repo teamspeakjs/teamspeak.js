@@ -1,3 +1,4 @@
+import { VirtualServerEditOptions } from '../managers/virtual-server-manager';
 import { Query } from '../query';
 import { RawVirtualServer } from '../typings/teamspeak';
 import { Base } from './base';
@@ -434,6 +435,10 @@ export class VirtualServer extends Base {
         data.connection_bandwidth_received_last_minute_total!,
       );
     }
+  }
+
+  edit(options: VirtualServerEditOptions): Promise<VirtualServer> {
+    return this.query.virtualServers.edit(options);
   }
 
   /**
