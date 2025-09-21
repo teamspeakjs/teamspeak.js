@@ -514,16 +514,28 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     });
   }
 
+  /**
+   * Get a list of bindings.
+   * @param subsystem The subsystem of the binding.
+   */
   getRawBindings(
     subsystem?: 'voice' | 'query' | 'filetransfer',
   ): Promise<RawBinding | RawBinding[]> {
     return this.commands.bindinglist({ subsystem });
   }
 
+  /**
+   * Get a list of client database properties.
+   * @param clientDatabaseId The ID of the client.
+   */
   getRawClientDatabaseProperties(clientDatabaseId: number): Promise<RawClientDbInfo> {
     return this.commands.clientdbinfo({ cldbid: clientDatabaseId });
   }
 
+  /**
+   * Get a list of client unique IDs from their client IDs.
+   * @param clientId The ID of the client.
+   */
   getRawClientUniqueIdFromClientId(clientId: number): Promise<RawClientUid | RawClientUid[]> {
     return this.commands.clientgetuidfromclid({ clid: clientId });
   }
@@ -546,18 +558,29 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     return this.commands.queryloginlist(params);
   }
 
+  /**
+   * Get a list of client permissions.
+   * @param clientDatabaseId The ID of the client.
+   */
   getRawClientPermissions(
     clientDatabaseId: number,
   ): Promise<RawClientPermission | RawClientPermission[]> {
     return this.commands.clientpermlist({ cldbid: clientDatabaseId, _permsid: true });
   }
 
+  /**
+   * Get a list of channel permissions.
+   * @param channelId The ID of the channel.
+   */
   getRawChannelPermissions(
     channelId: number,
   ): Promise<RawChannelPermission | RawChannelPermission[]> {
     return this.commands.channelpermlist({ cid: channelId, _permsid: true });
   }
 
+  /**
+   * Get a list of database clients.
+   */
   getRawDbClients(
     options: { start?: number; duration?: number; _count?: true } = {},
   ): Promise<RawDbClient | RawDbClient[]> {
