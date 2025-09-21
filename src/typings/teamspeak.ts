@@ -519,3 +519,11 @@ export type RawDbClient = {
   client_lastip: string;
   client_login_name: string;
 };
+
+export type RawLogViewItem = {
+  last_pos: string;
+  file_size: string;
+  l: string;
+};
+
+export type RawLogView = [RawLogViewItem, ...Pick<RawLogViewItem, 'l'>[]];

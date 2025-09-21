@@ -30,6 +30,7 @@ import {
   RawClientPermission,
   RawChannelPermission,
   RawDbClient,
+  LogLevel,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -39,9 +40,18 @@ import { PermissionManager } from './managers/permission-manager';
 import { Instance } from './structures/instance';
 
 interface ClientOptions {
+  /**
+   * The host you want to connect to.
+   */
   host: string;
+  /**
+   * The port you want to connect to.
+   */
   port?: number;
-  protocol?: 'websocket' | 'ssh'; //TODO: implement proper logic for this
+  /**
+   * The protocol you want to use. (Currently not implemented)
+   */
+  protocol?: 'websocket' | 'ssh' | 'http'; //TODO: implement proper logic for this
 }
 
 /**
@@ -276,6 +286,30 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     const instance = new Instance(this, data);
     this.instance = instance;
     return instance;
+  }
+
+  addLog(level: LogLevel, message: string): Promise<void> {
+    return this.commands.logadd({ loglevel: level, logmsg: message });
+  }
+
+  async fetchLogs(): Promise<
+    { timestamp: Date; level: string; module: string; virtualServerId: number; message: string }[]
+  > {
+    const _data = await this.commands.logview({});
+    const data = Array.isArray(_data) ? _data : [_data];
+
+    return data
+      .map(({ l }) => l)
+      .map((line) => {
+        const [timestamp, level, prefix, id, message] = line.split('|').map((part) => part.trim());
+        return {
+          timestamp: new Date(timestamp),
+          level,
+          module: prefix,
+          virtualServerId: Number(id),
+          message,
+        };
+      });
   }
 
   /**

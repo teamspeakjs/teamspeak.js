@@ -36,6 +36,8 @@ import {
   RawChannelPermission,
   RawClientFindDatabaseItem,
   RawDbClient,
+  RawLogView,
+  RawLogViewItem,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -386,7 +388,7 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('complaindelall', params);
   }
 
-  complainlist(params: { tcldbid?: number }) {
+  complainlist(params: { tcldbid?: number } = {}) {
     return this.query.commands._execute<RawComplain | RawComplain[]>('complainlist', params);
   }
 
@@ -462,8 +464,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawInstance>('instanceinfo');
   }
 
-  logadd() {
-    throw new Error('Not implemented');
+  logadd(params: { loglevel: number; logmsg: string }) {
+    return this.query.commands._execute<void>('logadd', params);
   }
 
   login(params: { client_login_name: string; client_login_password: string }) {
@@ -474,8 +476,10 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('logout');
   }
 
-  logview() {
-    throw new Error('Not implemented');
+  logview(
+    params: { lines?: number; reverse?: boolean; instance?: boolean; begin_pos?: number } = {},
+  ) {
+    return this.query.commands._execute<RawLogView | RawLogViewItem[]>('logview', params);
   }
 
   messageadd() {
