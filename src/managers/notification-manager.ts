@@ -8,6 +8,9 @@ import { TextMessageNotification } from '../notifications/textmessage';
 import { Query } from '../query';
 import { BaseManager } from './base-manager';
 
+/**
+ * Manages the notifications from the TeamSpeak server.
+ */
 export class NotificationManager extends BaseManager {
   // CHANNELS
   channelcreated: ChannelCreatedNotification;
