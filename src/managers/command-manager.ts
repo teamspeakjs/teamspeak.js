@@ -38,6 +38,7 @@ import {
   RawDbClient,
   RawLogView,
   RawLogViewItem,
+  RawPrivilegeKey,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -526,20 +527,26 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  privilegekeyadd() {
-    throw new Error('Not implemented');
+  privilegekeyadd(params: {
+    tokentype: string;
+    tokenid1: string;
+    tokenid2: string;
+    tokendescription?: string;
+    customset: string;
+  }) {
+    return this.query.commands._execute<{ token: string }>('privilegekeyadd', params);
   }
 
-  privilegekeydelete() {
-    throw new Error('Not implemented');
+  privilegekeydelete(params: { token: string }) {
+    return this.query.commands._execute<void>('privilegekeydelete', params);
   }
 
   privilegekeylist() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawPrivilegeKey | RawPrivilegeKey[]>('privilegekeylist');
   }
 
-  privilegekeyuse() {
-    throw new Error('Not implemented');
+  privilegekeyuse(params: { token: string }) {
+    return this.query.commands._execute<void>('privilegekeyuse', params);
   }
 
   queryloginadd() {

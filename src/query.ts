@@ -31,6 +31,7 @@ import {
   RawChannelPermission,
   RawDbClient,
   LogLevel,
+  RawPrivilegeKey,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -561,5 +562,55 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     options: { start?: number; duration?: number; _count?: true } = {},
   ): Promise<RawDbClient | RawDbClient[]> {
     return this.commands.clientdblist(options);
+  }
+
+  /**
+   * Get a list of privilege keys.
+   */
+  getRawPrivilegeKeys(): Promise<RawPrivilegeKey | RawPrivilegeKey[]> {
+    return this.commands.privilegekeylist();
+  }
+
+  /**
+   * Create a new privilege key.
+   *
+   * tokentype: 0 = group, 1 = channel
+   *
+   * tokenid1: Group ID
+   *
+   * tokenid2: Channel ID (if tokentype is 1)
+   *
+   * tokendescription: Description of the privilege key (optional)
+   *
+   * customset: Custom set of the privilege key (optional)
+   *
+   * @param params The parameters for the privilege key.
+   * @returns The created privilege key.
+   */
+  async createRawPrivilegeKey(params: {
+    tokentype: string;
+    tokenid1: string;
+    tokenid2: string;
+    tokendescription?: string;
+    customset: string;
+  }): Promise<string> {
+    const { token } = await this.commands.privilegekeyadd(params);
+    return token;
+  }
+
+  /**
+   * Delete a privilege key by its token.
+   * @param token The token of the privilege key to delete.
+   */
+  deleteRawPrivilegeKey(token: string): Promise<void> {
+    return this.commands.privilegekeydelete({ token });
+  }
+
+  /**
+   * Use a privilege key by its token.
+   * @param token The token of the privilege key to use.
+   */
+  useRawPrivilegeKey(token: string): Promise<void> {
+    return this.commands.privilegekeyuse({ token });
   }
 }

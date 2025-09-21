@@ -527,3 +527,13 @@ export type RawLogViewItem = {
 };
 
 export type RawLogView = [RawLogViewItem, ...Pick<RawLogViewItem, 'l'>[]];
+
+export type RawPrivilegeKey = {
+  token: string;
+  token_type: string;
+  token_id1: string;
+  token_id2: string;
+  token_created: string;
+  token_description: string;
+  token_customset: string;
+};
