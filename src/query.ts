@@ -29,6 +29,7 @@ import {
   RawQueryLogin,
   RawClientPermission,
   RawChannelPermission,
+  RawDbClient,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -507,5 +508,11 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     channelId: number,
   ): Promise<RawChannelPermission | RawChannelPermission[]> {
     return this.commands.channelpermlist({ cid: channelId, _permsid: true });
+  }
+
+  getRawDbClients(
+    options: { start?: number; duration?: number; _count?: true } = {},
+  ): Promise<RawDbClient | RawDbClient[]> {
+    return this.commands.clientdblist(options);
   }
 }

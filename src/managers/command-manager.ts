@@ -35,6 +35,7 @@ import {
   RawClientPermission,
   RawChannelPermission,
   RawClientFindDatabaseItem,
+  RawDbClient,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -264,8 +265,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawClientDbInfo>('clientdbinfo', params);
   }
 
-  clientdblist() {
-    throw new Error('Not implemented');
+  clientdblist(params: { start?: number; duration?: number; _count?: true }) {
+    return this.query.commands._execute<RawDbClient | RawDbClient[]>('clientdblist', params);
   }
 
   clientdelperm() {

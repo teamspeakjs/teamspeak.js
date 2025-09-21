@@ -507,3 +507,15 @@ export type RawChannelPermission = {
   permnegated: string;
   permskip: string;
 };
+
+export type RawDbClient = {
+  cldbid: string;
+  client_unique_identifier: string;
+  client_nickname: string;
+  client_created: string;
+  client_lastconnected: string;
+  client_totalconnections: string;
+  client_description: string;
+  client_lastip: string;
+  client_login_name: string;
+};
