@@ -466,4 +466,16 @@ export class VirtualServer extends Base {
   stop(reason?: string): Promise<void> {
     return this.query.virtualServers.stop(this, reason);
   }
+
+  setName(name: string): Promise<VirtualServer> {
+    return this.edit({ name });
+  }
+
+  setPort(port: number): Promise<VirtualServer> {
+    return this.edit({ port });
+  }
+
+  setAutoStart(autoStart: boolean): Promise<VirtualServer> {
+    return this.edit({ autoStart });
+  }
 }
