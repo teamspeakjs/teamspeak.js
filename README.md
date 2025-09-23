@@ -17,6 +17,8 @@ A fully typesafe and easy-to-use Node.js client for interacting with Teamspeak s
 
 🔗 [Documentation](https://teamspeak.js.org/docs)
 
+🔗 [Exmples](https://teamspeak.js.org/examples)
+
 🔗 [View on npm](https://www.npmjs.com/package/teamspeak.js)
 
 ## Examples
