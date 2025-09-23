@@ -76,3 +76,27 @@ export enum ChannelGroupType {
   Regular,
   Query,
 }
+
+export type ServerVersion = {
+  version: string;
+  build: number;
+  platform: string;
+};
+
+export type HostInfo = {
+  instanceUptime: number;
+  hostTimestampUtc: Date;
+  virtualServersRunningTotal: number;
+  connectionFiletransferBandwidthSent: number;
+  connectionFiletransferBandwidthReceived: number;
+  connectionFiletransferBytesSentTotal: number;
+  connectionFiletransferBytesReceivedTotal: number;
+  connectionPacketsSentTotal: number;
+  connectionBytesSentTotal: number;
+  connectionPacketsReceivedTotal: number;
+  connectionBytesReceivedTotal: number;
+  connectionBandwidthSentLastSecondTotal: number;
+  connectionBandwidthSentLastMinuteTotal: number;
+  connectionBandwidthReceivedLastSecondTotal: number;
+  connectionBandwidthReceivedLastMinuteTotal: number;
+};

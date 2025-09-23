@@ -8,7 +8,7 @@ import { NotificationManager } from './managers/notification-manager';
 import { QueryClient } from './structures/query-client';
 import { ActionManager } from './managers/action-manager';
 import { AsyncEventEmitter } from '@vladfrangu/async_event_emitter';
-import { EventTypes } from './typings/types';
+import { EventTypes, HostInfo, ServerVersion } from './typings/types';
 import { Events } from './utils/events';
 import {
   RawClientDbid,
@@ -382,12 +382,56 @@ export class Query extends AsyncEventEmitter<EventTypes> {
       });
   }
 
+  async fetchServerVersion(): Promise<ServerVersion> {
+    const data = await this.commands.version();
+    return {
+      version: data.version,
+      build: Number(data.build),
+      platform: data.platform,
+    };
+  }
+
+  async fetchHostInfo(): Promise<HostInfo> {
+    const data = await this.commands.hostinfo();
+    return {
+      instanceUptime: Number(data.instance_uptime),
+      hostTimestampUtc: new Date(data.host_timestamp_utc),
+      virtualServersRunningTotal: Number(data.virtualservers_running_total),
+      connectionFiletransferBandwidthSent: Number(data.connection_filetransfer_bandwidth_sent),
+      connectionFiletransferBandwidthReceived: Number(
+        data.connection_filetransfer_bandwidth_received,
+      ),
+      connectionFiletransferBytesSentTotal: Number(data.connection_filetransfer_bytes_sent_total),
+      connectionFiletransferBytesReceivedTotal: Number(
+        data.connection_filetransfer_bytes_received_total,
+      ),
+      connectionPacketsSentTotal: Number(data.connection_packets_sent_total),
+      connectionBytesSentTotal: Number(data.connection_bytes_sent_total),
+      connectionPacketsReceivedTotal: Number(data.connection_packets_received_total),
+      connectionBytesReceivedTotal: Number(data.connection_bytes_received_total),
+      connectionBandwidthSentLastSecondTotal: Number(
+        data.connection_bandwidth_sent_last_second_total,
+      ),
+      connectionBandwidthSentLastMinuteTotal: Number(
+        data.connection_bandwidth_sent_last_minute_total,
+      ),
+      connectionBandwidthReceivedLastSecondTotal: Number(
+        data.connection_bandwidth_received_last_second_total,
+      ),
+      connectionBandwidthReceivedLastMinuteTotal: Number(
+        data.connection_bandwidth_received_last_minute_total,
+      ),
+    };
+  }
+
   /**
    * Notice: All methods below this line are considered "raw" and return unprocessed data from the server. These methods will be deprecated and replaced with higher-level abstractions (e.g. Query.apiKeys.create(...)).
    */
 
   /**
    * Get the raw ServerQuery version information.
+   *
+   * @deprecated Please use Query.fetchServerVersion() instead.
    */
   getRawServerVersion(): Promise<RawVersion> {
     return this.commands.version();
@@ -395,6 +439,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Get the raw ServerQuery host information.
+   *
+   * @deprecated Please use Query.fetchHostInfo() instead.
    */
   getRawHostInfo(): Promise<RawHostInfo> {
     return this.commands.hostinfo();
