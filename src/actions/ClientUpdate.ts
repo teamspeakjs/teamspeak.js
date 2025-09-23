@@ -16,7 +16,10 @@ export class ClientUpdateAction extends Action {
   }
 
   handle(data: Payload): { before: Client | null; after: Client | null } {
-    const client = this.query.clients.cache.get(Number(data.clid));
+    const client =
+      data.clid === this.query.client.id.toString()
+        ? this.query.client
+        : this.query.clients.cache.get(Number(data.clid));
 
     if (client) {
       const before = client._update(data);
