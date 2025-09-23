@@ -1,4 +1,6 @@
-import { WebSocketManager } from './managers/websocket-manager';
+import { TCPTransport } from './protocols/tcp';
+import { SSHTransport } from './protocols/ssh';
+import type { Transport } from './protocols/transport';
 import { ChannelManager } from './managers/channel-manager';
 import { ClientManager } from './managers/client-manager';
 import { CommandManager } from './managers/command-manager';
@@ -50,16 +52,24 @@ interface ClientOptions {
    */
   port?: number;
   /**
-   * The protocol you want to use. (Currently not implemented)
+   * The protocol you want to use. Default is 'tcp' (TeamSpeak 3).
    */
-  protocol?: 'websocket' | 'ssh' | 'http'; //TODO: implement proper logic for this
+  protocol?: 'tcp' | 'ssh';
+  /**
+   * SSH authentication options (only used when protocol === 'ssh')
+   */
+  ssh?: {
+    username?: string;
+    password?: string;
+    [key: string]: unknown;
+  };
 }
 
 /**
  * Represents a ServerQuery connection.
  */
 export class Query extends AsyncEventEmitter<EventTypes> {
-  public ws: WebSocketManager;
+  public transport: Transport;
 
   /**
    * The Channel Manager of the Query instance.
@@ -126,15 +136,37 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   constructor(options: ClientOptions) {
     super();
 
-    this.ws = new WebSocketManager(options.host, options.port, (data) => {
-      this.emit(Events.Debug, `[CLIENT] ${data}`);
-    });
+    const protocol = options.protocol ?? 'tcp';
 
-    this.commands.registerWsEvents();
+    switch (protocol) {
+      case 'ssh':
+        if (!options.ssh) {
+          throw new Error('SSH authentication options are required when using the SSH protocol.');
+        }
+
+        this.transport = new SSHTransport(
+          options.host,
+          options.port ?? 10022,
+          options.ssh,
+          (data) => {
+            this.emit(Events.Debug, `[CLIENT] ${data}`);
+          },
+        );
+        break;
+      case 'tcp':
+        this.transport = new TCPTransport(options.host, options.port ?? 10011, (data) => {
+          this.emit(Events.Debug, `[CLIENT] ${data}`);
+        });
+        break;
+      default:
+        throw new Error(`Protocol '${protocol}' is not supported yet.`);
+    }
+
+    this.commands.registerTransportEvents();
 
     this._pingInterval = setInterval(() => this._ping(), 120_000);
 
-    this.ws.on('raw', (data) => {
+    this.transport.on('raw', (data) => {
       this.emit(Events.Debug, `[SERVER] ${data}`);
     });
   }
@@ -149,10 +181,47 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
-   * Connect to the Host.
+   * Connect to the Host and wait until the ServerQuery welcome message is received.
+   * Resolves when the underlying transport emits 'ready'.
    */
-  connect(): void {
-    this.ws.connect();
+  connect(timeoutMs = 15000): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.transport.isReady) return resolve();
+
+      const onReady = (): void => {
+        cleanup();
+        resolve();
+      };
+      const onError = (err: unknown): void => {
+        cleanup();
+        reject(err instanceof Error ? err : new Error(String(err)));
+      };
+      const onClose = (): void => {
+        cleanup();
+        reject(new Error('Connection closed before ready'));
+      };
+
+      let timeout: NodeJS.Timeout | null = setTimeout(() => {
+        cleanup();
+        reject(new Error('Connection timed out'));
+      }, timeoutMs);
+
+      const cleanup = (): void => {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        this.transport.off('ready', onReady);
+        this.transport.off('error', onError);
+        this.transport.off('close', onClose);
+      };
+
+      this.transport.once('ready', onReady);
+      this.transport.once('error', onError);
+      this.transport.once('close', onClose);
+
+      this.transport.connect();
+    });
   }
 
   /**
@@ -163,7 +232,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
       clearInterval(this._pingInterval);
       this._pingInterval = null;
     }
-    this.ws.destroy();
+    this.transport.destroy();
     this.removeAllListeners();
 
     this.channels.cache.clear();

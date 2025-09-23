@@ -73,7 +73,7 @@ export abstract class CommandExecutor extends BaseManager {
         }
         if (value === true) return `${key}=1`;
         if (value === false) return `${key}=0`;
-        if (value === undefined) return undefined;
+        if (value === undefined || value === null) return undefined;
         return `${key}=${this.escapeText(value.toString())}`;
       })
       .filter((v) => v !== undefined)
@@ -331,8 +331,8 @@ export abstract class CommandExecutor extends BaseManager {
     const next = this.queue.shift();
     if (!next) return;
 
-    if (!this.query.ws) {
-      next.reject(new Error('WebSocket manager missing'));
+    if (!this.query.transport) {
+      next.reject(new Error('Transport missing'));
       return;
     }
 
@@ -354,9 +354,9 @@ export abstract class CommandExecutor extends BaseManager {
 
     next.timeout = t;
 
-    // send the command (WebSocketManager.send is expected to send a string)
+    // send the command (transport.send is expected to send a string)
     try {
-      this.query.ws.send(next.command);
+      this.query.transport.send(next.command);
     } catch (err) {
       clearTimeout(t);
       this.inFlight = false;
@@ -368,10 +368,10 @@ export abstract class CommandExecutor extends BaseManager {
     }
   }
 
-  public registerWsEvents(): void {
-    this.query.ws.on('ready', () => this.query.emit('Ready'));
+  public registerTransportEvents(): void {
+    this.query.transport.on('ready', () => this.query.emit('Ready'));
     // single raw handler to keep ordering deterministic
-    this.query.ws.on('raw', (line: string) => {
+    this.query.transport.on('raw', (line: string) => {
       // always emit debug (raw string)
       this.query.emit('debug', line);
       // let the raw handler produce parsed notifications / server events
@@ -379,8 +379,8 @@ export abstract class CommandExecutor extends BaseManager {
       // let protocol-level handler manage command responses
       this.handleProtocolLine(line);
     });
-    this.query.ws.on('error', (err: unknown) => this.query.emit('Error', err));
-    this.query.ws.on('close', () => this.query.emit('Close'));
+    this.query.transport.on('error', (err: unknown) => this.query.emit('Error', err));
+    this.query.transport.on('close', () => this.query.emit('Close'));
   }
 
   /**

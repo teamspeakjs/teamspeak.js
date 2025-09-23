@@ -9,3 +9,4 @@ eslint.config.mjs
 tsconfig.json
 /docs-build
 /tests
+.env

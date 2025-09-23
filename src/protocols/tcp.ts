@@ -1,14 +1,15 @@
-import * as net from 'net';
 import { EventEmitter } from 'events';
+import * as net from 'net';
+import { Transport } from './transport';
 
-export class WebSocketManager extends EventEmitter {
-  private host: string;
-  private port: number;
-  private onOutgoing: (data: string) => void;
+export class TCPTransport extends EventEmitter implements Transport {
+  public isReady = false;
 
+  private readonly host: string;
+  private readonly port: number;
+  private readonly onOutgoing: (data: string) => void;
   private socket!: net.Socket;
   private buffer = '';
-  public isReady = false;
 
   constructor(host: string, port = 10011, onOutgoing: (data: string) => void) {
     super();
@@ -26,8 +27,22 @@ export class WebSocketManager extends EventEmitter {
   }
 
   send(cmd: string): void {
-    this.socket.write(cmd.trim() + '\n');
-    this.onOutgoing(cmd.trim());
+    const payload = cmd.trim();
+    this.socket.write(payload + '\n');
+    this.onOutgoing(payload);
+  }
+
+  onData(callback: (data: string) => void): void {
+    this.on('raw', callback);
+  }
+
+  destroy(): void {
+    this.removeAllListeners();
+    try {
+      this.socket?.destroy();
+    } catch {
+      // ignore destroy errors
+    }
   }
 
   private handleData(data: Buffer): void {
@@ -35,23 +50,17 @@ export class WebSocketManager extends EventEmitter {
     const lines = this.buffer.split('\n');
     this.buffer = lines.pop() || '';
 
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
+    for (const lineRaw of lines) {
+      const line = lineRaw.trim();
+      if (line.length === 0) continue;
 
-      if (!this.isReady && trimmed.startsWith('TS3')) {
+      if (!this.isReady && line.startsWith('TS3')) {
         this.isReady = true;
         this.emit('ready');
         continue;
       }
 
-      this.emit('raw', trimmed);
+      this.emit('raw', line);
     }
-  }
-
-  destroy(): void {
-    this.removeAllListeners();
-    // In tests or before connect(), the socket may not be initialized
-    this.socket?.destroy();
   }
 }
