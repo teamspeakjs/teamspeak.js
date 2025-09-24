@@ -19,7 +19,7 @@
     "url": "git+https://github.com/teamspeakjs/teamspeak.js.git"
   },
   "author": "Lixqa",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/teamspeakjs/teamspeak.js/issues"
   },
