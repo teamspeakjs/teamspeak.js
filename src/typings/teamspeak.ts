@@ -537,3 +537,9 @@ export type RawPrivilegeKey = {
   token_description: string;
   token_customset: string;
 };
+
+export type RawCreatedVirtualServer = {
+  sid: string;
+  token: string;
+  virtualserver_port: string;
+};

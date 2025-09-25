@@ -56,6 +56,7 @@ export type EventTypes = {
   ChannelGroupDelete: [channelGroup: ChannelGroup];
   ChannelGroupUpdate: [before: ChannelGroup, after: ChannelGroup];
 
+  VirtualServerCreate: [virtualServer: VirtualServer];
   VirtualServerUpdate: [before: VirtualServer, after: VirtualServer];
   VirtualServerDelete: [virtualServer: VirtualServer];
 };

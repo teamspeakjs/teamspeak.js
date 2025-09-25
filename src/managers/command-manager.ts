@@ -39,6 +39,7 @@ import {
   RawLogView,
   RawLogViewItem,
   RawPrivilegeKey,
+  RawCreatedVirtualServer,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -569,8 +570,26 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('sendtextmessage', params);
   }
 
-  servercreate() {
-    throw new Error('Not implemented');
+  servercreate(params: {
+    virtualserver_name: string;
+    virtualserver_welcomemessage?: string;
+    virtualserver_maxclients?: number;
+    virtualserver_password?: string;
+    virtualserver_codec_encryption_mode?: string;
+    virtualserver_encryption_ciphers?: string;
+    virtualserver_hostmessage?: string;
+    virtualserver_hostmessage_mode?: number;
+    virtualserver_default_server_group?: number;
+    virtualserver_default_channel_group?: number;
+    virtualserver_hostbanner_url?: string;
+    virtualserver_hostbanner_gfx_url?: string;
+    virtualserver_hostbanner_gfx_interval?: number;
+    virtualserver_weblist_enabled?: boolean;
+    virtualserver_port?: number;
+    virtualserver_machine_id?: string;
+    virtualserver_autostart?: boolean;
+  }) {
+    return this.query.commands._execute<RawCreatedVirtualServer>('servercreate', params);
   }
 
   serverdelete(params: { sid: number }) {

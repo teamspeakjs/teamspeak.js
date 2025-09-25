@@ -24,8 +24,33 @@ type VirtualServerUseOptions = {
 
 // TODO: Add all the options
 export type VirtualServerEditOptions = {
+  /**
+   * The virtual server name.
+   */
   name?: string;
+  /**
+   * The virtual server port.
+   */
   port?: number;
+  /**
+   * Whether the virtual server should be auto started.
+   */
+  autoStart?: boolean;
+};
+
+// TODO: Add all the options
+export type VirtualServerCreateOptions = {
+  /**
+   * The virtual server name.
+   */
+  name: string;
+  /**
+   * The virtual server port.
+   */
+  port?: number;
+  /**
+   * Whether the virtual server should be auto started.
+   */
   autoStart?: boolean;
 };
 
@@ -131,6 +156,32 @@ export class VirtualServerManager extends CachedManager<VirtualServer, RawVirtua
     const { server_id } = await this.query.commands.serveridgetbyport({ virtualserver_port: port });
 
     return Number(server_id);
+  }
+
+  /**
+   * Creates a virtual server.
+   * @param {VirtualServerCreateOptions} options The options for creating the virtual server.
+   * @returns {Promise<{ virtualServer: VirtualServer; token: string }>} The created virtual server and its token.
+   */
+  async create(
+    options: VirtualServerCreateOptions,
+  ): Promise<{ virtualServer: VirtualServer; token: string }> {
+    const payload = {
+      virtualserver_name: options.name,
+      virtualserver_port: options.port,
+      virtualserver_autostart: options.autoStart,
+    };
+
+    const data = await this.query.commands.servercreate(payload);
+
+    const virtualServer = this.query.actions.VirtualServerCreate.handle(
+      stringifyValues({ ...data, ...payload }),
+    ).virtualServer;
+
+    return {
+      virtualServer,
+      token: data.token,
+    };
   }
 
   /**

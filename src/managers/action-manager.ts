@@ -13,6 +13,7 @@ import { ClientUpdateAction } from '../actions/ClientUpdate';
 import { ServerGroupCreateAction } from '../actions/ServerGroupCreate';
 import { ServerGroupDeleteAction } from '../actions/ServerGroupDelete';
 import { ServerGroupUpdateAction } from '../actions/ServerGroupUpdate';
+import { VirtualServerCreateAction } from '../actions/VirtualServerCreate';
 import { VirtualServerDeleteAction } from '../actions/VirtualServerDelete';
 import { VirtualServerUpdateAction } from '../actions/VirtualServerUpdate';
 import { Query } from '../query';
@@ -45,6 +46,7 @@ export class ActionManager extends BaseManager {
   ChannelGroupUpdate: ChannelGroupUpdateAction;
 
   // VIRTUAL SERVERS
+  VirtualServerCreate: VirtualServerCreateAction;
   VirtualServerUpdate: VirtualServerUpdateAction;
   VirtualServerDelete: VirtualServerDeleteAction;
 
@@ -71,6 +73,7 @@ export class ActionManager extends BaseManager {
     this.ChannelGroupDelete = new ChannelGroupDeleteAction(query);
     this.ChannelGroupUpdate = new ChannelGroupUpdateAction(query);
 
+    this.VirtualServerCreate = new VirtualServerCreateAction(query);
     this.VirtualServerUpdate = new VirtualServerUpdateAction(query);
     this.VirtualServerDelete = new VirtualServerDeleteAction(query);
   }
