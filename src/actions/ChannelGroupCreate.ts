@@ -5,7 +5,8 @@ import { Events } from '../utils/events';
 
 type Payload = {
   cgid: string;
-  name: string;
+  name?: string;
+  type?: string;
 };
 
 export class ChannelGroupCreateAction extends Action {
