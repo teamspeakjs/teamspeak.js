@@ -2,7 +2,7 @@ import { Collection } from '@discordjs/collection';
 import { ClientEditOptions } from '../managers/client-manager';
 import { Query } from '../query';
 import { RawClient } from '../typings/teamspeak';
-import { ChannelResolvable, ServerGroupResolvable } from '../typings/types';
+import { ChannelGroupResolvable, ChannelResolvable, ServerGroupResolvable } from '../typings/types';
 import { Base } from './base';
 import { Channel } from './channel';
 import { ServerGroup } from './server-group';
@@ -192,6 +192,16 @@ export class Client extends Base {
    */
   ban(options: BanClientOptions = {}): Promise<Collection<number, Ban>> {
     return this.query.bans.banClient(this, options);
+  }
+
+  /**
+   * Sets a channel group for the client in a channel.
+   * @param {ChannelResolvable} channel The channel to set the channel group for.
+   * @param {ChannelGroupResolvable} channelGroup The channel group to set for the client.
+   * @returns {Promise<void>} A promise that resolves when the channel group has been set.
+   */
+  setChannelGroup(channel: ChannelResolvable, channelGroup: ChannelGroupResolvable): Promise<void> {
+    return this.query.clients.setChannelGroup(this, channel, channelGroup);
   }
 
   /**

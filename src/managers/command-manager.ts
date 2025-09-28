@@ -193,8 +193,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  channelgroupcopy() {
-    throw new Error('Not implemented');
+  channelgroupcopy(params: { scgid: number; tcgid?: number; name?: string; type?: number }) {
+    return this.query.commands._execute<{ cgid: string }>('channelgroupcopy', params);
   }
 
   channelgroupdel(params: { cgid: number; force?: boolean }) {
@@ -779,8 +779,8 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  setclientchannelgroup() {
-    throw new Error('Not implemented');
+  setclientchannelgroup(params: { cgid: number; cid: number; cldbid: number }) {
+    return this.query.commands._execute<void>('setclientchannelgroup', params);
   }
 
   tokenadd() {

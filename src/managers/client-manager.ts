@@ -6,6 +6,7 @@ import {
   BaseFetchOptions,
   ChannelResolvable,
   ClientResolvable,
+  ChannelGroupResolvable,
   ServerGroupResolvable,
 } from '../typings/types';
 import { CommandError } from '../errors/command-error';
@@ -370,7 +371,35 @@ export class ClientManager extends CachedManager<Client, RawClient> {
     return serverGroups;
   }
 
+  /**
+   * Deletes the database properties of a client.
+   * @param {number} clientDatabaseId The ID of the client.
+   * @returns {Promise<void>} A promise that resolves when the database properties have been deleted.
+   */
   async deleteDatabaseProperties(clientDatabaseId: number): Promise<void> {
     await this.query.commands.clientdbdelete({ cldbid: clientDatabaseId });
+  }
+
+  /**
+   * Sets a channel group for a client in a channel.
+   * @param {ClientResolvable} client The client to set the channel group for.
+   * @param {ChannelResolvable} channel The channel to set the channel group for.
+   * @param {ChannelGroupResolvable} channelGroup The channel group to set for the client.
+   * @returns {Promise<void>} A promise that resolves when the channel group has been set.
+   */
+  async setChannelGroup(
+    client: ClientResolvable,
+    channel: ChannelResolvable,
+    channelGroup: ChannelGroupResolvable,
+  ): Promise<void> {
+    const clientId = this.resolveId(client);
+    const channelId = this.query.channels.resolveId(channel);
+    const channelGroupId = this.query.channelGroups.resolveId(channelGroup);
+
+    await this.query.commands.setclientchannelgroup({
+      cgid: channelGroupId,
+      cid: channelId,
+      cldbid: clientId,
+    });
   }
 }

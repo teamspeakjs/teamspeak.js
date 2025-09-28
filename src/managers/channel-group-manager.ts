@@ -10,6 +10,31 @@ type ChannelGroupCreateOptions = {
   type?: ChannelGroupType;
 };
 
+export interface ChannelGroupCopyOptions {
+  /**
+   * The type of the new channel group.
+   */
+  type: ChannelGroupType;
+}
+
+export interface ChannelGroupCopyOptions_Create extends ChannelGroupCopyOptions {
+  /**
+   * The name of the new channel group.
+   */
+  name: string;
+
+  targetGroup?: never;
+}
+
+export interface ChannelGroupCopyOptions_Target extends ChannelGroupCopyOptions {
+  /**
+   * The target channel group to copy to.
+   */
+  targetGroup: ChannelGroupResolvable;
+
+  name?: never;
+}
+
 /**
  * Manages the channel groups in the TeamSpeak server.
  */
@@ -54,8 +79,11 @@ export class ChannelGroupManager extends CachedManager<ChannelGroup, RawChannelG
    */
   async create(options: ChannelGroupCreateOptions): Promise<ChannelGroup> {
     const data = await this.query.commands.channelgroupadd(options);
-    return this.query.actions.ChannelGroupCreate.handle({ cgid: data.cgid, ...options })
-      .channelGroup;
+    return this.query.actions.ChannelGroupCreate.handle({
+      cgid: data.cgid,
+      name: options.name,
+      type: options.type ? options.type.toString() : undefined,
+    }).channelGroup;
   }
 
   /**
@@ -80,5 +108,54 @@ export class ChannelGroupManager extends CachedManager<ChannelGroup, RawChannelG
     const id = this.resolveId(channelGroup);
     await this.query.commands.channelgrouprename({ cgid: id, name });
     return this.query.actions.ChannelGroupUpdate.handle({ cgid: id.toString(), name }).after!;
+  }
+
+  /**
+   * Copies a channel group into a new channel group.
+   *
+   * @param {ChannelGroup} sourceGroup The source channel group to copy.
+   * @param {ChannelGroupCopyOptions_Create} options The options for copying the channel group.
+   * @returns {Promise<ChannelGroup>} The created channel group.
+   */
+  async copy(
+    sourceGroup: ChannelGroupResolvable,
+    options: ChannelGroupCopyOptions_Create,
+  ): Promise<ChannelGroup>;
+
+  /**
+   * Copies a channel group into an existing channel group.
+   *
+   * @param {ChannelGroup} sourceGroup The source channel group to copy.
+   * @param {ChannelGroupCopyOptions_Target} options The options for copying the channel group.
+   * @returns {Promise<null>} A promise that resolves when the channel group has been copied.
+   */
+  async copy(
+    sourceGroup: ChannelGroupResolvable,
+    options: ChannelGroupCopyOptions_Target,
+  ): Promise<null>;
+
+  async copy(
+    sourceGroup: ChannelGroupResolvable,
+    options: ChannelGroupCopyOptions_Create | ChannelGroupCopyOptions_Target,
+  ): Promise<ChannelGroup | null> {
+    const sourceId = this.resolveId(sourceGroup);
+    const targetId = options.targetGroup ? this.resolveId(options.targetGroup) : 0; // Teamspeak requires tcgid to be set to 0 when creating a new group.
+
+    const data = await this.query.commands.channelgroupcopy({
+      scgid: sourceId,
+      tcgid: targetId,
+      name: options.name ?? 'copy', // TeamSpeak requires a name when copying to a target group, even if its ignored.
+      type: options.type,
+    });
+
+    if (options.targetGroup) {
+      return null;
+    } else {
+      return this.query.actions.ChannelGroupCreate.handle({
+        cgid: data.cgid,
+        name: options.name,
+        type: options.type.toString(),
+      }).channelGroup;
+    }
   }
 }

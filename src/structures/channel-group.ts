@@ -1,3 +1,7 @@
+import {
+  ChannelGroupCopyOptions_Create,
+  ChannelGroupCopyOptions_Target,
+} from '../managers/channel-group-manager';
 import { Query } from '../query';
 import { RawChannelGroup } from '../typings/teamspeak';
 import { Base } from './base';
@@ -80,5 +84,31 @@ export class ChannelGroup extends Base {
    */
   rename(name: string): Promise<ChannelGroup> {
     return this.query.channelGroups.rename(this, name);
+  }
+
+  /**
+   * Copies this channel group into a new channel group.
+   *
+   * @param {ChannelGroupCopyOptions_Create} options The options for copying the channel group.
+   * @returns {Promise<ChannelGroup>} The created channel group.
+   */
+  async copy(options: ChannelGroupCopyOptions_Create): Promise<ChannelGroup>;
+
+  /**
+   * Copies this channel group into an existing channel group.
+   *
+   * @param {ChannelGroupCopyOptions_Target} options The options for copying the channel group.
+   * @returns {Promise<null>} A promise that resolves when the channel group has been copied.
+   */
+  async copy(options: ChannelGroupCopyOptions_Target): Promise<null>;
+
+  async copy(
+    options: ChannelGroupCopyOptions_Create | ChannelGroupCopyOptions_Target,
+  ): Promise<ChannelGroup | null> {
+    if ('name' in options) {
+      return this.query.channelGroups.copy(this, options as ChannelGroupCopyOptions_Create);
+    } else {
+      return this.query.channelGroups.copy(this, options as ChannelGroupCopyOptions_Target);
+    }
   }
 }
