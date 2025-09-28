@@ -666,7 +666,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   }
 
   /**
-   * Get a list of query logins across all virtual servers.
+   * Get a list of query logins of the current virtual server. If no virtual server is selected, global logins will be returned as well.
    */
   getRawQueryLogins(
     params: { pattern?: string; start?: number; duration?: number; _count?: true } = {},
@@ -763,5 +763,13 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     clientDatabaseId: number,
   ): Promise<RawQueryLoginAdd> {
     return this.commands.queryloginadd({ client_login_name: loginName, cldbid: clientDatabaseId });
+  }
+
+  /**
+   * Delete a query login by its client database ID.
+   * @param clientDatabaseId The ID of the client to delete the login for.
+   */
+  deleteRawQueryLogin(clientDatabaseId: number): Promise<void> {
+    return this.commands.querylogindel({ cldbid: clientDatabaseId });
   }
 }

@@ -555,8 +555,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<RawQueryLoginAdd>('queryloginadd', params);
   }
 
-  querylogindel() {
-    throw new Error('Not implemented');
+  querylogindel(params: { cldbid: number }) {
+    return this.query.commands._execute<void>('querylogindel', params);
   }
 
   queryloginlist(params: { pattern?: string; start?: number; duration?: number; _count?: true }) {
