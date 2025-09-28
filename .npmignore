@@ -11,3 +11,4 @@ tsconfig.json
 /tests
 .env
 typedoc.json
+tsconfig.eslint.json
