@@ -494,6 +494,10 @@ export type RawQueryLogin = {
   client_login_name: string;
 };
 
+export type RawQueryLoginAdd = RawQueryLogin & {
+  client_login_password: string;
+};
+
 export type RawClientPermission = {
   permid: string;
   permvalue: string;

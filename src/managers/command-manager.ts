@@ -40,6 +40,7 @@ import {
   RawLogViewItem,
   RawPrivilegeKey,
   RawCreatedVirtualServer,
+  RawQueryLoginAdd,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -550,8 +551,8 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('privilegekeyuse', params);
   }
 
-  queryloginadd() {
-    throw new Error('Not implemented');
+  queryloginadd(params: { client_login_name: string; cldbid: number }) {
+    return this.query.commands._execute<RawQueryLoginAdd>('queryloginadd', params);
   }
 
   querylogindel() {

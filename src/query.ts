@@ -34,6 +34,7 @@ import {
   RawDbClient,
   LogLevel,
   RawPrivilegeKey,
+  RawQueryLoginAdd,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -750,5 +751,17 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   useRawPrivilegeKey(token: string): Promise<void> {
     return this.commands.privilegekeyuse({ token });
+  }
+
+  /**
+   * Create a new query login for the current virtual server. If no virtual server is selected, the login will be created globally.
+   * @param loginName The name of the query login.
+   * @param clientDatabaseId The ID of the client to login as.
+   */
+  async createRawQueryLogin(
+    loginName: string,
+    clientDatabaseId: number,
+  ): Promise<RawQueryLoginAdd> {
+    return this.commands.queryloginadd({ client_login_name: loginName, cldbid: clientDatabaseId });
   }
 }
