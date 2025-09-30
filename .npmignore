@@ -12,3 +12,4 @@ tsconfig.json
 .env
 typedoc.json
 tsconfig.eslint.json
+vitest.config.ts
