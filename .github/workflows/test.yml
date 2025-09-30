@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: Prod
     env:
       NODE_ENV: test
       TS_HOST: ${{ secrets.TS_HOST }}
