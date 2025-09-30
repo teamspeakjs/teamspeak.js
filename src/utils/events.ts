@@ -29,4 +29,7 @@ export const Events = {
   VirtualServerCreate: 'VirtualServerCreate',
   VirtualServerUpdate: 'VirtualServerUpdate',
   VirtualServerDelete: 'VirtualServerDelete',
+
+  PrivilegeKeyCreate: 'PrivilegeKeyCreate',
+  PrivilegeKeyDelete: 'PrivilegeKeyDelete',
 } as const;

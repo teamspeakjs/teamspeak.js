@@ -530,11 +530,11 @@ export class CommandManager extends CommandExecutor {
   }
 
   privilegekeyadd(params: {
-    tokentype: string;
-    tokenid1: string;
-    tokenid2: string;
+    tokentype: number;
+    tokenid1: number;
+    tokenid2: number;
     tokendescription?: string;
-    customset: string;
+    customset?: string;
   }) {
     return this.query.commands._execute<{ token: string }>('privilegekeyadd', params);
   }

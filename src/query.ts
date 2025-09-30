@@ -42,6 +42,7 @@ import { BanManager } from './managers/ban-manager';
 import { ChannelGroupManager } from './managers/channel-group-manager';
 import { PermissionManager } from './managers/permission-manager';
 import { Instance } from './structures/instance';
+import { PrivilegeKeyManager } from './managers/privilege-key-manager';
 
 interface ClientOptions {
   /**
@@ -126,6 +127,11 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * The Permission Manager of the Query instance.
    */
   public permissions = new PermissionManager(this);
+
+  /**
+   * The Privilege Key Manager of the Query instance.
+   */
+  public privilegeKeys = new PrivilegeKeyManager(this);
 
   /**
    * The Instance of the Query instance. Needs to be fetched first using fetchInstance().
@@ -243,6 +249,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
     this.bans.cache.clear();
     this.channelGroups.cache.clear();
     this.permissions.cache.clear();
+    this.privilegeKeys.cache.clear();
   }
 
   /**
@@ -717,7 +724,7 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    *
    * tokenid1: Group ID
    *
-   * tokenid2: Channel ID (if tokentype is 1)
+   * tokenid2: Channel ID (if tokentype is 1). Must be set to 0 if tokentype is 0.
    *
    * tokendescription: Description of the privilege key (optional)
    *
@@ -727,11 +734,11 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    * @returns The created privilege key.
    */
   async createRawPrivilegeKey(params: {
-    tokentype: string;
-    tokenid1: string;
-    tokenid2: string;
+    tokentype: number;
+    tokenid1: number;
+    tokenid2: number;
     tokendescription?: string;
-    customset: string;
+    customset?: string;
   }): Promise<string> {
     const { token } = await this.commands.privilegekeyadd(params);
     return token;

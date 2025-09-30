@@ -16,6 +16,8 @@ import { ServerGroupUpdateAction } from '../actions/ServerGroupUpdate';
 import { VirtualServerCreateAction } from '../actions/VirtualServerCreate';
 import { VirtualServerDeleteAction } from '../actions/VirtualServerDelete';
 import { VirtualServerUpdateAction } from '../actions/VirtualServerUpdate';
+import { PrivilegeKeyCreateAction } from '../actions/PrivilegeKeyCreate';
+import { PrivilegeKeyDeleteAction } from '../actions/PrivilegeKeyDelete';
 import { Query } from '../query';
 import { BaseManager } from './base-manager';
 
@@ -50,6 +52,10 @@ export class ActionManager extends BaseManager {
   VirtualServerUpdate: VirtualServerUpdateAction;
   VirtualServerDelete: VirtualServerDeleteAction;
 
+  // PRIVILEGE KEYS
+  PrivilegeKeyCreate: PrivilegeKeyCreateAction;
+  PrivilegeKeyDelete: PrivilegeKeyDeleteAction;
+
   constructor(query: Query) {
     super(query);
 
@@ -76,5 +82,8 @@ export class ActionManager extends BaseManager {
     this.VirtualServerCreate = new VirtualServerCreateAction(query);
     this.VirtualServerUpdate = new VirtualServerUpdateAction(query);
     this.VirtualServerDelete = new VirtualServerDeleteAction(query);
+
+    this.PrivilegeKeyCreate = new PrivilegeKeyCreateAction(query);
+    this.PrivilegeKeyDelete = new PrivilegeKeyDeleteAction(query);
   }
 }

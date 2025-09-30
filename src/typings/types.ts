@@ -5,6 +5,7 @@ import { Client } from '../structures/client';
 import { Permission } from '../structures/permission';
 import { ServerGroup } from '../structures/server-group';
 import { TextMessage } from '../structures/text-message';
+import { PrivilegeKey } from '../structures/privilege-key';
 import { VirtualServer } from '../structures/virtual-server';
 
 export type Constructable<Entity> = new (...args: any[]) => Entity;
@@ -22,6 +23,8 @@ export type BanResolvable = Ban | number;
 export type ChannelGroupResolvable = ChannelGroup | number;
 
 export type PermissionResolvable = Permission | number;
+
+export type PrivilegeKeyResolvable = PrivilegeKey | number;
 
 export type EventTypes = {
   Ready: [];
@@ -59,6 +62,9 @@ export type EventTypes = {
   VirtualServerCreate: [virtualServer: VirtualServer];
   VirtualServerUpdate: [before: VirtualServer, after: VirtualServer];
   VirtualServerDelete: [virtualServer: VirtualServer];
+
+  PrivilegeKeyCreate: [privilegeKey: PrivilegeKey];
+  PrivilegeKeyDelete: [privilegeKey: PrivilegeKey];
 };
 
 export type BaseFetchOptions = {
@@ -76,6 +82,11 @@ export enum ChannelGroupType {
   Template,
   Regular,
   Query,
+}
+
+export enum PrivilegeKeyType {
+  ServerGroup = 0,
+  ChannelGroup = 1,
 }
 
 export type ServerVersion = {
