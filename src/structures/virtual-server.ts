@@ -16,7 +16,7 @@ export class VirtualServer extends Base {
   password: string | null = null;
   clientsOnline: number | null = null;
   channelsOnline: number | null = null;
-  createdAt: Date | null = null;
+  createdTimestamp: number | null = null;
   uptime: number | null = null;
   codecEncryptionMode: string | null = null;
   hostMessage: string | null = null;
@@ -141,7 +141,7 @@ export class VirtualServer extends Base {
       this.channelsOnline = Number(data.virtualserver_channelsonline!);
     }
     if ('virtualserver_created' in data) {
-      this.createdAt = new Date(Number(data.virtualserver_created!) * 1000);
+      this.createdTimestamp = Number(data.virtualserver_created!);
     }
     if ('virtualserver_uptime' in data) {
       this.uptime = Number(data.virtualserver_uptime!);
@@ -435,6 +435,10 @@ export class VirtualServer extends Base {
         data.connection_bandwidth_received_last_minute_total!,
       );
     }
+  }
+
+  get createdAt(): Date | null {
+    return this.createdTimestamp ? new Date(this.createdTimestamp * 1000) : null;
   }
 
   edit(options: VirtualServerEditOptions): Promise<VirtualServer> {

@@ -11,7 +11,7 @@ export class Ban extends Base {
   uniqueId: string | null = null;
   myTeamspeakId: string | null = null;
   lastNickname: string | null = null;
-  createdAt: Date | null = null;
+  createdTimestamp: number | null = null;
   duration: number | null = null;
   invokerName: string | null = null;
   invokerDatabaseId: number | null = null;
@@ -46,7 +46,7 @@ export class Ban extends Base {
       this.lastNickname = data.lastnickname!;
     }
     if ('created' in data) {
-      this.createdAt = new Date(Number(data.created!) * 1000);
+      this.createdTimestamp = Number(data.created!);
     }
     if ('duration' in data) {
       this.duration = Number(data.duration!);
@@ -66,6 +66,10 @@ export class Ban extends Base {
     if ('enforcements' in data) {
       this.enforcements = Number(data.enforcements!);
     }
+  }
+
+  get createdAt(): Date | null {
+    return this.createdTimestamp ? new Date(this.createdTimestamp * 1000) : null;
   }
 
   /**
