@@ -712,6 +712,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
 
   /**
    * Get a list of privilege keys.
+   *
+   * @deprecated Please use Query.privilegeKeys.fetch() instead.
    */
   getRawPrivilegeKeys(): Promise<RawPrivilegeKey | RawPrivilegeKey[]> {
     return this.commands.privilegekeylist();
@@ -732,6 +734,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    *
    * @param params The parameters for the privilege key.
    * @returns The created privilege key.
+   *
+   * @deprecated Please use Query.privilegeKeys.create() instead.
    */
   async createRawPrivilegeKey(params: {
     tokentype: number;
@@ -747,6 +751,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Delete a privilege key by its token.
    * @param token The token of the privilege key to delete.
+   *
+   * @deprecated Please use Query.privilegeKeys.delete() or Query.privilegeKeys.deleteByToken() instead.
    */
   deleteRawPrivilegeKey(token: string): Promise<void> {
     return this.commands.privilegekeydelete({ token });
@@ -755,6 +761,8 @@ export class Query extends AsyncEventEmitter<EventTypes> {
   /**
    * Use a privilege key by its token.
    * @param token The token of the privilege key to use.
+   *
+   * @deprecated Please use Query.privilegeKeys.use() or Query.privilegeKeys.useByToken() instead.
    */
   useRawPrivilegeKey(token: string): Promise<void> {
     return this.commands.privilegekeyuse({ token });
