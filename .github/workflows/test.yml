@@ -1,0 +1,34 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      TS_HOST: ${{ secrets.TS_HOST }}
+      TS_USERNAME: ${{ secrets.TS_USERNAME }}
+      TS_PASSWORD: ${{ secrets.TS_PASSWORD }}
+      TS_QUERY_PORT: ${{ secrets.TS_QUERY_PORT }}
+      TS_VIRTUALSERVER_SID: ${{ secrets.TS_VIRTUALSERVER_SID }}
+      TS_ALLOW_MUTATIONS: ${{ secrets.TS_ALLOW_MUTATIONS }}
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run tests
+        run: npm run test
