@@ -11,6 +11,7 @@ import {
 } from '../typings/types';
 import { CachedManager } from './cached-manager';
 import { fnv1aHash32, stringifyValues } from '../utils/helpers';
+import { CommandError } from '../errors/command-error';
 
 type PrivilegeKeyCreateOptions = {
   /**
@@ -74,7 +75,14 @@ export class PrivilegeKeyManager extends CachedManager<PrivilegeKey, RawPrivileg
    * @returns {Promise<Collection<number, PrivilegeKey>>} A promise that resolves with a collection of privilege keys.
    */
   async fetch(): Promise<Collection<number, PrivilegeKey>> {
-    const _data = await this.query.commands.privilegekeylist();
+    let _data: RawPrivilegeKey | RawPrivilegeKey[] = [];
+    try {
+      _data = await this.query.commands.privilegekeylist();
+    } catch (error) {
+      if (error instanceof CommandError && error.id === 1281) {
+        return new Collection<number, PrivilegeKey>();
+      }
+    }
     const data = Array.isArray(_data) ? _data : [_data];
 
     const keys = new Collection<number, PrivilegeKey>();
