@@ -35,6 +35,7 @@ import {
   LogLevel,
   RawPrivilegeKey,
   RawQueryLoginAdd,
+  RawServerTempPassword,
 } from './typings/teamspeak';
 import { ServerGroupManager } from './managers/server-group-manager';
 import { VirtualServerManager } from './managers/virtual-server-manager';
@@ -786,5 +787,44 @@ export class Query extends AsyncEventEmitter<EventTypes> {
    */
   deleteRawQueryLogin(clientDatabaseId: number): Promise<void> {
     return this.commands.querylogindel({ cldbid: clientDatabaseId });
+  }
+
+  /**
+   * Get a list of server temporary passwords.
+   */
+  getRawServerTempPasswords(): Promise<RawServerTempPassword | RawServerTempPassword[]> {
+    return this.commands.servertemppasswordlist();
+  }
+
+  /**
+   * Create a new server temporary password.
+   * @param params The parameters for the server temporary password.
+   *
+   * pw: The password to create.
+   *
+   * desc: The description of the server temporary password.
+   *
+   * duration: The duration of the server temporary password IN SECONDS.
+   *
+   * tcid: The channel ID to create the server temporary password for. (optional, defaults to the default channel)
+   *
+   * tcpw: The channel password to create the server temporary password for. (optional)
+   */
+  createRawServerTempPassword(params: {
+    pw: string;
+    desc: string;
+    duration: number;
+    tcid?: string;
+    tcpw?: string;
+  }): Promise<void> {
+    return this.commands.servertemppasswordadd(params);
+  }
+
+  /**
+   * Delete a server temporary password by its password.
+   * @param pw The password of the server temporary password to delete.
+   */
+  deleteRawServerTempPassword(pw: string): Promise<void> {
+    return this.commands.servertemppassworddel({ pw });
   }
 }

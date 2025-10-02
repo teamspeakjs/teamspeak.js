@@ -554,3 +554,14 @@ export type RawAssignedPermission = {
   permnegated: string;
   permskip: string;
 };
+
+export type RawServerTempPassword = {
+  nickname: string;
+  uid: string;
+  desc: string;
+  pw_clear: string;
+  start: string;
+  end: string;
+  tcid: string;
+  tcpw: string;
+};

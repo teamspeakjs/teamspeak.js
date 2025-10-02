@@ -42,6 +42,7 @@ import {
   RawCreatedVirtualServer,
   RawQueryLoginAdd,
   RawAssignedPermission,
+  RawServerTempPassword,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -786,16 +787,24 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('serverstop', params);
   }
 
-  servertemppasswordadd() {
-    throw new Error('Not implemented');
+  servertemppasswordadd(params: {
+    pw: string;
+    desc: string;
+    duration: number;
+    tcid?: string;
+    tcpw?: string;
+  }) {
+    return this.query.commands._execute<void>('servertemppasswordadd', params);
   }
 
-  servertemppassworddel() {
-    throw new Error('Not implemented');
+  servertemppassworddel(params: { pw: string }) {
+    return this.query.commands._execute<void>('servertemppassworddel', params);
   }
 
   servertemppasswordlist() {
-    throw new Error('Not implemented');
+    return this.query.commands._execute<RawServerTempPassword | RawServerTempPassword[]>(
+      'servertemppasswordlist',
+    );
   }
 
   setclientchannelgroup(params: { cgid: number; cid: number; cldbid: number }) {
