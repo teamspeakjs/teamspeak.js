@@ -547,3 +547,10 @@ export type RawCreatedVirtualServer = {
   token: string;
   virtualserver_port: string;
 };
+
+export type RawAssignedPermission = {
+  permid: string;
+  permvalue: string;
+  permnegated: string;
+  permskip: string;
+};

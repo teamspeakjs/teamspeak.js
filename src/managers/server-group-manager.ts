@@ -3,7 +3,13 @@ import { Query } from '../query';
 import { ServerGroup } from '../structures/server-group';
 import { RawServerGroup } from '../typings/teamspeak';
 import { CachedManager } from './cached-manager';
-import { ClientResolvable, ServerGroupResolvable, ServerGroupType } from '../typings/types';
+import {
+  ClientResolvable,
+  PermissionResolvable,
+  ServerGroupResolvable,
+  ServerGroupType,
+} from '../typings/types';
+import { Permission } from '../structures/permission';
 
 interface ServerGroupCreateOptions {
   /**
@@ -40,6 +46,28 @@ export interface ServerGroupCopyOptions_Target extends ServerGroupCopyOptions {
   targetGroup: ServerGroupResolvable;
 
   name?: never;
+}
+
+export interface ServerGroupAddPermissionOptions {
+  /**
+   * The permission to add or edit. This can be a permission object, a permission ID (number), or a permission server ID (string, such as "i_channel_modify_power").
+   */
+  permission: PermissionResolvable | string;
+
+  /**
+   * The value of the permission.
+   */
+  value: number;
+
+  /**
+   * Whether the permission is negated.
+   */
+  negated?: boolean;
+
+  /**
+   * Whether the permission is skipped.
+   */
+  skip?: boolean;
 }
 
 /**
@@ -196,5 +224,76 @@ export class ServerGroupManager extends CachedManager<ServerGroup, RawServerGrou
         type: options.type.toString(),
       }).serverGroup;
     }
+  }
+
+  /**
+   * Fetches the permissions from a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to fetch the permissions from.
+   * @returns {Promise<Collection<number, Permission>>} A promise that resolves with the permissions.
+   */
+  async fetchPermissions(
+    serverGroup: ServerGroupResolvable,
+  ): Promise<Collection<number, Permission>> {
+    const id = this.resolveId(serverGroup);
+    const _data = await this.query.commands.servergrouppermlist({ sgid: id });
+    const data = Array.isArray(_data) ? _data : [_data];
+
+    const collection = new Collection<number, Permission>();
+
+    for (const permission of data) {
+      collection.set(Number(permission.permid), this.query.permissions._add(permission));
+    }
+
+    return collection;
+  }
+
+  /**
+   * Adds a permission to a server group. You can also edit the permission using this method.
+   * @param {ServerGroupResolvable} serverGroup The server group to add the permission to.
+   * @param {ServerGroupAddPermissionOptions} options The options for adding or editing the permission.
+   * @returns {Promise<void>} A promise that resolves when the permission has been added or edited.
+   */
+  addPermission(
+    serverGroup: ServerGroupResolvable,
+    options: ServerGroupAddPermissionOptions,
+  ): Promise<void> {
+    const serverGroupId = this.resolveId(serverGroup);
+    const permissionServerId =
+      typeof options.permission === 'string' ? options.permission : undefined;
+    const permissionId =
+      typeof options.permission === 'string'
+        ? undefined
+        : this.query.permissions.resolveId(options.permission);
+
+    return this.query.commands.servergroupaddperm({
+      sgid: serverGroupId,
+      permid: permissionId,
+      permsid: permissionServerId,
+      permvalue: options.value,
+      permnegated: options.negated || false,
+      permskip: options.skip || false,
+    });
+  }
+
+  /**
+   * Removes a permission from a server group.
+   * @param {ServerGroupResolvable} serverGroup The server group to remove the permission from.
+   * @param {PermissionResolvable | string} permission The permission to remove. This can be a permission object, a permission ID (number), or a permission server ID (string, such as "i_channel_modify_power").
+   * @returns {Promise<void>} A promise that resolves when the permission has been removed.
+   */
+  removePermission(
+    serverGroup: ServerGroupResolvable,
+    permission: PermissionResolvable | string,
+  ): Promise<void> {
+    const serverGroupId = this.resolveId(serverGroup);
+    const permissionServerId = typeof permission === 'string' ? permission : undefined;
+    const permissionId =
+      typeof permission === 'string' ? undefined : this.query.permissions.resolveId(permission);
+
+    return this.query.commands.servergroupdelperm({
+      sgid: serverGroupId,
+      permid: permissionId,
+      permsid: permissionServerId,
+    });
   }
 }

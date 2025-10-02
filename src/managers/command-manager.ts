@@ -41,6 +41,7 @@ import {
   RawPrivilegeKey,
   RawCreatedVirtualServer,
   RawQueryLoginAdd,
+  RawAssignedPermission,
 } from '../typings/teamspeak';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -658,8 +659,15 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('servergroupaddclient', params);
   }
 
-  servergroupaddperm() {
-    throw new Error('Not implemented');
+  servergroupaddperm(params: {
+    sgid: number;
+    permid?: number;
+    permsid?: string;
+    permvalue?: number;
+    permnegated?: boolean;
+    permskip?: boolean;
+  }) {
+    return this.query.commands._execute<void>('servergroupaddperm', params);
   }
 
   servergroupautoaddperm() {
@@ -689,21 +697,31 @@ export class CommandManager extends CommandExecutor {
     return this.query.commands._execute<void>('servergroupdel', params);
   }
 
-  //Note: This theoratically supports multiple clients.
+  //Note: This theoratically supports multiple permissions.
   servergroupdelclient(params: { sgid: number; cldbid: number; _continueonerror?: true }) {
     return this.query.commands._execute<void>('servergroupdelclient', params);
   }
-
-  servergroupdelperm() {
-    throw new Error('Not implemented');
+  //Note: This theoratically supports multiple permissions.
+  servergroupdelperm(params: {
+    sgid: number;
+    permid?: number;
+    permsid?: string;
+    _continueonerror?: true;
+  }) {
+    return this.query.commands._execute<void>('servergroupdelperm', params);
   }
 
   servergrouplist() {
     return this.query.commands._execute<RawServerGroup | RawServerGroup[]>('servergrouplist');
   }
 
-  servergrouppermlist() {
-    throw new Error('Not implemented');
+  //Note: This theoratically supports multiple permissions.
+  //TODO: permsid is not supported yet and has no effect
+  servergrouppermlist(params: { sgid: number; _permsid?: true; _continueonerror?: true }) {
+    return this.query.commands._execute<RawAssignedPermission | RawAssignedPermission[]>(
+      'servergrouppermlist',
+      params,
+    );
   }
 
   servergrouprename(params: { sgid: number; name: string }) {

@@ -1,11 +1,14 @@
 import {
+  ServerGroupAddPermissionOptions,
   ServerGroupCopyOptions_Create,
   ServerGroupCopyOptions_Target,
 } from '../managers/server-group-manager';
 import { Query } from '../query';
 import { RawServerGroup } from '../typings/teamspeak';
-import { ClientResolvable } from '../typings/types';
+import { ClientResolvable, PermissionResolvable } from '../typings/types';
 import { Base } from './base';
+import { Collection } from '@discordjs/collection';
+import { Permission } from './permission';
 
 /**
  * Represents a server group.
@@ -137,5 +140,31 @@ export class ServerGroup extends Base {
     } else {
       return this.query.serverGroups.copy(this, options as ServerGroupCopyOptions_Target);
     }
+  }
+
+  /**
+   * Fetches the permissions from this server group.
+   * @returns {Promise<Collection<number, Permission>>} A promise that resolves with the permissions.
+   */
+  fetchPermissions(): Promise<Collection<number, Permission>> {
+    return this.query.serverGroups.fetchPermissions(this);
+  }
+
+  /**
+   * Adds a permission to this server group. You can also edit the permission using this method.
+   * @param {ServerGroupAddPermissionOptions} options The options for adding or editing the permission.
+   * @returns {Promise<void>} A promise that resolves when the permission has been added or edited.
+   */
+  addPermission(options: ServerGroupAddPermissionOptions): Promise<void> {
+    return this.query.serverGroups.addPermission(this, options);
+  }
+
+  /**
+   * Removes a permission from this server group.
+   * @param {PermissionResolvable | string} permission The permission to remove. This can be a permission object, a permission ID (number), or a permission server ID (string, such as "i_channel_modify_power").
+   * @returns {Promise<void>} A promise that resolves when the permission has been removed.
+   */
+  removePermission(permission: PermissionResolvable | string): Promise<void> {
+    return this.query.serverGroups.removePermission(this, permission);
   }
 }

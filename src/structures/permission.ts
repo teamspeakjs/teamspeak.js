@@ -3,11 +3,14 @@ import { RawPermission } from '../typings/teamspeak';
 import { Base } from './base';
 
 /**
- * Represents a permission.
+ * Represents a permission or assigned permission.
  */
 export class Permission extends Base {
   name: string | null = null;
   description: string | null = null;
+  value: number | null = null;
+  negated: boolean | null = null;
+  skip: boolean | null = null;
 
   constructor(query: Query, data: Partial<RawPermission>) {
     super(query, Number(data.permid));
@@ -25,6 +28,15 @@ export class Permission extends Base {
     }
     if ('permdesc' in data) {
       this.description = data.permdesc!;
+    }
+    if ('permvalue' in data) {
+      this.value = Number(data.permvalue!);
+    }
+    if ('permnegated' in data) {
+      this.negated = data.permnegated! === '1';
+    }
+    if ('permskip' in data) {
+      this.skip = data.permskip! === '1';
     }
   }
 }
