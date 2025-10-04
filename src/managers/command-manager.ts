@@ -515,8 +515,12 @@ export class CommandManager extends CommandExecutor {
     throw new Error('Not implemented');
   }
 
-  permidgetbyname() {
-    throw new Error('Not implemented');
+  //Note: This theoratically supports multiple permissions.
+  permidgetbyname(params: { permsid: string }) {
+    return this.query.commands._execute<{ permsid: string; permid: string }>(
+      'permidgetbyname',
+      params,
+    );
   }
 
   permissionlist() {
