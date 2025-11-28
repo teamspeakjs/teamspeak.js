@@ -6,12 +6,33 @@ import { Base } from './base';
  * Represents a privilege key.
  */
 export class PrivilegeKey extends Base {
+  /**
+   * The token of the privilege key.
+   */
   token: string | null = null;
+  /**
+   * The type of the privilege key. 0 = Server Group, 1 = Channel Group.
+   */
   tokenType: number | null = null;
+  /**
+   * The ID of the server group or channel group.
+   */
   tokenId1: number | null = null;
+  /**
+   * The ID of the channel. (If the privilege key is for a channel group)
+   */
   tokenId2: number | null = null;
+  /**
+   * The timestamp the privilege key was created.
+   */
   createdTimestamp: number | null = null;
+  /**
+   * The description of the privilege key.
+   */
   description: string | null = null;
+  /**
+   * The custom set of the privilege key.
+   */
   customSet: string | null = null;
 
   constructor(query: Query, data: Partial<RawPrivilegeKey>) {
@@ -44,6 +65,10 @@ export class PrivilegeKey extends Base {
     }
   }
 
+  /**
+   * The timestamp the privilege key was created.
+   * @returns {Date | null} The timestamp the privilege key was created, or null if unknown.
+   */
   get createdAt(): Date | null {
     return this.createdTimestamp ? new Date(this.createdTimestamp * 1000) : null;
   }

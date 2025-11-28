@@ -13,11 +13,29 @@ import { BanClientOptions } from '../docs';
  * Represents a client.
  */
 export class Client extends Base {
+  /**
+   * The ID of the channel the client is in.
+   */
   channelId: number | null = null;
+  /**
+   * The database ID of the client.
+   */
   databaseId: number | null = null;
+  /**
+   * The unique ID of the client.
+   */
   uniqueId: string | null = null;
+  /**
+   * The nickname of the client.
+   */
   nickname: string | null = null;
+  /**
+   * The type of the client. 0 = Regular, 1 = Query.
+   */
   type: number | null = null;
+  /**
+   * The description of the client.
+   */
   description: string | null = null;
 
   constructor(query: Query, data: RawClient) {

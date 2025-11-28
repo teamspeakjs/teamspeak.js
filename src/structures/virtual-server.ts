@@ -471,14 +471,29 @@ export class VirtualServer extends Base {
     return this.query.virtualServers.stop(this, reason);
   }
 
+  /**
+   * Set the name of the virtual server.
+   * @param {string} name The name of the virtual server.
+   * @returns {Promise<VirtualServer>} A promise that resolves with the updated virtual server.
+   */
   setName(name: string): Promise<VirtualServer> {
     return this.edit({ name });
   }
 
+  /**
+   * Set the port of the virtual server.
+   * @param {number} port The port of the virtual server.
+   * @returns {Promise<VirtualServer>} A promise that resolves with the updated virtual server.
+   */
   setPort(port: number): Promise<VirtualServer> {
     return this.edit({ port });
   }
 
+  /**
+   * Set the auto start of the virtual server.
+   * @param {boolean} autoStart The auto start of the virtual server.
+   * @returns {Promise<VirtualServer>} A promise that resolves with the updated virtual server.
+   */
   setAutoStart(autoStart: boolean): Promise<VirtualServer> {
     return this.edit({ autoStart });
   }
