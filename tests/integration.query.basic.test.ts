@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import { makeQuery, readEnv } from './utils/live';
+import { makeQuery, readEnv, mutationsAllowed as allowMut } from './utils/live';
 
 const env = readEnv();
-const describeIf = env ? describe : describe.skip;
+const describeIf = env && allowMut() ? describe : describe.skip;
 
 describeIf('Live Query basic actions', () => {
   it('connects, logs in, selects server, and runs whoami', { timeout: 30000 }, async () => {
