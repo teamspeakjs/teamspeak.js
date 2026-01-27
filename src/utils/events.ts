@@ -101,7 +101,7 @@ export const Events = {
    * The event when a virtual server is deleted.
    */
   VirtualServerDelete: 'VirtualServerDelete',
-  
+
   /**
    * The event when a privilege key is created.
    */
