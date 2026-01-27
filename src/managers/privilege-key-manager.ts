@@ -13,7 +13,7 @@ import { CachedManager } from './cached-manager';
 import { fnv1aHash32, stringifyValues } from '../utils/helpers';
 import { CommandError } from '../errors/command-error';
 
-type PrivilegeKeyCreateOptions = {
+export type PrivilegeKeyCreateOptions = {
   /**
    * The description of the privilege key.
    */
@@ -25,7 +25,7 @@ type PrivilegeKeyCreateOptions = {
   customSet?: string;
 };
 
-type PrivilegeKeyCreateOptions_ServerGroup = PrivilegeKeyCreateOptions & {
+export type PrivilegeKeyCreateOptions_ServerGroup = PrivilegeKeyCreateOptions & {
   /**
    * The server group of the privilege key.
    */
@@ -36,7 +36,7 @@ type PrivilegeKeyCreateOptions_ServerGroup = PrivilegeKeyCreateOptions & {
   channel?: never;
 };
 
-type PrivilegeKeyCreateOptions_ChannelGroup = PrivilegeKeyCreateOptions & {
+export type PrivilegeKeyCreateOptions_ChannelGroup = PrivilegeKeyCreateOptions & {
   /**
    * The channel group of the privilege key.
    */

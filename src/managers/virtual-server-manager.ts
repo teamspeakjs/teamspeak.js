@@ -7,7 +7,7 @@ import { VirtualServer } from '../structures/virtual-server';
 import { QueryClient } from '../structures/query-client';
 import { stringifyValues } from '../utils/helpers';
 
-type VirtualServerUseOptions = {
+export type VirtualServerUseOptions = {
   /**
    * The virtual server ID.
    */

@@ -1,4 +1,4 @@
-export { Query } from './query';
+export { Query, ClientOptions } from './query';
 export * from './utils/events';
 
 export * from './typings/types';
@@ -13,6 +13,8 @@ export * from './managers/command-manager';
 export * from './managers/notification-manager';
 export * from './managers/server-group-manager';
 export * from './managers/virtual-server-manager';
+export * from './managers/permission-manager';
+export * from './managers/privilege-key-manager';
 
 export * from './structures/ban';
 export * from './structures/base';
@@ -23,3 +25,7 @@ export * from './structures/notification';
 export * from './structures/query-client';
 export * from './structures/server-group';
 export * from './structures/virtual-server';
+export * from './structures/permission';
+export * from './structures/privilege-key';
+export * from './structures/text-message';
+export * from './structures/instance';

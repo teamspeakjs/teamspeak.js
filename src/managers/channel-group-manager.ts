@@ -5,7 +5,7 @@ import { ChannelGroupResolvable, ChannelGroupType } from '../typings/types';
 import { ChannelGroup } from '../structures/channel-group';
 import { RawChannelGroup } from '../typings/teamspeak';
 
-type ChannelGroupCreateOptions = {
+export type ChannelGroupCreateOptions = {
   name: string;
   type?: ChannelGroupType;
 };

@@ -45,7 +45,7 @@ import { PermissionManager } from './managers/permission-manager';
 import { Instance } from './structures/instance';
 import { PrivilegeKeyManager } from './managers/privilege-key-manager';
 
-interface ClientOptions {
+export interface ClientOptions {
   /**
    * The host you want to connect to.
    */

@@ -6,7 +6,7 @@ import { BanResolvable, ClientResolvable } from '../typings/types';
 import { Ban } from '../structures/ban';
 import { CommandError } from '../errors/command-error';
 
-type BanCreateOptions = {
+export type BanCreateOptions = {
   /**
    * The IP address to ban.
    */

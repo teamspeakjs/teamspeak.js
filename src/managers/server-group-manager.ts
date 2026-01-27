@@ -11,7 +11,7 @@ import {
 } from '../typings/types';
 import { Permission } from '../structures/permission';
 
-interface ServerGroupCreateOptions {
+export interface ServerGroupCreateOptions {
   /**
    * The name of the server group.
    */
