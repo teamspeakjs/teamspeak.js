@@ -47,7 +47,7 @@
     "@vladfrangu/async_event_emitter": "^2.4.6",
     "events": "^3.3.0",
     "ssh2": "^1.17.0",
-    "typescript": "^5.8.2"
+    "typescript": "^6.0.2"
   },
   "devDependencies": {
     "@types/events": "^3.0.3",
